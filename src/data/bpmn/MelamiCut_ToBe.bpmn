@@ -1,0 +1,342 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Process_MelamiCut_ToBe" targetNamespace="http://bizagi.com/bpmn20">
+  <bpmn:collaboration id="Collaboration_Process_MelamiCut_ToBe">
+    <bpmn:participant id="Participant_Process_MelamiCut_ToBe" name="MelamiCut S.A.C." processRef="Process_MelamiCut_ToBe" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_MelamiCut_ToBe" name="MelamiCut S.A.C. - Proceso To-Be" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Process_MelamiCut_ToBe">
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_0" name="Cliente">
+        <bpmn:flowNodeRef>Start_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Solicitar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Recibir_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_1" name="Ventas">
+        <bpmn:flowNodeRef>Task_Registrar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Informar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_NoDisp_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_2" name="Almacen">
+        <bpmn:flowNodeRef>Task_Verificar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Disp_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_3" name="Caja">
+        <bpmn:flowNodeRef>Task_Pago_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_4" name="Produccion">
+        <bpmn:flowNodeRef>Task_Revisar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Cortar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Calidad_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Corregir_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_5" name="Sistema">
+        <bpmn:flowNodeRef>Task_Validar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Confirmar_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Orden_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Incidencia_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Listo_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_ToBe_6" name="Software de optimizacion">
+        <bpmn:flowNodeRef>Task_Patron_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_ToBe" name="Inicio solicitud">
+      <bpmn:outgoing>G1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_Solicitar_ToBe" name="Solicitar pedido">
+      <bpmn:incoming>G1</bpmn:incoming>
+      <bpmn:outgoing>G2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Registrar_ToBe" name="Registrar pedido">
+      <bpmn:incoming>G2</bpmn:incoming>
+      <bpmn:outgoing>G3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Validar_ToBe" name="Validar informacion">
+      <bpmn:incoming>G3</bpmn:incoming>
+      <bpmn:outgoing>G4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Verificar_ToBe" name="Verificar disponibilidad">
+      <bpmn:incoming>G4</bpmn:incoming>
+      <bpmn:outgoing>G5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gw_Disp_ToBe" name="Hay material?">
+      <bpmn:incoming>G5</bpmn:incoming>
+      <bpmn:outgoing>G6no</bpmn:outgoing>
+      <bpmn:outgoing>G6si</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Informar_ToBe" name="Informar no disponible">
+      <bpmn:incoming>G6no</bpmn:incoming>
+      <bpmn:outgoing>G7no</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_NoDisp_ToBe" name="Fin no disponible">
+      <bpmn:incoming>G7no</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_Pago_ToBe" name="Registrar pago">
+      <bpmn:incoming>G6si</bpmn:incoming>
+      <bpmn:outgoing>G8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Confirmar_ToBe" name="Confirmar pedido">
+      <bpmn:incoming>G8</bpmn:incoming>
+      <bpmn:outgoing>G9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Orden_ToBe" name="Generar orden de produccion">
+      <bpmn:incoming>G9</bpmn:incoming>
+      <bpmn:outgoing>G10</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Revisar_ToBe" name="Revisar orden">
+      <bpmn:incoming>G10</bpmn:incoming>
+      <bpmn:outgoing>G11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Patron_ToBe" name="Generar patron">
+      <bpmn:incoming>G11</bpmn:incoming>
+      <bpmn:outgoing>G12</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Cortar_ToBe" name="Realizar cortes">
+      <bpmn:incoming>G12</bpmn:incoming>
+      <bpmn:incoming>G16loop</bpmn:incoming>
+      <bpmn:outgoing>G13</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gw_Calidad_ToBe" name="Control correcto?">
+      <bpmn:incoming>G13</bpmn:incoming>
+      <bpmn:outgoing>G14bad</bpmn:outgoing>
+      <bpmn:outgoing>G14ok</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Incidencia_ToBe" name="Registrar incidencia">
+      <bpmn:incoming>G14bad</bpmn:incoming>
+      <bpmn:outgoing>G15</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Corregir_ToBe" name="Corregir corte">
+      <bpmn:incoming>G15</bpmn:incoming>
+      <bpmn:outgoing>G16loop</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Listo_ToBe" name="Listo para entrega">
+      <bpmn:incoming>G14ok</bpmn:incoming>
+      <bpmn:outgoing>G17</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Recibir_ToBe" name="Recibir pedido">
+      <bpmn:incoming>G17</bpmn:incoming>
+      <bpmn:outgoing>G18</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_ToBe" name="Entregado">
+      <bpmn:incoming>G18</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="G1" sourceRef="Start_ToBe" targetRef="Task_Solicitar_ToBe" />
+    <bpmn:sequenceFlow id="G2" sourceRef="Task_Solicitar_ToBe" targetRef="Task_Registrar_ToBe" />
+    <bpmn:sequenceFlow id="G3" sourceRef="Task_Registrar_ToBe" targetRef="Task_Validar_ToBe" />
+    <bpmn:sequenceFlow id="G4" sourceRef="Task_Validar_ToBe" targetRef="Task_Verificar_ToBe" />
+    <bpmn:sequenceFlow id="G5" sourceRef="Task_Verificar_ToBe" targetRef="Gw_Disp_ToBe" />
+    <bpmn:sequenceFlow id="G6no" sourceRef="Gw_Disp_ToBe" targetRef="Task_Informar_ToBe" name="No" />
+    <bpmn:sequenceFlow id="G7no" sourceRef="Task_Informar_ToBe" targetRef="End_NoDisp_ToBe" />
+    <bpmn:sequenceFlow id="G6si" sourceRef="Gw_Disp_ToBe" targetRef="Task_Pago_ToBe" name="Si" />
+    <bpmn:sequenceFlow id="G8" sourceRef="Task_Pago_ToBe" targetRef="Task_Confirmar_ToBe" />
+    <bpmn:sequenceFlow id="G9" sourceRef="Task_Confirmar_ToBe" targetRef="Task_Orden_ToBe" />
+    <bpmn:sequenceFlow id="G10" sourceRef="Task_Orden_ToBe" targetRef="Task_Revisar_ToBe" />
+    <bpmn:sequenceFlow id="G11" sourceRef="Task_Revisar_ToBe" targetRef="Task_Patron_ToBe" />
+    <bpmn:sequenceFlow id="G12" sourceRef="Task_Patron_ToBe" targetRef="Task_Cortar_ToBe" />
+    <bpmn:sequenceFlow id="G13" sourceRef="Task_Cortar_ToBe" targetRef="Gw_Calidad_ToBe" />
+    <bpmn:sequenceFlow id="G14bad" sourceRef="Gw_Calidad_ToBe" targetRef="Task_Incidencia_ToBe" name="Incorrecto" />
+    <bpmn:sequenceFlow id="G15" sourceRef="Task_Incidencia_ToBe" targetRef="Task_Corregir_ToBe" />
+    <bpmn:sequenceFlow id="G16loop" sourceRef="Task_Corregir_ToBe" targetRef="Task_Cortar_ToBe" name="Reintentar" />
+    <bpmn:sequenceFlow id="G14ok" sourceRef="Gw_Calidad_ToBe" targetRef="Task_Listo_ToBe" name="Correcto" />
+    <bpmn:sequenceFlow id="G17" sourceRef="Task_Listo_ToBe" targetRef="Task_Recibir_ToBe" />
+    <bpmn:sequenceFlow id="G18" sourceRef="Task_Recibir_ToBe" targetRef="End_ToBe" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_MelamiCut_ToBe" name="MelamiCut S.A.C. - Proceso To-Be">
+    <bpmndi:BPMNPlane id="Plane_Process_MelamiCut_ToBe" bpmnElement="Collaboration_Process_MelamiCut_ToBe">
+      <bpmndi:BPMNShape id="DI_Participant_Process_MelamiCut_ToBe" bpmnElement="Participant_Process_MelamiCut_ToBe" isHorizontal="true">
+        <dc:Bounds x="100" y="0" width="3120" height="1400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_0" bpmnElement="Lane_Process_MelamiCut_ToBe_0" isHorizontal="true">
+        <dc:Bounds x="130" y="0" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_1" bpmnElement="Lane_Process_MelamiCut_ToBe_1" isHorizontal="true">
+        <dc:Bounds x="130" y="200" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_2" bpmnElement="Lane_Process_MelamiCut_ToBe_2" isHorizontal="true">
+        <dc:Bounds x="130" y="400" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_3" bpmnElement="Lane_Process_MelamiCut_ToBe_3" isHorizontal="true">
+        <dc:Bounds x="130" y="600" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_4" bpmnElement="Lane_Process_MelamiCut_ToBe_4" isHorizontal="true">
+        <dc:Bounds x="130" y="800" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_5" bpmnElement="Lane_Process_MelamiCut_ToBe_5" isHorizontal="true">
+        <dc:Bounds x="130" y="1000" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_ToBe_6" bpmnElement="Lane_Process_MelamiCut_ToBe_6" isHorizontal="true">
+        <dc:Bounds x="130" y="1200" width="3090" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Start_ToBe" bpmnElement="Start_ToBe">
+        <dc:Bounds x="220" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Solicitar_ToBe" bpmnElement="Task_Solicitar_ToBe">
+        <dc:Bounds x="320" y="60" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Registrar_ToBe" bpmnElement="Task_Registrar_ToBe">
+        <dc:Bounds x="490" y="260" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Validar_ToBe" bpmnElement="Task_Validar_ToBe">
+        <dc:Bounds x="660" y="1060" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Verificar_ToBe" bpmnElement="Task_Verificar_ToBe">
+        <dc:Bounds x="830" y="460" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Disp_ToBe" bpmnElement="Gw_Disp_ToBe">
+        <dc:Bounds x="1000" y="475" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Informar_ToBe" bpmnElement="Task_Informar_ToBe">
+        <dc:Bounds x="1170" y="205" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_End_NoDisp_ToBe" bpmnElement="End_NoDisp_ToBe">
+        <dc:Bounds x="1340" y="227" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Pago_ToBe" bpmnElement="Task_Pago_ToBe">
+        <dc:Bounds x="1170" y="660" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Confirmar_ToBe" bpmnElement="Task_Confirmar_ToBe">
+        <dc:Bounds x="1340" y="1060" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Orden_ToBe" bpmnElement="Task_Orden_ToBe">
+        <dc:Bounds x="1510" y="1060" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Revisar_ToBe" bpmnElement="Task_Revisar_ToBe">
+        <dc:Bounds x="1680" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Patron_ToBe" bpmnElement="Task_Patron_ToBe">
+        <dc:Bounds x="1850" y="1260" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Cortar_ToBe" bpmnElement="Task_Cortar_ToBe">
+        <dc:Bounds x="2020" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Calidad_ToBe" bpmnElement="Gw_Calidad_ToBe">
+        <dc:Bounds x="2190" y="875" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Incidencia_ToBe" bpmnElement="Task_Incidencia_ToBe">
+        <dc:Bounds x="2360" y="1005" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Corregir_ToBe" bpmnElement="Task_Corregir_ToBe">
+        <dc:Bounds x="2530" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Listo_ToBe" bpmnElement="Task_Listo_ToBe">
+        <dc:Bounds x="2530" y="1060" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Recibir_ToBe" bpmnElement="Task_Recibir_ToBe">
+        <dc:Bounds x="2700" y="60" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_End_ToBe" bpmnElement="End_ToBe">
+        <dc:Bounds x="2870" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DI_G1" bpmnElement="G1">
+        <di:waypoint x="256" y="100.0" />
+        <di:waypoint x="320" y="100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G2" bpmnElement="G2">
+        <di:waypoint x="430" y="100.0" />
+        <di:waypoint x="490" y="100.0" />
+        <di:waypoint x="490" y="300.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G3" bpmnElement="G3">
+        <di:waypoint x="600" y="300.0" />
+        <di:waypoint x="660" y="300.0" />
+        <di:waypoint x="660" y="1100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G4" bpmnElement="G4">
+        <di:waypoint x="770" y="1100.0" />
+        <di:waypoint x="830" y="1100.0" />
+        <di:waypoint x="830" y="500.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G5" bpmnElement="G5">
+        <di:waypoint x="940" y="500.0" />
+        <di:waypoint x="1000" y="500.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G6no" bpmnElement="G6no">
+        <di:waypoint x="1050" y="500.0" />
+        <di:waypoint x="1170" y="500.0" />
+        <di:waypoint x="1170" y="245.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1090.0" y="362.5" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G7no" bpmnElement="G7no">
+        <di:waypoint x="1280" y="245.0" />
+        <di:waypoint x="1340" y="245.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G6si" bpmnElement="G6si">
+        <di:waypoint x="1050" y="500.0" />
+        <di:waypoint x="1170" y="500.0" />
+        <di:waypoint x="1170" y="700.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1090.0" y="590.0" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G8" bpmnElement="G8">
+        <di:waypoint x="1280" y="700.0" />
+        <di:waypoint x="1340" y="700.0" />
+        <di:waypoint x="1340" y="1100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G9" bpmnElement="G9">
+        <di:waypoint x="1450" y="1100.0" />
+        <di:waypoint x="1510" y="1100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G10" bpmnElement="G10">
+        <di:waypoint x="1620" y="1100.0" />
+        <di:waypoint x="1680" y="1100.0" />
+        <di:waypoint x="1680" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G11" bpmnElement="G11">
+        <di:waypoint x="1790" y="900.0" />
+        <di:waypoint x="1850" y="900.0" />
+        <di:waypoint x="1850" y="1300.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G12" bpmnElement="G12">
+        <di:waypoint x="1960" y="1300.0" />
+        <di:waypoint x="2020" y="1300.0" />
+        <di:waypoint x="2020" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G13" bpmnElement="G13">
+        <di:waypoint x="2130" y="900.0" />
+        <di:waypoint x="2190" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G14bad" bpmnElement="G14bad">
+        <di:waypoint x="2240" y="900.0" />
+        <di:waypoint x="2360" y="900.0" />
+        <di:waypoint x="2360" y="1045.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2280.0" y="962.5" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G15" bpmnElement="G15">
+        <di:waypoint x="2470" y="1045.0" />
+        <di:waypoint x="2530" y="1045.0" />
+        <di:waypoint x="2530" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G16loop" bpmnElement="G16loop">
+        <di:waypoint x="2585.0" y="940" />
+        <di:waypoint x="2585.0" y="990" />
+        <di:waypoint x="2075.0" y="990" />
+        <di:waypoint x="2075.0" y="940" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2310.0" y="930.0" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G14ok" bpmnElement="G14ok">
+        <di:waypoint x="2240" y="900.0" />
+        <di:waypoint x="2530" y="900.0" />
+        <di:waypoint x="2530" y="1100.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2365.0" y="990.0" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G17" bpmnElement="G17">
+        <di:waypoint x="2640" y="1100.0" />
+        <di:waypoint x="2700" y="1100.0" />
+        <di:waypoint x="2700" y="100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_G18" bpmnElement="G18">
+        <di:waypoint x="2810" y="100.0" />
+        <di:waypoint x="2870" y="100.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

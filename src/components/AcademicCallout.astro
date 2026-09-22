@@ -1,0 +1,18 @@
+---
+interface Props {
+	framework: 'CMMI' | 'DMM';
+	title: string;
+}
+
+const { framework, title } = Astro.props;
+---
+
+<aside class="my-6 p-4 rounded-lg border-l-4 border-l-neutral-800 bg-neutral-100/70 text-xs text-neutral-700 leading-relaxed font-sans">
+	<div class="flex items-center gap-2 mb-1.5 font-mono font-bold text-[11px] text-neutral-900">
+		<span class="px-1.5 py-0.5 rounded bg-neutral-200 border border-neutral-300 text-[10px] uppercase">{framework}</span>
+		<span>{title}</span>
+	</div>
+	<div class="text-neutral-600">
+		<slot />
+	</div>
+</aside>

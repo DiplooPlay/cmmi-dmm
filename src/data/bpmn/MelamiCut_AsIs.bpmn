@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Process_MelamiCut_AsIs" targetNamespace="http://bizagi.com/bpmn20">
+  <bpmn:collaboration id="Collaboration_Process_MelamiCut_AsIs">
+    <bpmn:participant id="Participant_Process_MelamiCut_AsIs" name="MelamiCut S.A.C." processRef="Process_MelamiCut_AsIs" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_MelamiCut_AsIs" name="MelamiCut S.A.C. - Proceso As-Is" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Process_MelamiCut_AsIs">
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_0" name="Cliente">
+        <bpmn:flowNodeRef>Start_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Solicitar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Recibir_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_1" name="Ventas">
+        <bpmn:flowNodeRef>Task_Registrar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Informar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_NoDisp_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Confirmar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Comunicar_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_2" name="Almacen">
+        <bpmn:flowNodeRef>Task_Verificar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Disp_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_3" name="Caja">
+        <bpmn:flowNodeRef>Task_Pago_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_4" name="Produccion">
+        <bpmn:flowNodeRef>Task_Revisar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Ingresar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Cortar_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Calidad_AsIs</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Corregir_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_5" name="Sistema">
+        <bpmn:flowNodeRef>Task_Actualizar_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Process_MelamiCut_AsIs_6" name="Software de optimizacion">
+        <bpmn:flowNodeRef>Task_Patron_AsIs</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_AsIs" name="Inicio solicitud">
+      <bpmn:outgoing>F1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_Solicitar_AsIs" name="Solicitar pedido">
+      <bpmn:incoming>F1</bpmn:incoming>
+      <bpmn:outgoing>F2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Registrar_AsIs" name="Registrar pedido">
+      <bpmn:incoming>F2</bpmn:incoming>
+      <bpmn:outgoing>F3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Verificar_AsIs" name="Verificar disponibilidad">
+      <bpmn:incoming>F3</bpmn:incoming>
+      <bpmn:outgoing>F4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gw_Disp_AsIs" name="Hay material?">
+      <bpmn:incoming>F4</bpmn:incoming>
+      <bpmn:outgoing>F5no</bpmn:outgoing>
+      <bpmn:outgoing>F5si</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Informar_AsIs" name="Informar no disponible">
+      <bpmn:incoming>F5no</bpmn:incoming>
+      <bpmn:outgoing>F6no</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_NoDisp_AsIs" name="Fin no disponible">
+      <bpmn:incoming>F6no</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_Confirmar_AsIs" name="Confirmar pedido">
+      <bpmn:incoming>F5si</bpmn:incoming>
+      <bpmn:outgoing>F7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Pago_AsIs" name="Registrar pago">
+      <bpmn:incoming>F7</bpmn:incoming>
+      <bpmn:outgoing>F8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Revisar_AsIs" name="Revisar medidas">
+      <bpmn:incoming>F8</bpmn:incoming>
+      <bpmn:outgoing>F9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Ingresar_AsIs" name="Ingresar medidas manualmente">
+      <bpmn:incoming>F9</bpmn:incoming>
+      <bpmn:outgoing>F10</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Patron_AsIs" name="Generar patron de corte">
+      <bpmn:incoming>F10</bpmn:incoming>
+      <bpmn:outgoing>F11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Cortar_AsIs" name="Realizar cortes">
+      <bpmn:incoming>F11</bpmn:incoming>
+      <bpmn:incoming>F14loop</bpmn:incoming>
+      <bpmn:outgoing>F12</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gw_Calidad_AsIs" name="Piezas correctas?">
+      <bpmn:incoming>F12</bpmn:incoming>
+      <bpmn:outgoing>F13bad</bpmn:outgoing>
+      <bpmn:outgoing>F13ok</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_Corregir_AsIs" name="Corregir corte">
+      <bpmn:incoming>F13bad</bpmn:incoming>
+      <bpmn:outgoing>F14loop</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Actualizar_AsIs" name="Actualizar pedido">
+      <bpmn:incoming>F13ok</bpmn:incoming>
+      <bpmn:outgoing>F15</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Comunicar_AsIs" name="Comunicar al cliente">
+      <bpmn:incoming>F15</bpmn:incoming>
+      <bpmn:outgoing>F16</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Recibir_AsIs" name="Recibir pedido">
+      <bpmn:incoming>F16</bpmn:incoming>
+      <bpmn:outgoing>F17</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_AsIs" name="Pedido entregado">
+      <bpmn:incoming>F17</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="F1" sourceRef="Start_AsIs" targetRef="Task_Solicitar_AsIs" />
+    <bpmn:sequenceFlow id="F2" sourceRef="Task_Solicitar_AsIs" targetRef="Task_Registrar_AsIs" />
+    <bpmn:sequenceFlow id="F3" sourceRef="Task_Registrar_AsIs" targetRef="Task_Verificar_AsIs" />
+    <bpmn:sequenceFlow id="F4" sourceRef="Task_Verificar_AsIs" targetRef="Gw_Disp_AsIs" />
+    <bpmn:sequenceFlow id="F5no" sourceRef="Gw_Disp_AsIs" targetRef="Task_Informar_AsIs" name="No" />
+    <bpmn:sequenceFlow id="F6no" sourceRef="Task_Informar_AsIs" targetRef="End_NoDisp_AsIs" />
+    <bpmn:sequenceFlow id="F5si" sourceRef="Gw_Disp_AsIs" targetRef="Task_Confirmar_AsIs" name="Si" />
+    <bpmn:sequenceFlow id="F7" sourceRef="Task_Confirmar_AsIs" targetRef="Task_Pago_AsIs" />
+    <bpmn:sequenceFlow id="F8" sourceRef="Task_Pago_AsIs" targetRef="Task_Revisar_AsIs" />
+    <bpmn:sequenceFlow id="F9" sourceRef="Task_Revisar_AsIs" targetRef="Task_Ingresar_AsIs" />
+    <bpmn:sequenceFlow id="F10" sourceRef="Task_Ingresar_AsIs" targetRef="Task_Patron_AsIs" />
+    <bpmn:sequenceFlow id="F11" sourceRef="Task_Patron_AsIs" targetRef="Task_Cortar_AsIs" />
+    <bpmn:sequenceFlow id="F12" sourceRef="Task_Cortar_AsIs" targetRef="Gw_Calidad_AsIs" />
+    <bpmn:sequenceFlow id="F13bad" sourceRef="Gw_Calidad_AsIs" targetRef="Task_Corregir_AsIs" name="Incorrecto" />
+    <bpmn:sequenceFlow id="F14loop" sourceRef="Task_Corregir_AsIs" targetRef="Task_Cortar_AsIs" name="Reintentar" />
+    <bpmn:sequenceFlow id="F13ok" sourceRef="Gw_Calidad_AsIs" targetRef="Task_Actualizar_AsIs" name="Correcto" />
+    <bpmn:sequenceFlow id="F15" sourceRef="Task_Actualizar_AsIs" targetRef="Task_Comunicar_AsIs" />
+    <bpmn:sequenceFlow id="F16" sourceRef="Task_Comunicar_AsIs" targetRef="Task_Recibir_AsIs" />
+    <bpmn:sequenceFlow id="F17" sourceRef="Task_Recibir_AsIs" targetRef="End_AsIs" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_MelamiCut_AsIs" name="MelamiCut S.A.C. - Proceso As-Is">
+    <bpmndi:BPMNPlane id="Plane_Process_MelamiCut_AsIs" bpmnElement="Collaboration_Process_MelamiCut_AsIs">
+      <bpmndi:BPMNShape id="DI_Participant_Process_MelamiCut_AsIs" bpmnElement="Participant_Process_MelamiCut_AsIs" isHorizontal="true">
+        <dc:Bounds x="100" y="0" width="2940" height="1400" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_0" bpmnElement="Lane_Process_MelamiCut_AsIs_0" isHorizontal="true">
+        <dc:Bounds x="130" y="0" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_1" bpmnElement="Lane_Process_MelamiCut_AsIs_1" isHorizontal="true">
+        <dc:Bounds x="130" y="200" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_2" bpmnElement="Lane_Process_MelamiCut_AsIs_2" isHorizontal="true">
+        <dc:Bounds x="130" y="400" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_3" bpmnElement="Lane_Process_MelamiCut_AsIs_3" isHorizontal="true">
+        <dc:Bounds x="130" y="600" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_4" bpmnElement="Lane_Process_MelamiCut_AsIs_4" isHorizontal="true">
+        <dc:Bounds x="130" y="800" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_5" bpmnElement="Lane_Process_MelamiCut_AsIs_5" isHorizontal="true">
+        <dc:Bounds x="130" y="1000" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Process_MelamiCut_AsIs_6" bpmnElement="Lane_Process_MelamiCut_AsIs_6" isHorizontal="true">
+        <dc:Bounds x="130" y="1200" width="2910" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Start_AsIs" bpmnElement="Start_AsIs">
+        <dc:Bounds x="220" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Solicitar_AsIs" bpmnElement="Task_Solicitar_AsIs">
+        <dc:Bounds x="320" y="60" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Registrar_AsIs" bpmnElement="Task_Registrar_AsIs">
+        <dc:Bounds x="490" y="260" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Verificar_AsIs" bpmnElement="Task_Verificar_AsIs">
+        <dc:Bounds x="660" y="460" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Disp_AsIs" bpmnElement="Gw_Disp_AsIs">
+        <dc:Bounds x="830" y="475" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Informar_AsIs" bpmnElement="Task_Informar_AsIs">
+        <dc:Bounds x="990" y="205" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_End_NoDisp_AsIs" bpmnElement="End_NoDisp_AsIs">
+        <dc:Bounds x="1160" y="227" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Confirmar_AsIs" bpmnElement="Task_Confirmar_AsIs">
+        <dc:Bounds x="990" y="315" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Pago_AsIs" bpmnElement="Task_Pago_AsIs">
+        <dc:Bounds x="1160" y="660" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Revisar_AsIs" bpmnElement="Task_Revisar_AsIs">
+        <dc:Bounds x="1330" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Ingresar_AsIs" bpmnElement="Task_Ingresar_AsIs">
+        <dc:Bounds x="1500" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Patron_AsIs" bpmnElement="Task_Patron_AsIs">
+        <dc:Bounds x="1670" y="1260" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Cortar_AsIs" bpmnElement="Task_Cortar_AsIs">
+        <dc:Bounds x="1840" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Calidad_AsIs" bpmnElement="Gw_Calidad_AsIs">
+        <dc:Bounds x="2010" y="875" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Corregir_AsIs" bpmnElement="Task_Corregir_AsIs">
+        <dc:Bounds x="2180" y="860" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Actualizar_AsIs" bpmnElement="Task_Actualizar_AsIs">
+        <dc:Bounds x="2180" y="1060" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Comunicar_AsIs" bpmnElement="Task_Comunicar_AsIs">
+        <dc:Bounds x="2350" y="260" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Task_Recibir_AsIs" bpmnElement="Task_Recibir_AsIs">
+        <dc:Bounds x="2520" y="60" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_End_AsIs" bpmnElement="End_AsIs">
+        <dc:Bounds x="2690" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DI_F1" bpmnElement="F1">
+        <di:waypoint x="256" y="100.0" />
+        <di:waypoint x="320" y="100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F2" bpmnElement="F2">
+        <di:waypoint x="430" y="100.0" />
+        <di:waypoint x="490" y="100.0" />
+        <di:waypoint x="490" y="300.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F3" bpmnElement="F3">
+        <di:waypoint x="600" y="300.0" />
+        <di:waypoint x="660" y="300.0" />
+        <di:waypoint x="660" y="500.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F4" bpmnElement="F4">
+        <di:waypoint x="770" y="500.0" />
+        <di:waypoint x="830" y="500.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F5no" bpmnElement="F5no">
+        <di:waypoint x="880" y="500.0" />
+        <di:waypoint x="990" y="500.0" />
+        <di:waypoint x="990" y="245.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="915.0" y="362.5" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F6no" bpmnElement="F6no">
+        <di:waypoint x="1100" y="245.0" />
+        <di:waypoint x="1160" y="245.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F5si" bpmnElement="F5si">
+        <di:waypoint x="880" y="500.0" />
+        <di:waypoint x="990" y="500.0" />
+        <di:waypoint x="990" y="355.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="915.0" y="417.5" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F7" bpmnElement="F7">
+        <di:waypoint x="1100" y="355.0" />
+        <di:waypoint x="1160" y="355.0" />
+        <di:waypoint x="1160" y="700.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F8" bpmnElement="F8">
+        <di:waypoint x="1270" y="700.0" />
+        <di:waypoint x="1330" y="700.0" />
+        <di:waypoint x="1330" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F9" bpmnElement="F9">
+        <di:waypoint x="1440" y="900.0" />
+        <di:waypoint x="1500" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F10" bpmnElement="F10">
+        <di:waypoint x="1610" y="900.0" />
+        <di:waypoint x="1670" y="900.0" />
+        <di:waypoint x="1670" y="1300.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F11" bpmnElement="F11">
+        <di:waypoint x="1780" y="1300.0" />
+        <di:waypoint x="1840" y="1300.0" />
+        <di:waypoint x="1840" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F12" bpmnElement="F12">
+        <di:waypoint x="1950" y="900.0" />
+        <di:waypoint x="2010" y="900.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F13bad" bpmnElement="F13bad">
+        <di:waypoint x="2060" y="900.0" />
+        <di:waypoint x="2180" y="900.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2100.0" y="890.0" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F14loop" bpmnElement="F14loop">
+        <di:waypoint x="2235.0" y="940" />
+        <di:waypoint x="2235.0" y="990" />
+        <di:waypoint x="1895.0" y="990" />
+        <di:waypoint x="1895.0" y="940" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2045.0" y="930.0" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F13ok" bpmnElement="F13ok">
+        <di:waypoint x="2060" y="900.0" />
+        <di:waypoint x="2180" y="900.0" />
+        <di:waypoint x="2180" y="1100.0" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2100.0" y="990.0" width="60" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F15" bpmnElement="F15">
+        <di:waypoint x="2290" y="1100.0" />
+        <di:waypoint x="2350" y="1100.0" />
+        <di:waypoint x="2350" y="300.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F16" bpmnElement="F16">
+        <di:waypoint x="2460" y="300.0" />
+        <di:waypoint x="2520" y="300.0" />
+        <di:waypoint x="2520" y="100.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F17" bpmnElement="F17">
+        <di:waypoint x="2630" y="100.0" />
+        <di:waypoint x="2690" y="100.0" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

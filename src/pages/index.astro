@@ -1,0 +1,544 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import BpmnDiagram from '../components/BpmnDiagram.astro';
+import AcademicCallout from '../components/AcademicCallout.astro';
+import Evidencias from '../components/Evidencias.astro';
+---
+
+<Layout
+	title="Análisis As-Is / To-Be y Modelamiento BPMN · MelamiCut S.A.C."
+	description="Estudio de reingeniería de procesos y madurez de datos para la gestión de pedidos y corte de melamina (CMMI & DMM)"
+>
+	<main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
+		<!-- Encabezado del caso de estudio -->
+		<header class="border-b border-neutral-200 pb-8 mb-8">
+			<div class="text-xs text-neutral-500 font-medium mb-3">
+				Caso de estudio · Gestión de procesos y madurez de datos
+			</div>
+
+			<h1 class="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-neutral-900 leading-snug tracking-tight mb-4">
+				Análisis As-Is / To-Be y Modelamiento BPMN del proceso de gestión de pedidos y corte de melamina
+			</h1>
+
+			<p class="text-base text-neutral-600 font-serif leading-relaxed italic mb-4">
+				Evaluación de la madurez operacional, duplicidad de datos y reingeniería del flujo de valor aplicada a la empresa <strong>MelamiCut S.A.C.</strong>
+			</p>
+
+			<div class="pt-3 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500">
+				<span>Empresa: <strong>MelamiCut S.A.C.</strong></span>
+				<a href="#sec-evidencias" class="text-neutral-800 font-medium hover:underline">Ver Evidencias ↓</a>
+			</div>
+		</header>
+
+		<!-- Índice de Contenidos -->
+		<TableOfContents />
+
+		<!-- SECTION 1 -->
+		<section id="sec-1" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				1. Introducción
+			</h2>
+			<div class="space-y-4 text-neutral-700 leading-relaxed text-sm sm:text-base">
+				<p>
+					Las empresas dedicadas a la comercialización y corte de melamina requieren coordinar diferentes actividades para atender correctamente los pedidos de sus clientes. Estas actividades comprenden la recepción del pedido, verificación de materiales, registro de información, planificación de cortes, producción, control de calidad y entrega.
+				</p>
+				<p>
+					En el presente trabajo se analiza el proceso de gestión de pedidos de una empresa dedicada a la venta de melamina y a la realización de cortes personalizados. Se presenta el estado actual del proceso mediante un modelo <strong>As-Is</strong>, identificando las principales dificultades que se presentan durante su ejecución. Posteriormente, se plantea un modelo <strong>To-Be</strong>, orientado a mejorar la gestión de la información y la trazabilidad de los pedidos.
+				</p>
+				<p>
+					Finalmente, se representan ambos escenarios mediante diagramas BPMN, permitiendo visualizar las actividades, responsables, decisiones y flujo de información involucrados en el proceso.
+				</p>
+			</div>
+
+			<AcademicCallout framework="CMMI" title="Alineamiento con CMMI y DMM">
+				Desde la perspectiva del modelo <strong>CMMI</strong>, el escenario As-Is se sitúa en un <em>Nivel 1 (Inicial/Ad-Hoc)</em>, caracterizado por la dependencia del esfuerzo individual y la ausencia de procesos formalmente medidos. Asimismo, bajo el marco <strong>DMM (Data Management Maturity)</strong>, se observa una falta de gobierno sobre el ciclo de vida de los datos del cliente y de despiece, provocando redundancia y vulnerabilidad en la persistencia local.
+			</AcademicCallout>
+		</section>
+
+		<!-- SECTION 2 -->
+		<section id="sec-2" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				2. Descripción de la empresa
+			</h2>
+			<div class="space-y-4 text-neutral-700 leading-relaxed text-sm sm:text-base">
+				<p>
+					<strong>MelamiCut S.A.C.</strong> es una empresa dedicada a la comercialización de planchas de melamina y a la prestación de servicios de corte personalizado. La empresa atiende principalmente a clientes que requieren planchas completas de melamina o piezas cortadas de acuerdo con medidas específicas para la fabricación de muebles.
+				</p>
+				<p class="font-medium text-neutral-800">
+					Entre los principales servicios ofrecidos se encuentran:
+				</p>
+				<ul class="list-disc pl-5 space-y-1.5 text-sm sm:text-base">
+					<li>Venta de planchas de melamina en diversas texturas y espesores (15 mm, 18 mm).</li>
+					<li>Corte de piezas según medidas solicitadas.</li>
+					<li>Corte personalizado para proyectos de mobiliario a medida.</li>
+					<li>Optimización de la distribución de cortes en planchas.</li>
+					<li>Colocación y enchapado de tapacantos (delgado y grueso).</li>
+					<li>Preparación, empaquetado y entrega de pedidos.</li>
+				</ul>
+				<p>
+					Para realizar la planificación de los cortes, la empresa utiliza un software especializado de optimización de materiales. En el escenario analizado se considera el uso de <strong>CutList Optimizer</strong>, que permite generar una distribución de las piezas sobre las planchas disponibles.
+				</p>
+				<p>
+					La empresa cuenta con personal encargado de ventas, almacén, producción y caja. La información de los pedidos se administra actualmente mediante un sistema instalado en una computadora principal, cuya base de datos utiliza <strong>SQLite</strong> como sistema de almacenamiento local.
+				</p>
+			</div>
+		</section>
+
+		<!-- SECTION 3 -->
+		<section id="sec-3" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				3. Proceso seleccionado
+			</h2>
+			<div class="space-y-4 text-neutral-700 leading-relaxed text-sm sm:text-base">
+				<p>
+					El proceso seleccionado para el análisis es: <strong class="text-neutral-900">Gestión de pedidos y corte personalizado de melamina</strong>.
+				</p>
+				<p>
+					Este proceso fue seleccionado debido a que involucra directamente la interacción entre el cliente, el área de ventas, almacén y producción, además de requerir el registro y transferencia de información técnica entre diferentes actividades.
+				</p>
+
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+					<div class="p-4 bg-white rounded border border-neutral-200">
+						<span class="text-xs font-semibold text-neutral-500 uppercase block mb-1">Alcance Inicial</span>
+						<p class="text-sm text-neutral-900">Recepción de la solicitud del cliente.</p>
+					</div>
+					<div class="p-4 bg-white rounded border border-neutral-200">
+						<span class="text-xs font-semibold text-neutral-500 uppercase block mb-1">Alcance Final</span>
+						<p class="text-sm text-neutral-900">Entrega del pedido terminado.</p>
+					</div>
+				</div>
+
+				<p class="font-medium text-neutral-800">Áreas y entidades involucradas:</p>
+				<div class="flex flex-wrap gap-2 text-xs">
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Cliente</span>
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Ventas</span>
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Almacén</span>
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Producción</span>
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Caja</span>
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Sistema de gestión</span>
+					<span class="px-2.5 py-1 bg-white border border-neutral-200 rounded">Software de optimización de cortes</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- SECTION 4 -->
+		<section id="sec-4" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				4. Situación actual — As-Is
+			</h2>
+			<div class="space-y-4 text-neutral-700 leading-relaxed text-sm sm:text-base">
+				<p>
+					Actualmente, el proceso comienza cuando el cliente solicita productos o un servicio de corte personalizado. El personal de ventas recibe las especificaciones del cliente, incluyendo el tipo de melamina, cantidad, dimensiones de las piezas y otros requerimientos especiales.
+				</p>
+				<p>
+					La información del pedido es registrada en el sistema disponible en la computadora principal. Posteriormente, se verifica la disponibilidad del material necesario para atender el pedido.
+				</p>
+				<p>
+					Cuando el pedido requiere cortes personalizados, la información debe ser revisada por el área de producción. El encargado de producción <strong>introduce manualmente</strong> las medidas de las piezas en el software de optimización de cortes para determinar la distribución de las piezas sobre las planchas de melamina.
+				</p>
+				<p>
+					Una vez obtenido el patrón de corte, el operario realiza los cortes correspondientes. Las piezas resultantes son revisadas y, si cumplen con las especificaciones, el pedido continúa hacia su etapa de entrega. Finalmente, se actualiza la información del pedido y se comunica al cliente que puede recoger o recibir su pedido.
+				</p>
+			</div>
+		</section>
+
+		<!-- SECTION 5 -->
+		<section id="sec-5" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				5. Flujo del proceso As-Is
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4">
+				El proceso actual comprende las siguientes 13 etapas:
+			</p>
+			<ol class="space-y-2 text-sm sm:text-base text-neutral-800 bg-white p-5 rounded border border-neutral-200">
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">1.</span> <span>Recepción de solicitud del cliente.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">2.</span> <span>Registro del pedido.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">3.</span> <span>Verificación de disponibilidad de materiales.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">4.</span> <span>Confirmación del pedido.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">5.</span> <span>Preparación de la orden de corte.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">6.</span> <span>Revisión de las medidas.</span></li>
+				<li class="flex items-start gap-3 text-rose-800 font-medium"><span class="text-rose-500 font-medium w-5 shrink-0 text-right">7.</span> <span>Ingreso manual de medidas al software de optimización.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">8.</span> <span>Generación del patrón de corte.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">9.</span> <span>Realización de los cortes.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">10.</span> <span>Control de las piezas.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">11.</span> <span>Actualización del pedido.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">12.</span> <span>Comunicación al cliente.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">13.</span> <span>Entrega del pedido.</span></li>
+			</ol>
+		</section>
+
+		<!-- SECTION 6 -->
+		<section id="sec-6" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				6. Actores involucrados en el proceso As-Is
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4">
+				Funciones de los participantes y componentes en la operativa actual:
+			</p>
+			<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+				<table class="w-full text-left text-xs sm:text-sm border-collapse">
+					<thead>
+						<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-700">
+							<th class="py-2.5 px-4 font-bold w-1/3">Actor</th>
+							<th class="py-2.5 px-4 font-bold">Función</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-neutral-100 text-neutral-700">
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Cliente</td>
+							<td class="py-2.5 px-4">Solicita el producto o servicio y recibe el pedido terminado.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Ventas</td>
+							<td class="py-2.5 px-4">Recibe los requerimientos y registra el pedido.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Almacén</td>
+							<td class="py-2.5 px-4">Verifica la disponibilidad de materiales.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Caja</td>
+							<td class="py-2.5 px-4">Registra y controla el pago correspondiente.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Encargado de producción</td>
+							<td class="py-2.5 px-4">Revisa la orden y prepara el proceso de corte.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Operario</td>
+							<td class="py-2.5 px-4">Realiza físicamente los cortes de melamina.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Sistema actual</td>
+							<td class="py-2.5 px-4">Almacena la información de los pedidos.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Software de optimización</td>
+							<td class="py-2.5 px-4">Genera la distribución de las piezas para realizar los cortes.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- SECTION 7 -->
+		<section id="sec-7" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				7. Problemas identificados en el proceso As-Is
+			</h2>
+			<div class="space-y-5 text-neutral-700 text-sm sm:text-base leading-relaxed">
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<h3 class="font-bold text-neutral-900 text-sm uppercase">7.1. Dependencia de una única computadora</h3>
+					<p class="mt-1">
+						La información de los pedidos se encuentra almacenada en una computadora principal. Esto genera una dependencia directa del equipo para consultar y registrar información. Una falla del equipo puede dificultar temporalmente el acceso a los registros necesarios para continuar con las operaciones.
+					</p>
+				</div>
+
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<h3 class="font-bold text-neutral-900 text-sm uppercase">7.2. Centralización de la información</h3>
+					<p class="mt-1">
+						La base de datos SQLite se encuentra almacenada localmente, por lo que el acceso a la información depende del equipo donde se encuentra instalada. Esto dificulta que diferentes áreas puedan consultar y actualizar simultáneamente la información desde distintos equipos.
+					</p>
+				</div>
+
+				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 p-3 rounded-r">
+					<h3 class="font-bold text-rose-900 text-sm uppercase">7.3. Ingreso duplicado de información</h3>
+					<p class="mt-1 text-rose-950">
+						Las medidas registradas inicialmente en el pedido deben ser introducidas nuevamente en el software de optimización. Esta duplicación de información puede generar errores de digitación y aumentar el tiempo necesario para preparar un pedido.
+					</p>
+				</div>
+
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<h3 class="font-bold text-neutral-900 text-sm uppercase">7.4. Limitada trazabilidad</h3>
+					<p class="mt-1">
+						El proceso no cuenta con un flujo claramente definido para visualizar todas las etapas por las que pasa un pedido. Por este motivo, conocer si un pedido se encuentra registrado, pendiente de corte, en producción o listo para entrega puede requerir consultar directamente con el personal responsable.
+					</p>
+				</div>
+
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<h3 class="font-bold text-neutral-900 text-sm uppercase">7.5. Riesgo de utilizar información desactualizada</h3>
+					<p class="mt-1">
+						Cuando se producen modificaciones en las medidas o características del pedido, existe el riesgo de que producción utilice información anterior si el cambio no es comunicado correctamente.
+					</p>
+				</div>
+
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<h3 class="font-bold text-neutral-900 text-sm uppercase">7.6. Dependencia de respaldos locales</h3>
+					<p class="mt-1">
+						La información almacenada en la computadora requiere mecanismos de respaldo para evitar pérdidas ante fallas del equipo o problemas con la base de datos.
+					</p>
+				</div>
+			</div>
+
+			<AcademicCallout framework="DMM" title="Diagnóstico bajo Data Management Maturity">
+				El análisis de los puntos 7.2 y 7.3 evidencia una carencia fundamental en la dimensión de <em>Gobierno y Calidad de Datos (Data Quality & Architecture)</em>: la reintroducción manual rompe el principio de "Fuente Única de Verdad" (Single Source of Truth), provocando riesgos de inconsistencia en los datos del despiece.
+			</AcademicCallout>
+		</section>
+
+		<!-- SECTION 8 -->
+		<section id="sec-8" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				8. Modelo As-Is del proceso
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-2">
+				Representación esquemática del flujo de actividades y decisiones del proceso actual:
+			</p>
+
+			<!-- Diagrama As-Is -->
+			<BpmnDiagram
+				type="as-is"
+				title="Flujo de Proceso As-Is · MelamiCut S.A.C."
+			/>
+		</section>
+
+		<!-- SECTION 9 -->
+		<section id="sec-9" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				9. Situación propuesta — To-Be
+			</h2>
+			<div class="space-y-4 text-neutral-700 leading-relaxed text-sm sm:text-base">
+				<p>
+					El proceso <strong>To-Be</strong> plantea una mejora en la gestión del pedido mediante la centralización de la información y la definición de estados que permitan realizar un seguimiento de cada pedido durante todo su ciclo.
+				</p>
+				<p>
+					En el proceso propuesto, <strong>la información del pedido se registra una sola vez</strong> y posteriormente es utilizada por las diferentes áreas involucradas.
+				</p>
+				<p>
+					Cuando un pedido requiere cortes personalizados, se genera una orden de producción asociada al pedido original. Esta orden contiene las dimensiones, cantidades y características necesarias para realizar el trabajo. La información puede ser utilizada para preparar el patrón de corte en el software de optimización, reduciendo la necesidad de volver a registrar manualmente los datos.
+				</p>
+				<p>
+					El pedido contará además con estados definidos que permitirán identificar su situación actual.
+				</p>
+			</div>
+		</section>
+
+		<!-- SECTION 10 -->
+		<section id="sec-10" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				10. Flujo del proceso To-Be
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4">
+				El proceso propuesto comprende las siguientes etapas (etapas 14 a 30):
+			</p>
+			<ol start="14" class="space-y-2 text-sm sm:text-base text-neutral-800 bg-white p-5 rounded border border-neutral-200">
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">14.</span> <span>El cliente realiza la solicitud.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">15.</span> <span>Ventas registra el pedido.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">16.</span> <span>El sistema valida los datos ingresados.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">17.</span> <span>Se verifica la disponibilidad del material.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">18.</span> <span>Se registra el pago.</span></li>
+				<li class="flex items-start gap-3 font-semibold text-emerald-800"><span class="text-emerald-600 font-medium w-5 shrink-0 text-right">19.</span> <span>El pedido pasa a estado CONFIRMADO.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">20.</span> <span>Si requiere cortes, se genera una orden de producción.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">21.</span> <span>Producción recibe la orden.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">22.</span> <span>Se revisan las especificaciones.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">23.</span> <span>Se prepara el patrón mediante el software de optimización.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">24.</span> <span>Se realizan los cortes.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">25.</span> <span>Se realiza el control de calidad.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">26.</span> <span>Se actualiza el estado del pedido.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">27.</span> <span>Se comunica a ventas que el pedido está listo.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">28.</span> <span>El cliente recoge o recibe el pedido.</span></li>
+				<li class="flex items-start gap-3"><span class="text-neutral-400 font-medium w-5 shrink-0 text-right">29.</span> <span>Se registra la entrega.</span></li>
+				<li class="flex items-start gap-3 font-semibold text-emerald-800"><span class="text-emerald-600 font-medium w-5 shrink-0 text-right">30.</span> <span>El pedido pasa a estado ENTREGADO.</span></li>
+			</ol>
+		</section>
+
+		<!-- SECTION 11 -->
+		<section id="sec-11" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				11. Mejoras planteadas en el To-Be
+			</h2>
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+				<div class="p-4 bg-white rounded border border-neutral-200">
+					<h4 class="font-bold text-neutral-900 mb-1">Gestión centralizada</h4>
+					<p class="text-neutral-600">La información del pedido se encuentra disponible para las áreas que participan en el proceso.</p>
+				</div>
+				<div class="p-4 bg-white rounded border border-neutral-200">
+					<h4 class="font-bold text-neutral-900 mb-1">Registro único</h4>
+					<p class="text-neutral-600">Las medidas y características del pedido se registran una sola vez y pueden ser utilizadas posteriormente durante la producción.</p>
+				</div>
+				<div class="p-4 bg-white rounded border border-neutral-200">
+					<h4 class="font-bold text-neutral-900 mb-1">Trazabilidad</h4>
+					<p class="text-neutral-600">Cada pedido posee un estado que permite conocer en qué etapa se encuentra.</p>
+				</div>
+				<div class="p-4 bg-white rounded border border-neutral-200">
+					<h4 class="font-bold text-neutral-900 mb-1">Orden de producción</h4>
+					<p class="text-neutral-600">La información necesaria para realizar los cortes se encuentra asociada directamente al pedido.</p>
+				</div>
+				<div class="p-4 bg-white rounded border border-neutral-200">
+					<h4 class="font-bold text-neutral-900 mb-1">Control de modificaciones</h4>
+					<p class="text-neutral-600">Los cambios realizados sobre un pedido pueden quedar registrados antes de continuar con la producción.</p>
+				</div>
+				<div class="p-4 bg-white rounded border border-neutral-200">
+					<h4 class="font-bold text-neutral-900 mb-1">Mayor disponibilidad de información</h4>
+					<p class="text-neutral-600">Ventas y producción pueden consultar la información actualizada del pedido sin depender exclusivamente de la comunicación verbal.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- SECTION 12 -->
+		<section id="sec-12" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				12. Modelo To-Be del proceso
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-2">
+				Representación del proceso propuesto con sistema centralizado y control de calidad formal:
+			</p>
+
+			<!-- Diagrama To-Be -->
+			<BpmnDiagram
+				type="to-be"
+				title="Flujo de Proceso To-Be · MelamiCut S.A.C."
+			/>
+		</section>
+
+		<!-- SECTION 13 -->
+		<section id="sec-13" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				13. Comparación As-Is y To-Be
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4">
+				Comparación directa de los aspectos analizados entre el modelo actual y la propuesta:
+			</p>
+			<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+				<table class="w-full text-left text-xs sm:text-sm border-collapse">
+					<thead>
+						<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+							<th class="py-2.5 px-4 font-bold">Aspecto</th>
+							<th class="py-2.5 px-4 font-bold text-neutral-700">As-Is</th>
+							<th class="py-2.5 px-4 font-bold text-neutral-900">To-Be</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-neutral-100 text-neutral-700">
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Almacenamiento</td>
+							<td class="py-2.5 px-4 text-neutral-600">Base de datos SQLite local</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Sistema centralizado</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Acceso a información</td>
+							<td class="py-2.5 px-4 text-neutral-600">Dependiente de una computadora</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Disponible para las áreas autorizadas</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Registro de medidas</td>
+							<td class="py-2.5 px-4 text-neutral-600">Se registra y posteriormente se vuelve a ingresar</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">La información registrada se reutiliza</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Gestión del pedido</td>
+							<td class="py-2.5 px-4 text-neutral-600">Seguimiento limitado</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Estados definidos</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Producción</td>
+							<td class="py-2.5 px-4 text-neutral-600">Recibe y revisa información del pedido</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Recibe una orden de producción asociada</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Cambios del pedido</td>
+							<td class="py-2.5 px-4 text-neutral-600">Comunicación manual</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Registro y control de modificaciones</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Trazabilidad</td>
+							<td class="py-2.5 px-4 text-neutral-600">Limitada</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Seguimiento por estados</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Control de calidad</td>
+							<td class="py-2.5 px-4 text-neutral-600">Verificación de las piezas</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Verificación e identificación de incidencias</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Información</td>
+							<td class="py-2.5 px-4 text-neutral-600">Puede encontrarse desactualizada</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Información actualizada durante el proceso</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Respaldo</td>
+							<td class="py-2.5 px-4 text-neutral-600">Dependiente del almacenamiento local</td>
+							<td class="py-2.5 px-4 font-medium text-neutral-900">Respaldos planificados</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- SECTION 14 -->
+		<section id="sec-14" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				14. Indicadores básicos del proceso
+			</h2>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4">
+				Para realizar posteriormente un análisis más detallado del proceso, se pueden considerar los siguientes indicadores:
+			</p>
+			<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+				<table class="w-full text-left text-xs sm:text-sm border-collapse">
+					<thead>
+						<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+							<th class="py-2.5 px-4 font-bold w-1/3">Indicador</th>
+							<th class="py-2.5 px-4 font-bold">Descripción</th>
+						</tr>
+					</thead>
+					<tbody class="divide-y divide-neutral-100 text-neutral-700">
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Tiempo de procesamiento del pedido</td>
+							<td class="py-2.5 px-4">Tiempo desde el registro hasta que el pedido queda listo.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Tiempo de producción</td>
+							<td class="py-2.5 px-4">Tiempo empleado en realizar los cortes.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Pedidos con errores</td>
+							<td class="py-2.5 px-4">Cantidad de pedidos que requieren corrección.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Pedidos entregados a tiempo</td>
+							<td class="py-2.5 px-4">Pedidos terminados dentro del plazo establecido.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Pedidos modificados</td>
+							<td class="py-2.5 px-4">Cantidad de pedidos que sufren modificaciones después de ser registrados.</td>
+						</tr>
+						<tr>
+							<td class="py-2.5 px-4 font-semibold text-neutral-900">Incidencias de producción</td>
+							<td class="py-2.5 px-4">Cantidad de problemas detectados durante el corte o control de calidad.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p class="mt-4 text-xs text-neutral-500 italic">
+				Estos indicadores permitirían comparar posteriormente el desempeño del proceso antes y después de aplicar las mejoras propuestas.
+			</p>
+
+			<AcademicCallout framework="CMMI" title="Alineamiento con CMMI Nivel 2 y 3 (Medición y Análisis)">
+				Bajo el área de proceso de <strong>Medición y Análisis (MA)</strong> de CMMI, estos 6 indicadores permiten establecer una línea base cuantitativa para evaluar objetivamente la estabilidad y repetibilidad del proceso de corte.
+			</AcademicCallout>
+		</section>
+
+		<!-- SECTION 15 -->
+		<section id="sec-15" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+				15. Conclusiones
+			</h2>
+			<div class="space-y-4 text-neutral-700 leading-relaxed text-sm sm:text-base">
+				<p>
+					El análisis del proceso de gestión de pedidos y corte personalizado de melamina permitió representar la situación actual de la empresa mediante un modelo <strong>As-Is</strong> y establecer una propuesta de mejora mediante un modelo <strong>To-Be</strong>.
+				</p>
+				<p>
+					En el escenario actual se identificaron principalmente problemas relacionados con la dependencia de una única computadora, la centralización de la información, la duplicación del ingreso de datos, la limitada trazabilidad de los pedidos y el riesgo de utilizar información desactualizada.
+				</p>
+				<p>
+					El modelo <strong>To-Be</strong> propone centralizar la gestión de la información, establecer estados para los pedidos, generar órdenes de producción asociadas y reducir la duplicación de datos durante la planificación de los cortes.
+				</p>
+				<p>
+					Los diagramas BPMN permiten representar visualmente ambos escenarios y facilitan la identificación de las actividades, responsables, decisiones y puntos de interacción existentes en el proceso. Esta representación servirá como base para posteriores actividades de análisis y mejora de procesos.
+				</p>
+			</div>
+		</section>
+
+		<!-- SECCIÓN 16: EVIDENCIAS DEL PROYECTO -->
+		<Evidencias />
+	</main>
+</Layout>

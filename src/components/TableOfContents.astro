@@ -1,0 +1,39 @@
+---
+// Índice de navegación del caso de estudio
+const sections = [
+	{ id: "sec-1", num: "1", title: "Introducción" },
+	{ id: "sec-2", num: "2", title: "Descripción de la empresa" },
+	{ id: "sec-3", num: "3", title: "Proceso seleccionado" },
+	{ id: "sec-4", num: "4", title: "Situación actual — As-Is" },
+	{ id: "sec-5", num: "5", title: "Flujo del proceso As-Is" },
+	{ id: "sec-6", num: "6", title: "Actores involucrados en el proceso As-Is" },
+	{ id: "sec-7", num: "7", title: "Problemas identificados en el proceso As-Is" },
+	{ id: "sec-8", num: "8", title: "Modelo As-Is del proceso" },
+	{ id: "sec-9", num: "9", title: "Situación propuesta — To-Be" },
+	{ id: "sec-10", num: "10", title: "Flujo del proceso To-Be" },
+	{ id: "sec-11", num: "11", title: "Mejoras planteadas en el To-Be" },
+	{ id: "sec-12", num: "12", title: "Modelo To-Be del proceso" },
+	{ id: "sec-13", num: "13", title: "Comparación As-Is y To-Be" },
+	{ id: "sec-14", num: "14", title: "Indicadores básicos del proceso" },
+	{ id: "sec-15", num: "15", title: "Conclusiones" },
+	{ id: "sec-evidencias", num: "16", title: "Evidencias del proyecto" }
+];
+---
+
+<nav class="my-8 p-5 bg-neutral-50 rounded-lg border border-neutral-200 text-neutral-800">
+	<div class="flex items-center justify-between mb-3 pb-2 border-b border-neutral-200">
+		<span class="text-xs font-semibold uppercase tracking-wider text-neutral-600">Índice del documento</span>
+		<span class="text-xs text-neutral-400">16 Secciones</span>
+	</div>
+	<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-xs">
+		{sections.map((s) => (
+			<a
+				href={`#${s.id}`}
+				class="text-neutral-600 hover:text-neutral-950 py-1 transition-colors flex items-baseline gap-2 group"
+			>
+				<span class="text-neutral-400 group-hover:text-neutral-700 w-5 shrink-0 text-right font-mono">{s.num}.</span>
+				<span class="truncate hover:underline underline-offset-2">{s.title}</span>
+			</a>
+		))}
+	</div>
+</nav>

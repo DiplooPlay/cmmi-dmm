@@ -1,0 +1,189 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface EvidenciaSlot {
+	id: string;
+	filenameBase: string;
+	title: string;
+	description: string;
+}
+
+const assignedSlots: EvidenciaSlot[] = [
+	{
+		id: "ev-1",
+		filenameBase: "evidencia1",
+		title: "1. Levantamiento de información y entrevista inicial",
+		description: "Reunión con el personal de ventas y administración de MelamiCut S.A.C."
+	},
+	{
+		id: "ev-2",
+		filenameBase: "evidencia2",
+		title: "2. Operación con CutList Optimizer y registro local",
+		description: "Captura del flujo actual de registro manual de piezas y optimización."
+	},
+	{
+		id: "ev-3",
+		filenameBase: "evidencia3",
+		title: "3. Taller, seccionadora y área de producción",
+		description: "Área física de corte de melamina y colocación de tapacantos."
+	},
+	{
+		id: "ev-4",
+		filenameBase: "evidencia4",
+		title: "4. Modelamiento de procesos en Bizagi Modeler",
+		description: "Sesión de diagramación y validación de los modelos As-Is y To-Be."
+	},
+	{
+		id: "ev-5",
+		filenameBase: "evidencia5",
+		title: "5. Control de calidad y medición de piezas",
+		description: "Verificación de medidas, escuadras y tolerancias en el taller."
+	},
+	{
+		id: "ev-6",
+		filenameBase: "evidencia6",
+		title: "6. Validación de resultados del estudio",
+		description: "Revisión final de métricas y alineamiento con los criterios CMMI y DMM."
+	}
+];
+
+const evidenciasDir = path.join(process.cwd(), 'public', 'evidencias');
+const supportedExts = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
+
+// Resolve each slot checking if file exists on disk
+const resolvedSlots = assignedSlots.map((slot) => {
+	let foundFile: string | null = null;
+	if (fs.existsSync(evidenciasDir)) {
+		for (const ext of supportedExts) {
+			const candidate = `${slot.filenameBase}${ext}`;
+			if (fs.existsSync(path.join(evidenciasDir, candidate))) {
+				foundFile = candidate;
+				break;
+			}
+		}
+	}
+	return {
+		...slot,
+		fileUrl: foundFile ? `/evidencias/${foundFile}` : null,
+		assignedFilename: `${slot.filenameBase}.jpg`
+	};
+});
+
+// Detect any extra images added to public/evidencias
+let extraImages: { filename: string; url: string }[] = [];
+if (fs.existsSync(evidenciasDir)) {
+	const allFiles = fs.readdirSync(evidenciasDir).filter(f => !f.startsWith('.'));
+	extraImages = allFiles
+		.filter(f => {
+			const parsed = path.parse(f);
+			const baseName = parsed.name.toLowerCase();
+			return !assignedSlots.some(s => s.filenameBase.toLowerCase() === baseName);
+		})
+		.map(f => ({
+			filename: f,
+			url: `/evidencias/${f}`
+		}));
+}
+---
+
+<section id="sec-evidencias" class="my-14 pt-6 border-t border-neutral-200 scroll-mt-16">
+	<div class="mb-6">
+		<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-2">
+			16. Evidencias del Proyecto
+		</h2>
+		<p class="text-xs sm:text-sm text-neutral-600 leading-relaxed">
+			Registro fotográfico y capturas de validación correspondientes al estudio de campo en MelamiCut S.A.C.
+		</p>
+	</div>
+
+	<!-- Information guide box -->
+	<div class="mb-6 p-4 bg-neutral-50 rounded-lg border border-neutral-200 text-xs text-neutral-600">
+		<div class="flex items-center gap-2 font-semibold text-neutral-800 mb-1">
+			<svg class="w-4 h-4 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+			</svg>
+			<span>Instrucción para agregar imágenes</span>
+		</div>
+		<p>
+			Para agregar una evidencia, coloca la imagen en la carpeta <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-neutral-200 text-neutral-800">public/evidencias/</code> con el nombre asignado (por ejemplo, <code class="font-mono font-semibold text-neutral-900">evidencia1.jpg</code>). Al guardar o hacer commit, aparecerá automáticamente en su recuadro sin requerir base de datos ni backend. Formatos soportados: <code class="font-mono text-neutral-700">.jpg</code>, <code class="font-mono text-neutral-700">.png</code> y <code class="font-mono text-neutral-700">.webp</code>.
+		</p>
+	</div>
+
+	<!-- Slots Grid -->
+	<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+		{resolvedSlots.map((item) => (
+			<div class="rounded-lg border border-neutral-200 bg-white overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+				{item.fileUrl ? (
+					<div>
+						<div class="relative bg-neutral-100 aspect-video overflow-hidden border-b border-neutral-100 group">
+							<img
+								src={item.fileUrl}
+								alt={item.title}
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+								loading="lazy"
+								onclick={`window.open('${item.fileUrl}', '_blank')`}
+							/>
+							<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-emerald-700 text-white text-[10px] font-medium shadow">
+								✓ Imagen cargada
+							</span>
+						</div>
+						<div class="p-4">
+							<div class="text-[11px] font-mono text-neutral-400 mb-1">{item.assignedFilename}</div>
+							<h3 class="text-sm font-bold text-neutral-900 mb-1">{item.title}</h3>
+							<p class="text-xs text-neutral-600">{item.description}</p>
+						</div>
+					</div>
+				) : (
+					<div>
+						<div class="aspect-video bg-neutral-50/80 border-b border-dashed border-neutral-200 flex flex-col items-center justify-center p-6 text-center text-neutral-400">
+							<div class="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mb-2 text-neutral-500">
+								<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+								</svg>
+							</div>
+							<span class="text-xs font-mono font-medium text-neutral-700 mb-0.5">
+								{item.assignedFilename}
+							</span>
+							<span class="text-[11px] text-neutral-400">
+								Pendiente de agregar imagen
+							</span>
+						</div>
+						<div class="p-4">
+							<h3 class="text-sm font-bold text-neutral-900 mb-1">{item.title}</h3>
+							<p class="text-xs text-neutral-600">{item.description}</p>
+						</div>
+					</div>
+				)}
+
+				<div class="px-4 py-2.5 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+					<span>Destino: public/evidencias/</span>
+					<span class="font-bold text-neutral-700">{item.assignedFilename}</span>
+				</div>
+			</div>
+		))}
+
+		{extraImages.map((extra) => (
+			<div class="rounded-lg border border-neutral-200 bg-white overflow-hidden flex flex-col justify-between shadow-sm">
+				<div>
+					<div class="relative bg-neutral-100 aspect-video overflow-hidden border-b border-neutral-100">
+						<img
+							src={extra.url}
+							alt={extra.filename}
+							class="w-full h-full object-cover cursor-pointer"
+							loading="lazy"
+							onclick={`window.open('${extra.url}', '_blank')`}
+						/>
+						<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-blue-700 text-white text-[10px] font-medium shadow">
+							Evidencia adicional
+						</span>
+					</div>
+					<div class="p-4">
+						<h3 class="text-sm font-bold text-neutral-900 mb-1">{extra.filename}</h3>
+						<p class="text-xs text-neutral-500 font-mono">Archivo detectado automáticamente</p>
+					</div>
+				</div>
+			</div>
+		))}
+	</div>
+</section>
