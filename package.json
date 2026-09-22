@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "deploy": "astro build && wrangler pages deploy dist --project-name cmmi-dmm --branch main",
+    "sync": "astro build && wrangler pages deploy dist --project-name cmmi-dmm --branch main && git add . && git commit -m 'update: nuevas evidencias y ajustes' && git push",
     "astro": "astro"
   },
   "dependencies": {
