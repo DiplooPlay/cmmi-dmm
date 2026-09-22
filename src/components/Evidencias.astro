@@ -97,19 +97,6 @@ if (fs.existsSync(evidenciasDir)) {
 		</p>
 	</div>
 
-	<!-- Information guide box -->
-	<div class="mb-6 p-4 bg-neutral-50 rounded-lg border border-neutral-200 text-xs text-neutral-600">
-		<div class="flex items-center gap-2 font-semibold text-neutral-800 mb-1">
-			<svg class="w-4 h-4 text-neutral-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-			</svg>
-			<span>Instrucción para agregar imágenes</span>
-		</div>
-		<p>
-			Para agregar una evidencia, coloca la imagen en la carpeta <code class="font-mono bg-white px-1.5 py-0.5 rounded border border-neutral-200 text-neutral-800">public/evidencias/</code> con el nombre asignado (por ejemplo, <code class="font-mono font-semibold text-neutral-900">evidencia1.jpg</code>). Al guardar o hacer commit, aparecerá automáticamente en su recuadro sin requerir base de datos ni backend. Formatos soportados: <code class="font-mono text-neutral-700">.jpg</code>, <code class="font-mono text-neutral-700">.png</code> y <code class="font-mono text-neutral-700">.webp</code>.
-		</p>
-	</div>
-
 	<!-- Slots Grid -->
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
 		{resolvedSlots.map((item) => (
@@ -125,11 +112,10 @@ if (fs.existsSync(evidenciasDir)) {
 								onclick={`window.open('${item.fileUrl}', '_blank')`}
 							/>
 							<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-emerald-700 text-white text-[10px] font-medium shadow">
-								✓ Imagen cargada
+								✓ Registro fotográfico
 							</span>
 						</div>
 						<div class="p-4">
-							<div class="text-[11px] font-mono text-neutral-400 mb-1">{item.assignedFilename}</div>
 							<h3 class="text-sm font-bold text-neutral-900 mb-1">{item.title}</h3>
 							<p class="text-xs text-neutral-600">{item.description}</p>
 						</div>
@@ -137,16 +123,16 @@ if (fs.existsSync(evidenciasDir)) {
 				) : (
 					<div>
 						<div class="aspect-video bg-neutral-50/80 border-b border-dashed border-neutral-200 flex flex-col items-center justify-center p-6 text-center text-neutral-400">
-							<div class="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mb-2 text-neutral-500">
+							<div class="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mb-2 text-neutral-400">
 								<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
 								</svg>
 							</div>
-							<span class="text-xs font-mono font-medium text-neutral-700 mb-0.5">
-								{item.assignedFilename}
+							<span class="text-xs font-medium text-neutral-600 mb-0.5">
+								Registro fotográfico
 							</span>
 							<span class="text-[11px] text-neutral-400">
-								Pendiente de agregar imagen
+								Pendiente de anexar
 							</span>
 						</div>
 						<div class="p-4">
@@ -155,11 +141,6 @@ if (fs.existsSync(evidenciasDir)) {
 						</div>
 					</div>
 				)}
-
-				<div class="px-4 py-2.5 bg-neutral-50 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
-					<span>Destino: public/evidencias/</span>
-					<span class="font-bold text-neutral-700">{item.assignedFilename}</span>
-				</div>
 			</div>
 		))}
 
@@ -180,7 +161,7 @@ if (fs.existsSync(evidenciasDir)) {
 					</div>
 					<div class="p-4">
 						<h3 class="text-sm font-bold text-neutral-900 mb-1">{extra.filename}</h3>
-						<p class="text-xs text-neutral-500 font-mono">Archivo detectado automáticamente</p>
+						<p class="text-xs text-neutral-500">Evidencia fotográfica complementaria</p>
 					</div>
 				</div>
 			</div>
