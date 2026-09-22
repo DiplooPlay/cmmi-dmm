@@ -85,6 +85,105 @@ if (fs.existsSync(evidenciasDir)) {
 			url: `/evidencias/${f}`
 		}));
 }
+
+const preguntasEntrevista = [
+	{
+		num: 1,
+		pregunta: "¿Cómo se distribuyen actualmente las responsabilidades operativas entre las áreas de ventas, caja, almacén y taller de corte?"
+	},
+	{
+		num: 2,
+		pregunta: "Desde que un cliente llega con su proyecto hasta que recibe el material cortado, ¿cuáles son los pasos que sigue actualmente el pedido?"
+	},
+	{
+		num: 3,
+		pregunta: "Cuando un cliente solicita cortes personalizados, ¿dónde y cómo se registran las dimensiones, el grosor, el tipo de tablero y los requerimientos de tapacanto?"
+	},
+	{
+		num: 4,
+		pregunta: "¿Cuántas personas o equipos pueden registrar o modificar pedidos simultáneamente?"
+	},
+	{
+		num: 5,
+		pregunta: "Si un cliente solicita modificar las medidas o características de sus piezas después de haber registrado el pedido, ¿cómo se gestiona actualmente el cambio y qué problemas puede ocasionar?"
+	},
+	{
+		num: 6,
+		pregunta: "¿Cómo verifica el personal que existe stock físico de las planchas de melamina necesarias antes de cobrar o procesar un pedido?"
+	},
+	{
+		num: 7,
+		pregunta: "¿Qué sucede cuando una plancha requerida no está disponible o presenta algún defecto al momento de realizar el corte?"
+	},
+	{
+		num: 8,
+		pregunta: "¿En qué momento interviene el área de caja y qué documento, comprobante o autorización indica al personal de producción que puede iniciar el trabajo?"
+	},
+	{
+		num: 9,
+		pregunta: "¿Cómo recibe actualmente el encargado de producción las medidas y especificaciones de las piezas que debe cortar?"
+	},
+	{
+		num: 10,
+		pregunta: "¿Cómo se realiza el ingreso de las dimensiones de las piezas en el software CutList Optimizer?"
+	},
+	{
+		num: 11,
+		pregunta: "¿Cuánto tiempo y esfuerzo requiere transcribir manualmente los datos de cada pedido al software de optimización?"
+	},
+	{
+		num: 12,
+		pregunta: "¿Con qué frecuencia se producen errores al transcribir las medidas y qué consecuencias generan en el desperdicio de material, el tiempo de trabajo o la necesidad de repetir cortes?"
+	},
+	{
+		num: 13,
+		pregunta: "¿Cómo se realiza actualmente la revisión de calidad de las piezas antes de empaquetarlas o entregarlas al cliente?"
+	},
+	{
+		num: 14,
+		pregunta: "Si una pieza se corta incorrectamente, ¿cómo se registra el incidente y cómo se gestiona su reposición?"
+	},
+	{
+		num: 15,
+		pregunta: "Si un cliente consulta sobre el estado de su pedido, ¿cómo determina el personal en qué etapa se encuentra, por ejemplo, pendiente, en optimización, en corte o terminado?"
+	},
+	{
+		num: 16,
+		pregunta: "¿Cómo se informa al área de atención o ventas que un pedido ya terminó de ser cortado y está listo para ser entregado al cliente?"
+	},
+	{
+		num: 17,
+		pregunta: "¿Qué comprobante o constancia se utiliza actualmente para confirmar que el cliente recibió su pedido completo y conforme?"
+	},
+	{
+		num: 18,
+		pregunta: "La base de datos actual funciona en una computadora principal. ¿Qué limitaciones o riesgos representa para el negocio depender de un único equipo?"
+	},
+	{
+		num: 19,
+		pregunta: "¿Qué procedimiento se sigue si la computadora principal presenta una falla, se daña o deja de estar disponible?"
+	},
+	{
+		num: 20,
+		pregunta: "¿Con qué frecuencia se realizan copias de seguridad de la base de datos y dónde se almacenan actualmente?"
+	},
+	{
+		num: 21,
+		pregunta: "¿Qué información considera más importante conservar y consultar para poder hacer seguimiento a un pedido desde su registro hasta su entrega?"
+	},
+	{
+		num: 22,
+		pregunta: "¿Qué problemas o retrasos se presentan con mayor frecuencia durante todo el proceso de venta, corte y entrega de los pedidos?"
+	},
+	{
+		num: 23,
+		pregunta: "¿Qué actividades del proceso considera que actualmente requieren más tiempo o trabajo manual?"
+	},
+	{
+		num: 24,
+		pregunta: "¿Qué información le gustaría poder consultar de manera inmediata y que actualmente resulta difícil de obtener?"
+	}
+];
 ---
 
 <section id="sec-evidencias" class="my-14 pt-6 border-t border-neutral-200 scroll-mt-16">
@@ -118,6 +217,12 @@ if (fs.existsSync(evidenciasDir)) {
 						<div class="p-4">
 							<h3 class="text-sm font-bold text-neutral-900 mb-1">{item.title}</h3>
 							<p class="text-xs text-neutral-600">{item.description}</p>
+							{item.id === 'ev-1' && (
+								<a href="#guia-entrevista" class="inline-flex items-center gap-1.5 mt-2.5 text-xs font-semibold text-neutral-800 hover:text-neutral-950 underline underline-offset-2">
+									<span>Ver guía de entrevista (24 preguntas)</span>
+									<span>↓</span>
+								</a>
+							)}
 						</div>
 					</div>
 				) : (
@@ -138,6 +243,12 @@ if (fs.existsSync(evidenciasDir)) {
 						<div class="p-4">
 							<h3 class="text-sm font-bold text-neutral-900 mb-1">{item.title}</h3>
 							<p class="text-xs text-neutral-600">{item.description}</p>
+							{item.id === 'ev-1' && (
+								<a href="#guia-entrevista" class="inline-flex items-center gap-1.5 mt-2.5 text-xs font-semibold text-neutral-800 hover:text-neutral-950 underline underline-offset-2">
+									<span>Ver guía de entrevista (24 preguntas)</span>
+									<span>↓</span>
+								</a>
+							)}
 						</div>
 					</div>
 				)}
@@ -166,5 +277,53 @@ if (fs.existsSync(evidenciasDir)) {
 				</div>
 			</div>
 		))}
+	</div>
+
+	<!-- Instrumento de Levantamiento: Guía de Entrevista -->
+	<div id="guia-entrevista" class="mt-12 rounded-xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-sm scroll-mt-20">
+		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-neutral-200">
+			<div>
+				<div class="flex items-center gap-2 mb-1.5">
+					<span class="px-2 py-0.5 rounded bg-neutral-100 border border-neutral-200 text-neutral-700 font-mono text-[11px] font-semibold uppercase tracking-wider">
+						Instrumento de campo
+					</span>
+					<span class="text-xs text-neutral-500">24 preguntas estructuradas</span>
+				</div>
+				<h3 class="text-lg sm:text-xl font-serif font-bold text-neutral-900">
+					Entrevista del Proceso — MelamiCut S.A.C.
+				</h3>
+			</div>
+		</div>
+
+		<!-- Meta información del instrumento -->
+		<div class="my-5 p-4 rounded-lg bg-neutral-50 border border-neutral-200 space-y-2 text-xs sm:text-sm text-neutral-700">
+			<div>
+				<strong class="text-neutral-900 font-semibold">Objetivo:</strong>
+				<span class="text-neutral-600 ml-1">Relevar en detalle la operativa actual (As-Is), identificar las causas raíz de las principales dificultades operativas y validar los requerimientos de la solución propuesta (To-Be).</span>
+			</div>
+			<div>
+				<strong class="text-neutral-900 font-semibold">Entrevistado:</strong>
+				<span class="text-neutral-600 ml-1">Administrador / Dueño / Responsable Operativo General</span>
+			</div>
+		</div>
+
+		<!-- Listado de preguntas estructuradas -->
+		<div>
+			<h4 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4 pb-1 border-b border-neutral-100">
+				Cuestionario estructurado de levantamiento y validación
+			</h4>
+			<ol class="space-y-2 text-xs sm:text-sm text-neutral-800">
+				{preguntasEntrevista.map((item) => (
+					<li class="flex items-start gap-3 p-2.5 rounded hover:bg-neutral-50/80 transition-colors">
+						<span class="font-mono text-neutral-400 font-semibold w-6 shrink-0 text-right pt-0.5">
+							{String(item.num).padStart(2, '0')}.
+						</span>
+						<span class="text-neutral-700 leading-relaxed">
+							{item.pregunta}
+						</span>
+					</li>
+				))}
+			</ol>
+		</div>
 	</div>
 </section>
