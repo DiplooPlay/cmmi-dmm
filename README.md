@@ -1,6 +1,6 @@
 # cmmi-dmm
 
-Caso de Estudio y Modelamiento BPMN para el curso de **CMMI** y **DMM (Data Management Maturity)**: Análisis As-Is / To-Be del proceso de gestión de pedidos y corte de melamina en la empresa **MelamiCut S.A.C.**
+Caso de Estudio y Modelamiento BPMN para el curso de **CMMI** y **DMM (Data Management Maturity)**: Análisis As-Is / To-Be del proceso de gestión de pedidos y corte de melamina en la empresa **FerZur S.A.C.**
 
 ## 🚀 Tecnologías
 
@@ -15,8 +15,8 @@ Caso de Estudio y Modelamiento BPMN para el curso de **CMMI** y **DMM (Data Mana
 uni/
 ├── Docs/                  # Documento fuente en PDF y modelos BPMN originales
 │   ├── Analisis_AsIs_ToBe_BPMN_Melamina_APA7.docx.pdf
-│   ├── MelamiCut_AsIs.bpmn
-│   └── MelamiCut_ToBe.bpmn
+│   ├── FerZur_AsIs.bpmn
+│   └── FerZur_ToBe.bpmn
 ├── public/
 │   └── evidencias/        # Carpeta para colocar imágenes (evidencia1.jpg, etc.)
 ├── src/
