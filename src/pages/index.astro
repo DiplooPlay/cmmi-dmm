@@ -326,7 +326,213 @@ import Evidencias from '../components/Evidencias.astro';
 			</ul>
 		</section>
 
-		<!-- SECCIÓN 16: EVIDENCIAS DEL PROYECTO -->
+		<!-- SECTION 7: Análisis Proceso 1 - Gestión de pedido -->
+		<section id="sec-7" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
+				7. Análisis — Proceso 1: Gestión de pedido
+			</h2>
+
+			<!-- 7.1 Problemas As-Is -->
+			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
+				7.1 Problemas detectados en el proceso actual (As-Is)
+			</h3>
+			<div class="space-y-4 text-sm sm:text-base text-neutral-700 mb-10">
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.1 Punto único de falla y dependencia personalista en Caja</p>
+					<p>La validación de ingresos depende de la presencia física del dueño y de la revisión visual en su teléfono personal. Si se ausenta, atiende otra tarea o demora en abrir su aplicación bancaria, la cadena se detiene. El dato del abono (número de operación, cuenta, hora) no queda en la base de datos SQLite, solo en una constatación mental y privada.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.2 Autorización desconectada e informal hacia el taller</p>
+					<p>La confirmación del pago no viaja de forma digital a producción. Se comunica con un sello manual, un ticket engrapado o un aviso verbal («ya pagó, corta»).</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.3 Ruptura digital por soporte en papel</p>
+					<p>Aunque mostrador calcula en CutList Optimizer, el plano viaja impreso al taller. Una vez que la hoja sale de mostrador, el sistema pierde el control: no hay seguimiento del estado de corte ni de los tiempos de ciclo. El avance queda solo en el lápiz del operario.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.4 Vulnerabilidad ante cambios de medidas</p>
+					<p>Si el cliente modifica una pieza tras pagar, nada bloquea el trabajo en taller. Evitar mermas depende de que alguien camine a retirar la hoja antes de que el operario corte con medidas obsoletas.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.5 Opacidad del avance</p>
+					<p>Mostrador no ve el estado del pedido. Para informar al cliente debe ir al taller a preguntar de palabra, y el aviso de retiro también es manual.</p>
+				</div>
+				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 pr-3 py-2 rounded-r">
+					<p class="font-semibold text-rose-900 text-sm uppercase mb-1">1.6 Manejo informal de mermas y calidad</p>
+					<p class="text-rose-950">Las piezas astilladas o mal cortadas se reponen con retazos del piso, sin registrar causa (error de máquina, defecto del tablero o descalibración) ni costo del desperdicio.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.7 Empaque y entrega sin evidencia</p>
+					<p>Las piezas se agrupan sin rotulado, con riesgo de mezclar pedidos, y la entrega concluye sin acta de conformidad, lo que deja a la empresa sin respaldo ante reclamos.</p>
+				</div>
+			</div>
+
+			<!-- 7.2 Por qué es CMMI Nivel 1 -->
+			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
+				7.2 ¿Por qué Gestión de pedido es CMMI Nivel 1 (Inicial)?
+			</h3>
+			<p class="text-sm sm:text-base text-neutral-700 mb-3 leading-relaxed">
+				En el Nivel 1 los procesos son <em>ad-hoc</em>, informales y reactivos, y el éxito depende del esfuerzo, la memoria y la vigilancia de personas clave («héroes»). Aquí se evidencia así:
+			</p>
+			<ul class="space-y-2 text-sm sm:text-base text-neutral-700 mb-10 pl-1">
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Dependencia de personas específicas:</strong> el control del dinero y la liberación del pedido dependen del dueño en Caja, no de un procedimiento institucionalizado en el sistema.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Falta de repetibilidad:</strong> si el dueño o el operario habitual son reemplazados, no existen reglas de negocio codificadas que garanticen el mismo control y calidad.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Ausencia de productos de trabajo auditables:</strong> la verificación del pago y la autorización de corte no dejan rastro transaccional; solo hay una hoja tachada con lápiz y una constatación visual en una app bancaria.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Reacción en lugar de prevención:</strong> los cambios de medidas y los defectos se atienden cuando ya ocurrieron.</span></li>
+			</ul>
+
+			<!-- 7.3 Propuesta To-Be -->
+			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
+				7.3 Propuesta To-Be de Gestión de pedido (paso a paso)
+			</h3>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4 leading-relaxed">
+				El modelo mantiene al dueño o familiar con el control del dinero en Caja, pero convierte su visto bueno en un disparador digital auditable.
+			</p>
+			<ol class="space-y-3 text-sm sm:text-base text-neutral-800">
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">1.</span>
+					<span><strong class="text-neutral-900">Registro técnico y precotización:</strong> mostrador recibe los requerimientos (presencial o WhatsApp con formato estándar), ingresa las cotas a la plataforma de corte y genera la orden en estado <em>PENDIENTE DE PAGO</em>.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">2.</span>
+					<span><strong class="text-neutral-900">Validación formal en Caja:</strong> el encargado abre la orden en su terminal o tablet y constata el dinero (efectivo o app bancaria). Debe ingresar obligatoriamente el número de operación (o marcar cobro en efectivo con código de recibo) y presionar «Confirmar y liberar pedido».</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">3.</span>
+					<span><strong class="text-neutral-900">Generación automática de la Orden de Producción versionada:</strong> el estado pasa a <em>CONFIRMADO</em> y se genera la OP con identificador único y versión inicial (ej. OP-301-v1), con el mapa de corte y la lista de piezas.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">4.</span>
+					<span><strong class="text-neutral-900">Liberación digital a taller:</strong> la orden aparece en la cola de trabajo del taller, en pantalla o en ficha impresa con código de versión visible y QR o código de barras.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">5.</span>
+					<span><strong class="text-neutral-900">Gobernanza ante cambios de medidas:</strong> si el cliente cambia medidas tras pagar, mostrador actualiza las cotas, el sistema genera OP-301-v2, bloquea la v1 y alerta al operario.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">6.</span>
+					<span><strong class="text-neutral-900">Ejecución y registro de calidad:</strong> el operario corta y enchapa según la versión activa. Si descarta una pieza, tipifica la causa en la terminal antes de usar un retazo.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">7.</span>
+					<span><strong class="text-neutral-900">Actualización de estado en tiempo real:</strong> al terminar el empaque, el operario marca «Terminado» o escanea el código. El estado pasa a <em>LISTO PARA RECOJO</em>.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">8.</span>
+					<span><strong class="text-neutral-900">Notificación y entrega con acta de conformidad:</strong> el sistema avisa a mostrador y envía un mensaje automático al cliente. En el despacho el cliente revisa y firma el acta de entrega, y el pedido pasa a <em>ENTREGADO</em>.</span>
+				</li>
+			</ol>
+		</section>
+
+		<!-- SECTION 8: Análisis Proceso 2 - Gestión de inventario -->
+		<section id="sec-8" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
+				8. Análisis — Proceso 2: Gestión de inventario
+			</h2>
+
+			<!-- 8.1 Problemas As-Is -->
+			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
+				8.1 Problemas detectados en el proceso actual (As-Is)
+			</h3>
+			<div class="space-y-4 text-sm sm:text-base text-neutral-700 mb-10">
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.1 Reposición reactiva sin parámetros</p>
+					<p>La necesidad de comprar se detecta al ver «que queda poco» o cuando un pedido no puede atenderse. No hay stock mínimo, punto de reorden ni orden de compra formal; las cantidades se piden de memoria al proveedor por llamada o WhatsApp.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.2 Recepción sin verificación sistemática</p>
+					<p>La mercadería se recibe con la guía del proveedor sin contrastarla con un pedido, ni revisar cantidades, medidas, colores o daños. Los errores se descubren tarde, cuando ya no se puede reclamar.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.3 Almacenamiento sin identificación ni ubicaciones</p>
+					<p>Los tableros se apilan donde hay espacio, sin codificar material, color o espesor. Esto genera búsquedas lentas, riesgo de usar el tablero equivocado y deterioro por mala estiba.</p>
+				</div>
+				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 pr-3 py-2 rounded-r">
+					<p class="font-semibold text-rose-900 text-sm uppercase mb-1">1.4 Consumo sin descargo</p>
+					<p class="text-rose-950">El operario toma tableros y tapacanto sin vale de salida. El pedido registrado en SQLite no descuenta insumos, por lo que el consumo real por pedido se pierde y el costo real no se conoce.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.5 Retazos sin gestión</p>
+					<p>Los sobrantes quedan en el piso o en un rincón, sin medir, catalogar ni valorizar. Se reutilizan solo si el operario los recuerda, y parte del material se pierde.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.6 Mermas sin registro</p>
+					<p>Las piezas repetidas por error salen del stock sin dejar rastro. Sin causa documentada no se puede mejorar ni distinguir entre defecto del proveedor, falla de máquina o error humano.</p>
+				</div>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.7 Control de existencias esporádico</p>
+					<p>El conteo es visual y ocasional. No existe inventario físico contra sistema, así que no se detectan diferencias ni pérdidas.</p>
+				</div>
+				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 pr-3 py-2 rounded-r">
+					<p class="font-semibold text-rose-900 text-sm uppercase mb-1">1.8 Faltantes y compras de emergencia</p>
+					<p class="text-rose-950">El faltante aparece en pleno pedido, causa retrasos y obliga a comprar a otro proveedor o a precio de tienda. El sobrecosto reduce el margen y tampoco se registra.</p>
+				</div>
+			</div>
+
+			<!-- 8.2 Por qué es CMMI Nivel 1 -->
+			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
+				8.2 ¿Por qué Gestión de inventario es CMMI Nivel 1 (Inicial)?
+			</h3>
+			<ul class="space-y-2 text-sm sm:text-base text-neutral-700 mb-10 pl-1">
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Dependencia del dueño y del operario:</strong> el conocimiento de cuánto hay, dónde está y cuándo comprar está en la memoria de personas, no en un procedimiento ni en el sistema.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Ausencia de planificación:</strong> no hay políticas de stock mínimo, criterios de compra ni selección de proveedores; todo se decide al momento.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Falta de repetibilidad:</strong> otra persona no podría reponer ni controlar el almacén con el mismo criterio, porque no hay reglas escritas.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Sin productos de trabajo auditables:</strong> no existen órdenes de compra, vales de salida, actas de recepción ni actas de conteo. No se puede reconstruir qué material se compró, usó o perdió.</span></li>
+				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Procesos desvinculados:</strong> el inventario no está conectado con los pedidos ni con CutList Optimizer, de modo que vender no descuenta existencias.</span></li>
+			</ul>
+
+			<!-- 8.3 Propuesta To-Be -->
+			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
+				8.3 Propuesta To-Be de Gestión de inventario (paso a paso)
+			</h3>
+			<p class="text-sm sm:text-base text-neutral-700 mb-4 leading-relaxed">
+				El modelo mantiene al dueño como autoridad de compra, pero reemplaza la memoria por parámetros y registros en el sistema.
+			</p>
+			<ol class="space-y-3 text-sm sm:text-base text-neutral-800">
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">1.</span>
+					<span><strong class="text-neutral-900">Catálogo y codificación de materiales:</strong> cada tablero y tapacanto se registra con código único (material, color, espesor, medida) y ubicación definida en el almacén.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">2.</span>
+					<span><strong class="text-neutral-900">Parámetros de reposición:</strong> se definen stock mínimo y punto de reorden por material. El sistema genera una alerta de reposición cuando se alcanza.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">3.</span>
+					<span><strong class="text-neutral-900">Orden de compra formal:</strong> el dueño aprueba una orden de compra en el sistema, con cantidades calculadas según la demanda y los pedidos confirmados, y la envía al proveedor.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">4.</span>
+					<span><strong class="text-neutral-900">Recepción con verificación:</strong> al llegar la mercadería, el encargado la contrasta con la orden de compra y la guía del proveedor (cantidad, medidas, color, daños), registra la entrada y deja constancia de las observaciones.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">5.</span>
+					<span><strong class="text-neutral-900">Almacenamiento identificado:</strong> los materiales se ubican en zonas rotuladas según el código asignado.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">6.</span>
+					<span><strong class="text-neutral-900">Reserva y descargo automático por pedido:</strong> al confirmarse la OP en Caja, el sistema reserva los tableros y metros de tapacanto calculados. Al marcar «Terminado», se genera el descargo real contra el consumo de la orden.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">7.</span>
+					<span><strong class="text-neutral-900">Gestión de retazos:</strong> los sobrantes útiles se miden, rotulan y registran en el sistema como retazos disponibles, para que mostrador y operario puedan reutilizarlos y valorizarlos.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">8.</span>
+					<span><strong class="text-neutral-900">Registro tipificado de mermas:</strong> toda pieza descartada se registra con causa (defecto del tablero, descalibración, error de operación o cambio del cliente) y se descuenta del stock.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">9.</span>
+					<span><strong class="text-neutral-900">Inventarios cíclicos:</strong> se programan conteos periódicos (por ejemplo, semanales para los materiales de mayor rotación) y se concilian contra el sistema, con ajuste autorizado por el dueño.</span>
+				</li>
+				<li class="flex items-start gap-3 bg-white border border-neutral-200 rounded p-3">
+					<span class="text-neutral-400 font-mono font-semibold shrink-0 w-5 text-right">10.</span>
+					<span><strong class="text-neutral-900">Indicadores de control:</strong> el sistema reporta existencias, rotación, mermas por causa, diferencias de inventario y sobrecostos por compras de emergencia, para decidir con datos.</span>
+				</li>
+			</ol>
+		</section>
+
+		<!-- SECCIÓN EVIDENCIAS DEL PROYECTO -->
 		<Evidencias />
 	</main>
 </Layout>
