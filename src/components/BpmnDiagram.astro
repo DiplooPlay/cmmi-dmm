@@ -1,16 +1,86 @@
 ---
 import asIsRaw from '../data/bpmn/MelamiCut_AsIs.bpmn?raw';
 import toBeRaw from '../data/bpmn/MelamiCut_ToBe.bpmn?raw';
+import pedidoRaw from '../data/bpmn/GestionPedido.bpmn?raw';
+import inventarioRaw from '../data/bpmn/GestionInventario.bpmn?raw';
 
 interface Props {
-	type: 'as-is' | 'to-be';
+	type: 'as-is' | 'to-be' | 'gestion-pedido' | 'gestion-inventario';
 	title: string;
 }
 
 const { type, title } = Astro.props;
-const isAsIs = type === 'as-is';
-const rawXml = isAsIs ? asIsRaw : toBeRaw;
+
+const xmlMap: Record<string, string> = {
+	'as-is': asIsRaw,
+	'to-be': toBeRaw,
+	'gestion-pedido': pedidoRaw,
+	'gestion-inventario': inventarioRaw,
+};
+const rawXml = xmlMap[type] ?? asIsRaw;
 const viewerId = `bpmn-viewer-${type}`;
+
+const labelMap: Record<string, string> = {
+	'as-is': 'Diagrama integrado · Estado Actual',
+	'to-be': 'Diagrama integrado · Estado Propuesto',
+	'gestion-pedido': 'Diagrama BPMN · Gestión de pedido — CMMI nivel 1',
+	'gestion-inventario': 'Diagrama BPMN · Gestión de inventario — CMMI nivel 1',
+};
+const diagramLabel = labelMap[type] ?? '';
+
+const fallbackMap: Record<string, { step: string; text: string }[]> = {
+	'as-is': [
+		{ step: '1. Cliente', text: 'Solicita productos o servicio de corte.' },
+		{ step: '2. Ventas', text: 'Registra el pedido en la PC principal con SQLite local.' },
+		{ step: '3. Almacén', text: 'Verifica disponibilidad de material.' },
+		{ step: '4. Caja', text: 'Registra el pago del cliente.' },
+		{ step: '5. Producción', text: 'Revisa medidas e ingresa datos manualmente al software.' },
+		{ step: '6. CutList', text: 'Genera patrón de distribución de cortes.' },
+		{ step: '7. Taller', text: 'Realiza los cortes físicos y pasa por control de calidad.' },
+		{ step: '8. Entrega', text: 'Si correcto, actualiza y entrega.' },
+	],
+	'to-be': [
+		{ step: '1. Cliente', text: 'Realiza la solicitud con dimensiones y tapacantos requeridos.' },
+		{ step: '2. Ventas & Sistema', text: 'Registro único en plataforma centralizada con validación.' },
+		{ step: '3. Almacén', text: 'Comprobación de inventario en línea.' },
+		{ step: '4. Caja', text: 'Registro del pago y paso a estado CONFIRMADO.' },
+		{ step: '5. Sistema', text: 'Genera automáticamente la Orden de Producción.' },
+		{ step: '6. Optimización', text: 'Reutilización directa de medidas en CutList.' },
+		{ step: '7. Taller & Calidad', text: 'Ejecución de corte e inspección formal.' },
+		{ step: '8. Despacho', text: 'Entrega conforme y estado ENTREGADO.' },
+	],
+	'gestion-pedido': [
+		{ step: '1. Mostrador', text: 'Recibe pedido del cliente (tienda o WhatsApp) sin formato estándar.' },
+		{ step: '2. Mostrador', text: 'Ingresa medidas en CutList para cotizar; resultado queda en herramienta externa.' },
+		{ step: '3. Mostrador', text: 'Deriva al cliente a Caja de forma verbal.' },
+		{ step: '4. Dueño', text: 'Atiende al cliente en caja.' },
+		{ step: '5. Dueño', text: 'Verifica pago (efectivo, Yape, Plin) sin conciliación.' },
+		{ step: '6. Dueño', text: 'Autoriza el pago de forma verbal o con ticket sellado manual.' },
+		{ step: '7. Mostrador', text: 'Registra en SQLite después del pago; riesgo de omisión.' },
+		{ step: '8. Mostrador', text: 'Imprime plano de corte y lista de despiece en papel.' },
+		{ step: '9. Mostrador', text: 'Traslada la orden al taller en mano; avisa de palabra.' },
+		{ step: '10. Operario', text: 'Corta guiándose por el plano; tacha con lápiz lo terminado.' },
+		{ step: '11. Modificación', text: 'Si hay cambio, mostrador retira la hoja anterior del taller.' },
+		{ step: '12. Operario', text: 'Trata defectos buscando un retazo del piso; merma no registrada.' },
+		{ step: '13. Operario', text: 'Empaca sin rotulado en zona de acopio; riesgo de mezcla.' },
+		{ step: '14. Mostrador', text: 'Consulta verbalmente el estado caminando al taller.' },
+		{ step: '15. Mostrador', text: 'Avisa al cliente que puede retirar.' },
+		{ step: '16. Operario', text: 'Despacha sin acta de conformidad.' },
+	],
+	'gestion-inventario': [
+		{ step: '1. Dueño / Operario', text: 'Detecta necesidad de reposición al ver que "ya queda poco".' },
+		{ step: '2. Dueño', text: 'Llama o escribe al proveedor con cantidades de memoria.' },
+		{ step: '3. Dueño / Operario', text: 'Recibe mercadería con guía del proveedor, sin verificación sistemática.' },
+		{ step: '4. Operario', text: 'Apila tableros donde haya espacio, sin identificación.' },
+		{ step: '5. Operario', text: 'Toma material según plano, sin vale de salida.' },
+		{ step: '6. Operario', text: 'Deja retazos en el piso; se reutilizan si se recuerdan.' },
+		{ step: '7. Operario', text: 'No registra mermas; piezas repetidas salen del stock sin rastro.' },
+		{ step: '8. Dueño', text: 'Hace conteo visual y ocasional sin periodicidad.' },
+		{ step: '9. Operario', text: 'Descubre faltante en pleno pedido, generando retrasos.' },
+		{ step: '10. Dueño', text: 'Compra de emergencia a mayor precio; sobrecosto no registrado.' },
+	],
+};
+const fallbackSteps = fallbackMap[type] ?? [];
 ---
 
 <div class="my-8 rounded-lg border border-neutral-200 bg-white overflow-hidden text-neutral-800">
@@ -18,7 +88,7 @@ const viewerId = `bpmn-viewer-${type}`;
 	<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-neutral-50 border-b border-neutral-200">
 		<div>
 			<span class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider block">
-				{isAsIs ? 'Diagrama integrado · Estado Actual' : 'Diagrama integrado · Estado Propuesto'}
+				{diagramLabel}
 			</span>
 			<h4 class="text-base font-bold text-neutral-900">{title}</h4>
 		</div>
@@ -63,7 +133,7 @@ const viewerId = `bpmn-viewer-${type}`;
 		</div>
 	</div>
 
-	<!-- Structured Steps Summary (Accessible fallback & quick reference) -->
+	<!-- Structured Steps Summary -->
 	<div class="p-4 bg-neutral-50/50">
 		<details class="text-xs group">
 			<summary class="cursor-pointer font-medium text-neutral-700 hover:text-neutral-950 py-1 flex items-center justify-between select-none">
@@ -71,33 +141,16 @@ const viewerId = `bpmn-viewer-${type}`;
 				<span class="text-neutral-400 group-open:rotate-180 transition-transform">▼</span>
 			</summary>
 			<div class="mt-3 pt-3 border-t border-neutral-200">
-				{isAsIs ? (
-					<div class="space-y-1.5 text-neutral-600">
-						<p><strong class="text-neutral-800">1. Cliente:</strong> Solicita productos o servicio de corte.</p>
-						<p><strong class="text-neutral-800">2. Ventas:</strong> Registra el pedido en la PC principal con SQLite local.</p>
-						<p><strong class="text-neutral-800">3. Almacén:</strong> Verifica disponibilidad de material. Si no hay stock, informa a ventas.</p>
-						<p><strong class="text-neutral-800">4. Caja:</strong> Registra el pago del cliente tras confirmación.</p>
-						<p><strong class="text-neutral-800">5. Producción:</strong> Revisa medidas e ingresa datos manualmente al software.</p>
-						<p><strong class="text-neutral-800">6. CutList Optimizer:</strong> Genera patrón de distribución de cortes.</p>
-						<p><strong class="text-neutral-800">7. Taller:</strong> Realiza los cortes físicos y pasa por control de calidad.</p>
-						<p><strong class="text-neutral-800">8. Control de Calidad:</strong> Si es incorrecto se corrige; si es correcto, se actualiza y se entrega.</p>
-					</div>
-				) : (
-					<div class="space-y-1.5 text-neutral-600">
-						<p><strong class="text-neutral-800">1. Cliente:</strong> Realiza la solicitud con dimensiones y tapacantos requeridos.</p>
-						<p><strong class="text-neutral-800">2. Ventas & Sistema:</strong> Registro único en la plataforma centralizada con validación inmediata.</p>
-						<p><strong class="text-neutral-800">3. Almacén:</strong> Comprobación de inventario en línea y notificación automática.</p>
-						<p><strong class="text-neutral-800">4. Caja:</strong> Registro del pago y paso a estado CONFIRMADO.</p>
-						<p><strong class="text-neutral-800">5. Sistema:</strong> Genera automáticamente la Orden de Producción paramétrica vinculada.</p>
-						<p><strong class="text-neutral-800">6. Optimización:</strong> Reutilización directa de medidas en CutList sin redigitación manual.</p>
-						<p><strong class="text-neutral-800">7. Taller & Calidad:</strong> Ejecución de corte, inspección formal con registro de incidencias y estado LISTO.</p>
-						<p><strong class="text-neutral-800">8. Despacho:</strong> Entrega conforme y transición al estado final ENTREGADO.</p>
-					</div>
-				)}
+				<div class="space-y-1.5 text-neutral-600">
+					{fallbackSteps.map((s) => (
+						<p><strong class="text-neutral-800">{s.step}:</strong> {s.text}</p>
+					))}
+				</div>
 			</div>
 		</details>
 	</div>
 </div>
+
 
 <script>
 	import BpmnViewer from 'bpmn-js/dist/bpmn-navigated-viewer.production.min.js';

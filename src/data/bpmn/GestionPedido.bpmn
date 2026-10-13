@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Def_GestionPedido"
+  targetNamespace="http://ferzur.pe/bpmn">
+
+  <bpmn:collaboration id="Collab_GestionPedido">
+    <bpmn:participant id="Part_GestionPedido" name="FerZur S.A.C. — Gestión de pedido (CMMI nivel 1)" processRef="Proc_GestionPedido" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Proc_GestionPedido" isExecutable="false">
+    <bpmn:laneSet id="LS_GestionPedido">
+
+      <!-- Lane: Mostrador -->
+      <bpmn:lane id="Lane_Mostrador" name="Mostrador">
+        <bpmn:flowNodeRef>Start_Pedido</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T01_RecepcionPedido</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T02_Cotizacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T03_DerivacionCaja</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T07_RegistroSistema</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T08_ImpresionPlano</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T09_TrasladoOrden</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T11_GestionModificaciones</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T14_ConsultaVerbal</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T15_AvisoRetiro</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Pedido</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Lane: Dueño (Caja) -->
+      <bpmn:lane id="Lane_Dueno" name="Dueño (Caja)">
+        <bpmn:flowNodeRef>T04_AtencionCaja</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T05_PagoVerificacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T06_AutorizacionPago</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Lane: Operario (Taller) -->
+      <bpmn:lane id="Lane_Operario" name="Operario (Taller)">
+        <bpmn:flowNodeRef>T10_CorteEnchapado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Modificacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Defecto</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T12_TratamientoDefectos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T13_EmpaqueAcopio</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T16_Despacho</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+    </bpmn:laneSet>
+
+    <!-- Start -->
+    <bpmn:startEvent id="Start_Pedido" name="Cliente solicita pedido">
+      <bpmn:outgoing>F01</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- Mostrador -->
+    <bpmn:userTask id="T01_RecepcionPedido" name="1. Recibir pedido&#10;(tienda o WhatsApp)">
+      <bpmn:incoming>F01</bpmn:incoming>
+      <bpmn:outgoing>F02</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T02_Cotizacion" name="2. Optimización y&#10;cotización (CutList)">
+      <bpmn:incoming>F02</bpmn:incoming>
+      <bpmn:outgoing>F03</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T03_DerivacionCaja" name="3. Derivar cliente a Caja&#10;(aviso verbal del monto)">
+      <bpmn:incoming>F03</bpmn:incoming>
+      <bpmn:outgoing>F04</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Dueño -->
+    <bpmn:userTask id="T04_AtencionCaja" name="4. Atención en Caja">
+      <bpmn:incoming>F04</bpmn:incoming>
+      <bpmn:outgoing>F05</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T05_PagoVerificacion" name="5. Pago y verificación&#10;(efectivo / Yape / transferencia)">
+      <bpmn:incoming>F05</bpmn:incoming>
+      <bpmn:outgoing>F06</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T06_AutorizacionPago" name="6. Autorización informal&#10;del pago (boleta / verbal)">
+      <bpmn:incoming>F06</bpmn:incoming>
+      <bpmn:outgoing>F07</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Mostrador vuelve -->
+    <bpmn:userTask id="T07_RegistroSistema" name="7. Registro en SQLite&#10;(PC principal)">
+      <bpmn:incoming>F07</bpmn:incoming>
+      <bpmn:outgoing>F08</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T08_ImpresionPlano" name="8. Imprimir plano de corte&#10;y lista de despiece">
+      <bpmn:incoming>F08</bpmn:incoming>
+      <bpmn:outgoing>F09</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T09_TrasladoOrden" name="9. Trasladar orden al taller&#10;(entrega en mano / verbal)">
+      <bpmn:incoming>F09</bpmn:incoming>
+      <bpmn:outgoing>F10</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Operario -->
+    <bpmn:userTask id="T10_CorteEnchapado" name="10. Corte y enchapado&#10;(marca con lápiz en papel)">
+      <bpmn:incoming>F10</bpmn:incoming>
+      <bpmn:incoming>F_loop_mod</bpmn:incoming>
+      <bpmn:outgoing>F11</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gw_Modificacion" name="¿Hay modificación?">
+      <bpmn:incoming>F11</bpmn:incoming>
+      <bpmn:outgoing>F_mod_si</bpmn:outgoing>
+      <bpmn:outgoing>F_mod_no</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="T11_GestionModificaciones" name="11. Gestión de modificaciones&#10;(retira hoja, entrega nueva)">
+      <bpmn:incoming>F_mod_si</bpmn:incoming>
+      <bpmn:outgoing>F_loop_mod</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gw_Defecto" name="¿Pieza con defecto?">
+      <bpmn:incoming>F_mod_no</bpmn:incoming>
+      <bpmn:outgoing>F_def_si</bpmn:outgoing>
+      <bpmn:outgoing>F_def_no</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <bpmn:userTask id="T12_TratamientoDefectos" name="12. Repetir pieza con&#10;retazo del piso">
+      <bpmn:incoming>F_def_si</bpmn:incoming>
+      <bpmn:outgoing>F13</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T13_EmpaqueAcopio" name="13. Empacar sin rotulado&#10;en zona de acopio">
+      <bpmn:incoming>F_def_no</bpmn:incoming>
+      <bpmn:incoming>F13</bpmn:incoming>
+      <bpmn:outgoing>F14</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Mostrador pregunta -->
+    <bpmn:userTask id="T14_ConsultaVerbal" name="14. Consulta verbal del estado&#10;(camina al taller)">
+      <bpmn:incoming>F14</bpmn:incoming>
+      <bpmn:outgoing>F15</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T15_AvisoRetiro" name="15. Avisar al cliente&#10;que puede retirar">
+      <bpmn:incoming>F15</bpmn:incoming>
+      <bpmn:outgoing>F16</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Operario despacha -->
+    <bpmn:userTask id="T16_Despacho" name="16. Despacho y entrega&#10;(sin acta de conformidad)">
+      <bpmn:incoming>F16</bpmn:incoming>
+      <bpmn:outgoing>F17</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- End -->
+    <bpmn:endEvent id="End_Pedido" name="Pedido entregado">
+      <bpmn:incoming>F17</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence flows -->
+    <bpmn:sequenceFlow id="F01" sourceRef="Start_Pedido" targetRef="T01_RecepcionPedido" />
+    <bpmn:sequenceFlow id="F02" sourceRef="T01_RecepcionPedido" targetRef="T02_Cotizacion" />
+    <bpmn:sequenceFlow id="F03" sourceRef="T02_Cotizacion" targetRef="T03_DerivacionCaja" />
+    <bpmn:sequenceFlow id="F04" sourceRef="T03_DerivacionCaja" targetRef="T04_AtencionCaja" />
+    <bpmn:sequenceFlow id="F05" sourceRef="T04_AtencionCaja" targetRef="T05_PagoVerificacion" />
+    <bpmn:sequenceFlow id="F06" sourceRef="T05_PagoVerificacion" targetRef="T06_AutorizacionPago" />
+    <bpmn:sequenceFlow id="F07" sourceRef="T06_AutorizacionPago" targetRef="T07_RegistroSistema" />
+    <bpmn:sequenceFlow id="F08" sourceRef="T07_RegistroSistema" targetRef="T08_ImpresionPlano" />
+    <bpmn:sequenceFlow id="F09" sourceRef="T08_ImpresionPlano" targetRef="T09_TrasladoOrden" />
+    <bpmn:sequenceFlow id="F10" sourceRef="T09_TrasladoOrden" targetRef="T10_CorteEnchapado" />
+    <bpmn:sequenceFlow id="F11" sourceRef="T10_CorteEnchapado" targetRef="Gw_Modificacion" />
+    <bpmn:sequenceFlow id="F_mod_si" name="Sí" sourceRef="Gw_Modificacion" targetRef="T11_GestionModificaciones" />
+    <bpmn:sequenceFlow id="F_loop_mod" name="Reintentar" sourceRef="T11_GestionModificaciones" targetRef="T10_CorteEnchapado" />
+    <bpmn:sequenceFlow id="F_mod_no" name="No" sourceRef="Gw_Modificacion" targetRef="Gw_Defecto" />
+    <bpmn:sequenceFlow id="F_def_si" name="Sí" sourceRef="Gw_Defecto" targetRef="T12_TratamientoDefectos" />
+    <bpmn:sequenceFlow id="F13" sourceRef="T12_TratamientoDefectos" targetRef="T13_EmpaqueAcopio" />
+    <bpmn:sequenceFlow id="F_def_no" name="No" sourceRef="Gw_Defecto" targetRef="T13_EmpaqueAcopio" />
+    <bpmn:sequenceFlow id="F14" sourceRef="T13_EmpaqueAcopio" targetRef="T14_ConsultaVerbal" />
+    <bpmn:sequenceFlow id="F15" sourceRef="T14_ConsultaVerbal" targetRef="T15_AvisoRetiro" />
+    <bpmn:sequenceFlow id="F16" sourceRef="T15_AvisoRetiro" targetRef="T16_Despacho" />
+    <bpmn:sequenceFlow id="F17" sourceRef="T16_Despacho" targetRef="End_Pedido" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="Diag_GestionPedido" name="Gestión de pedido — CMMI nivel 1">
+    <bpmndi:BPMNPlane id="Plane_GestionPedido" bpmnElement="Collab_GestionPedido">
+
+      <!-- Participant pool -->
+      <bpmndi:BPMNShape id="DI_Part" bpmnElement="Part_GestionPedido" isHorizontal="true">
+        <dc:Bounds x="100" y="0" width="3400" height="600" />
+      </bpmndi:BPMNShape>
+
+      <!-- Lanes -->
+      <bpmndi:BPMNShape id="DI_Lane_Mostrador" bpmnElement="Lane_Mostrador" isHorizontal="true">
+        <dc:Bounds x="130" y="0" width="3370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Dueno" bpmnElement="Lane_Dueno" isHorizontal="true">
+        <dc:Bounds x="130" y="200" width="3370" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Operario" bpmnElement="Lane_Operario" isHorizontal="true">
+        <dc:Bounds x="130" y="400" width="3370" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Start -->
+      <bpmndi:BPMNShape id="DI_Start" bpmnElement="Start_Pedido">
+        <dc:Bounds x="192" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- Mostrador tasks -->
+      <bpmndi:BPMNShape id="DI_T01" bpmnElement="T01_RecepcionPedido">
+        <dc:Bounds x="280" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T02" bpmnElement="T02_Cotizacion">
+        <dc:Bounds x="460" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T03" bpmnElement="T03_DerivacionCaja">
+        <dc:Bounds x="640" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Dueño tasks -->
+      <bpmndi:BPMNShape id="DI_T04" bpmnElement="T04_AtencionCaja">
+        <dc:Bounds x="820" y="260" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T05" bpmnElement="T05_PagoVerificacion">
+        <dc:Bounds x="1000" y="260" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T06" bpmnElement="T06_AutorizacionPago">
+        <dc:Bounds x="1180" y="260" width="120" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Mostrador tasks cont -->
+      <bpmndi:BPMNShape id="DI_T07" bpmnElement="T07_RegistroSistema">
+        <dc:Bounds x="1360" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T08" bpmnElement="T08_ImpresionPlano">
+        <dc:Bounds x="1540" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T09" bpmnElement="T09_TrasladoOrden">
+        <dc:Bounds x="1720" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Operario tasks -->
+      <bpmndi:BPMNShape id="DI_T10" bpmnElement="T10_CorteEnchapado">
+        <dc:Bounds x="1900" y="460" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Mod" bpmnElement="Gw_Modificacion">
+        <dc:Bounds x="2075" y="475" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T11" bpmnElement="T11_GestionModificaciones">
+        <dc:Bounds x="1720" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Def" bpmnElement="Gw_Defecto">
+        <dc:Bounds x="2195" y="475" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T12" bpmnElement="T12_TratamientoDefectos">
+        <dc:Bounds x="2300" y="460" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T13" bpmnElement="T13_EmpaqueAcopio">
+        <dc:Bounds x="2480" y="460" width="120" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Mostrador final tasks -->
+      <bpmndi:BPMNShape id="DI_T14" bpmnElement="T14_ConsultaVerbal">
+        <dc:Bounds x="2660" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T15" bpmnElement="T15_AvisoRetiro">
+        <dc:Bounds x="2840" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Operario despacho -->
+      <bpmndi:BPMNShape id="DI_T16" bpmnElement="T16_Despacho">
+        <dc:Bounds x="3020" y="460" width="120" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- End -->
+      <bpmndi:BPMNShape id="DI_End" bpmnElement="End_Pedido">
+        <dc:Bounds x="3202" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+      <bpmndi:BPMNEdge id="DI_F01" bpmnElement="F01">
+        <di:waypoint x="228" y="100" />
+        <di:waypoint x="280" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F02" bpmnElement="F02">
+        <di:waypoint x="400" y="100" />
+        <di:waypoint x="460" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F03" bpmnElement="F03">
+        <di:waypoint x="580" y="100" />
+        <di:waypoint x="640" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F04" bpmnElement="F04">
+        <di:waypoint x="700" y="140" />
+        <di:waypoint x="700" y="300" />
+        <di:waypoint x="820" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F05" bpmnElement="F05">
+        <di:waypoint x="940" y="300" />
+        <di:waypoint x="1000" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F06" bpmnElement="F06">
+        <di:waypoint x="1120" y="300" />
+        <di:waypoint x="1180" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F07" bpmnElement="F07">
+        <di:waypoint x="1300" y="300" />
+        <di:waypoint x="1360" y="300" />
+        <di:waypoint x="1360" y="140" />
+        <di:waypoint x="1420" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F08" bpmnElement="F08">
+        <di:waypoint x="1480" y="100" />
+        <di:waypoint x="1540" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F09" bpmnElement="F09">
+        <di:waypoint x="1660" y="100" />
+        <di:waypoint x="1720" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F10" bpmnElement="F10">
+        <di:waypoint x="1780" y="140" />
+        <di:waypoint x="1780" y="500" />
+        <di:waypoint x="1900" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F11" bpmnElement="F11">
+        <di:waypoint x="2020" y="500" />
+        <di:waypoint x="2075" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_mod_si" bpmnElement="F_mod_si">
+        <di:waypoint x="2100" y="475" />
+        <di:waypoint x="2100" y="140" />
+        <di:waypoint x="1840" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_loop_mod" bpmnElement="F_loop_mod">
+        <di:waypoint x="1840" y="140" />
+        <di:waypoint x="1840" y="500" />
+        <di:waypoint x="1900" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_mod_no" bpmnElement="F_mod_no">
+        <di:waypoint x="2125" y="500" />
+        <di:waypoint x="2195" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_def_si" bpmnElement="F_def_si">
+        <di:waypoint x="2245" y="500" />
+        <di:waypoint x="2300" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F13" bpmnElement="F13">
+        <di:waypoint x="2420" y="500" />
+        <di:waypoint x="2480" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_def_no" bpmnElement="F_def_no">
+        <di:waypoint x="2220" y="525" />
+        <di:waypoint x="2220" y="560" />
+        <di:waypoint x="2540" y="560" />
+        <di:waypoint x="2540" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F14" bpmnElement="F14">
+        <di:waypoint x="2600" y="500" />
+        <di:waypoint x="2660" y="500" />
+        <di:waypoint x="2660" y="140" />
+        <di:waypoint x="2720" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F15" bpmnElement="F15">
+        <di:waypoint x="2780" y="100" />
+        <di:waypoint x="2840" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F16" bpmnElement="F16">
+        <di:waypoint x="2960" y="140" />
+        <di:waypoint x="2960" y="500" />
+        <di:waypoint x="3020" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F17" bpmnElement="F17">
+        <di:waypoint x="3140" y="500" />
+        <di:waypoint x="3220" y="500" />
+        <di:waypoint x="3220" y="100" />
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

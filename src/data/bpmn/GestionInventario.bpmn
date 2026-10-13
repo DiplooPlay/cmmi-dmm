@@ -1,0 +1,268 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Def_GestionInventario"
+  targetNamespace="http://ferzur.pe/bpmn">
+
+  <bpmn:collaboration id="Collab_GestionInventario">
+    <bpmn:participant id="Part_GestionInventario" name="FerZur S.A.C. — Gestión de inventario (CMMI nivel 1)" processRef="Proc_GestionInventario" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Proc_GestionInventario" isExecutable="false">
+    <bpmn:laneSet id="LS_GestionInventario">
+
+      <!-- Lane: Dueño -->
+      <bpmn:lane id="Lane_Dueno_Inv" name="Dueño">
+        <bpmn:flowNodeRef>Start_Inv</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T02_SolicitudProveedor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T03_RecepcionMercaderia</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T08_ControlExistencias</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T10_CompraEmergencia</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Inv</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Lane: Operario -->
+      <bpmn:lane id="Lane_Operario_Inv" name="Operario">
+        <bpmn:flowNodeRef>T01_DeteccionNecesidad</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T04_Almacenamiento</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T05_ConsumoParaPedidos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T06_GestionRetazos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T07_RegistroMermas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gw_Faltante</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T09_DeteccionFaltantes</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+    </bpmn:laneSet>
+
+    <!-- Start -->
+    <bpmn:startEvent id="Start_Inv" name="Inicio ciclo de inventario">
+      <bpmn:outgoing>FI01</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- Operario -->
+    <bpmn:userTask id="T01_DeteccionNecesidad" name="1. Detección de necesidad&#10;de reposición (visual)">
+      <bpmn:incoming>FI01</bpmn:incoming>
+      <bpmn:outgoing>FI02</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Dueño -->
+    <bpmn:userTask id="T02_SolicitudProveedor" name="2. Solicitud al proveedor&#10;por WhatsApp / llamada">
+      <bpmn:incoming>FI02</bpmn:incoming>
+      <bpmn:outgoing>FI03</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T03_RecepcionMercaderia" name="3. Recepción de mercadería&#10;(guía del proveedor)">
+      <bpmn:incoming>FI03</bpmn:incoming>
+      <bpmn:outgoing>FI04</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Operario -->
+    <bpmn:userTask id="T04_Almacenamiento" name="4. Almacenamiento&#10;(donde haya espacio)">
+      <bpmn:incoming>FI04</bpmn:incoming>
+      <bpmn:outgoing>FI05</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T05_ConsumoParaPedidos" name="5. Consumo para pedidos&#10;(según plano, sin registro)">
+      <bpmn:incoming>FI05</bpmn:incoming>
+      <bpmn:outgoing>FI06</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T06_GestionRetazos" name="6. Gestión de retazos&#10;(piso / rincón, sin catálogo)">
+      <bpmn:incoming>FI06</bpmn:incoming>
+      <bpmn:outgoing>FI07</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:userTask id="T07_RegistroMermas" name="7. Registro de mermas&#10;(no se hace)">
+      <bpmn:incoming>FI07</bpmn:incoming>
+      <bpmn:outgoing>FI08</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Dueño -->
+    <bpmn:userTask id="T08_ControlExistencias" name="8. Control de existencias&#10;(conteo visual ocasional)">
+      <bpmn:incoming>FI08</bpmn:incoming>
+      <bpmn:outgoing>FI09</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- Operario detecta faltante -->
+    <bpmn:userTask id="T09_DeteccionFaltantes" name="9. Faltante detectado&#10;en pleno pedido">
+      <bpmn:incoming>FI09</bpmn:incoming>
+      <bpmn:outgoing>FI10</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <bpmn:exclusiveGateway id="Gw_Faltante" name="¿Hay faltante?">
+      <bpmn:incoming>FI10</bpmn:incoming>
+      <bpmn:outgoing>FI_si</bpmn:outgoing>
+      <bpmn:outgoing>FI_no</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- Dueño compra emergencia -->
+    <bpmn:userTask id="T10_CompraEmergencia" name="10. Compra de emergencia&#10;(otro proveedor, mayor costo)">
+      <bpmn:incoming>FI_si</bpmn:incoming>
+      <bpmn:outgoing>FI11</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- End -->
+    <bpmn:endEvent id="End_Inv" name="Ciclo concluido">
+      <bpmn:incoming>FI_no</bpmn:incoming>
+      <bpmn:incoming>FI11</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence flows -->
+    <bpmn:sequenceFlow id="FI01" sourceRef="Start_Inv" targetRef="T01_DeteccionNecesidad" />
+    <bpmn:sequenceFlow id="FI02" sourceRef="T01_DeteccionNecesidad" targetRef="T02_SolicitudProveedor" />
+    <bpmn:sequenceFlow id="FI03" sourceRef="T02_SolicitudProveedor" targetRef="T03_RecepcionMercaderia" />
+    <bpmn:sequenceFlow id="FI04" sourceRef="T03_RecepcionMercaderia" targetRef="T04_Almacenamiento" />
+    <bpmn:sequenceFlow id="FI05" sourceRef="T04_Almacenamiento" targetRef="T05_ConsumoParaPedidos" />
+    <bpmn:sequenceFlow id="FI06" sourceRef="T05_ConsumoParaPedidos" targetRef="T06_GestionRetazos" />
+    <bpmn:sequenceFlow id="FI07" sourceRef="T06_GestionRetazos" targetRef="T07_RegistroMermas" />
+    <bpmn:sequenceFlow id="FI08" sourceRef="T07_RegistroMermas" targetRef="T08_ControlExistencias" />
+    <bpmn:sequenceFlow id="FI09" sourceRef="T08_ControlExistencias" targetRef="T09_DeteccionFaltantes" />
+    <bpmn:sequenceFlow id="FI10" sourceRef="T09_DeteccionFaltantes" targetRef="Gw_Faltante" />
+    <bpmn:sequenceFlow id="FI_si" name="Sí" sourceRef="Gw_Faltante" targetRef="T10_CompraEmergencia" />
+    <bpmn:sequenceFlow id="FI11" sourceRef="T10_CompraEmergencia" targetRef="End_Inv" />
+    <bpmn:sequenceFlow id="FI_no" name="No" sourceRef="Gw_Faltante" targetRef="End_Inv" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="Diag_GestionInventario" name="Gestión de inventario — CMMI nivel 1">
+    <bpmndi:BPMNPlane id="Plane_GestionInventario" bpmnElement="Collab_GestionInventario">
+
+      <!-- Participant pool -->
+      <bpmndi:BPMNShape id="DI_Part_Inv" bpmnElement="Part_GestionInventario" isHorizontal="true">
+        <dc:Bounds x="100" y="0" width="2700" height="400" />
+      </bpmndi:BPMNShape>
+
+      <!-- Lanes -->
+      <bpmndi:BPMNShape id="DI_Lane_Dueno_Inv" bpmnElement="Lane_Dueno_Inv" isHorizontal="true">
+        <dc:Bounds x="130" y="0" width="2670" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Operario_Inv" bpmnElement="Lane_Operario_Inv" isHorizontal="true">
+        <dc:Bounds x="130" y="200" width="2670" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Start -->
+      <bpmndi:BPMNShape id="DI_Start_Inv" bpmnElement="Start_Inv">
+        <dc:Bounds x="182" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- Operario T01 -->
+      <bpmndi:BPMNShape id="DI_T01_Inv" bpmnElement="T01_DeteccionNecesidad">
+        <dc:Bounds x="270" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Dueño T02 T03 -->
+      <bpmndi:BPMNShape id="DI_T02_Inv" bpmnElement="T02_SolicitudProveedor">
+        <dc:Bounds x="460" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T03_Inv" bpmnElement="T03_RecepcionMercaderia">
+        <dc:Bounds x="650" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Operario T04-T07 -->
+      <bpmndi:BPMNShape id="DI_T04_Inv" bpmnElement="T04_Almacenamiento">
+        <dc:Bounds x="840" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T05_Inv" bpmnElement="T05_ConsumoParaPedidos">
+        <dc:Bounds x="1030" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T06_Inv" bpmnElement="T06_GestionRetazos">
+        <dc:Bounds x="1220" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_T07_Inv" bpmnElement="T07_RegistroMermas">
+        <dc:Bounds x="1410" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Dueño T08 -->
+      <bpmndi:BPMNShape id="DI_T08_Inv" bpmnElement="T08_ControlExistencias">
+        <dc:Bounds x="1600" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Operario T09 + gateway -->
+      <bpmndi:BPMNShape id="DI_T09_Inv" bpmnElement="T09_DeteccionFaltantes">
+        <dc:Bounds x="1790" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Gw_Faltante" bpmnElement="Gw_Faltante">
+        <dc:Bounds x="1980" y="275" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <!-- Dueño T10 -->
+      <bpmndi:BPMNShape id="DI_T10_Inv" bpmnElement="T10_CompraEmergencia">
+        <dc:Bounds x="2090" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- End -->
+      <bpmndi:BPMNShape id="DI_End_Inv" bpmnElement="End_Inv">
+        <dc:Bounds x="2282" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+      <bpmndi:BPMNEdge id="DI_FI01" bpmnElement="FI01">
+        <di:waypoint x="218" y="100" />
+        <di:waypoint x="270" y="100" />
+        <di:waypoint x="270" y="300" />
+        <di:waypoint x="270" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI02" bpmnElement="FI02">
+        <di:waypoint x="400" y="300" />
+        <di:waypoint x="430" y="300" />
+        <di:waypoint x="430" y="100" />
+        <di:waypoint x="460" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI03" bpmnElement="FI03">
+        <di:waypoint x="590" y="100" />
+        <di:waypoint x="650" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI04" bpmnElement="FI04">
+        <di:waypoint x="780" y="100" />
+        <di:waypoint x="810" y="100" />
+        <di:waypoint x="810" y="300" />
+        <di:waypoint x="840" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI05" bpmnElement="FI05">
+        <di:waypoint x="970" y="300" />
+        <di:waypoint x="1030" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI06" bpmnElement="FI06">
+        <di:waypoint x="1160" y="300" />
+        <di:waypoint x="1220" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI07" bpmnElement="FI07">
+        <di:waypoint x="1350" y="300" />
+        <di:waypoint x="1410" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI08" bpmnElement="FI08">
+        <di:waypoint x="1540" y="300" />
+        <di:waypoint x="1570" y="300" />
+        <di:waypoint x="1570" y="100" />
+        <di:waypoint x="1600" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI09" bpmnElement="FI09">
+        <di:waypoint x="1730" y="100" />
+        <di:waypoint x="1760" y="100" />
+        <di:waypoint x="1760" y="300" />
+        <di:waypoint x="1790" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI10" bpmnElement="FI10">
+        <di:waypoint x="1920" y="300" />
+        <di:waypoint x="1980" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI_si" bpmnElement="FI_si">
+        <di:waypoint x="2005" y="275" />
+        <di:waypoint x="2005" y="100" />
+        <di:waypoint x="2090" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI11" bpmnElement="FI11">
+        <di:waypoint x="2220" y="100" />
+        <di:waypoint x="2282" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_FI_no" bpmnElement="FI_no">
+        <di:waypoint x="2030" y="300" />
+        <di:waypoint x="2300" y="300" />
+        <di:waypoint x="2300" y="118" />
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
