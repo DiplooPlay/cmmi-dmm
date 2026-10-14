@@ -3,9 +3,11 @@ import asIsRaw from '../data/bpmn/MelamiCut_AsIs.bpmn?raw';
 import toBeRaw from '../data/bpmn/MelamiCut_ToBe.bpmn?raw';
 import pedidoRaw from '../data/bpmn/GestionPedido.bpmn?raw';
 import inventarioRaw from '../data/bpmn/GestionInventario.bpmn?raw';
+import pedidoToBeRaw from '../data/bpmn/GestionPedido_ToBe.bpmn?raw';
+import inventarioToBeRaw from '../data/bpmn/GestionInventario_ToBe.bpmn?raw';
 
 interface Props {
-	type: 'as-is' | 'to-be' | 'gestion-pedido' | 'gestion-inventario';
+	type: 'as-is' | 'to-be' | 'gestion-pedido' | 'gestion-inventario' | 'gestion-pedido-to-be' | 'gestion-inventario-to-be';
 	title: string;
 }
 
@@ -16,6 +18,8 @@ const xmlMap: Record<string, string> = {
 	'to-be': toBeRaw,
 	'gestion-pedido': pedidoRaw,
 	'gestion-inventario': inventarioRaw,
+	'gestion-pedido-to-be': pedidoToBeRaw,
+	'gestion-inventario-to-be': inventarioToBeRaw,
 };
 const rawXml = xmlMap[type] ?? asIsRaw;
 const viewerId = `bpmn-viewer-${type}`;
@@ -23,8 +27,10 @@ const viewerId = `bpmn-viewer-${type}`;
 const labelMap: Record<string, string> = {
 	'as-is': 'Diagrama integrado · Estado Actual',
 	'to-be': 'Diagrama integrado · Estado Propuesto',
-	'gestion-pedido': 'Diagrama BPMN · Gestión de pedido — CMMI nivel 1',
-	'gestion-inventario': 'Diagrama BPMN · Gestión de inventario — CMMI nivel 1',
+	'gestion-pedido': 'Diagrama BPMN · Gestión de pedido — CMMI nivel 1 (As-Is)',
+	'gestion-inventario': 'Diagrama BPMN · Gestión de inventario — CMMI nivel 1 (As-Is)',
+	'gestion-pedido-to-be': 'Diagrama BPMN · Gestión de pedido — Propuesta To-Be',
+	'gestion-inventario-to-be': 'Diagrama BPMN · Gestión de inventario — Propuesta To-Be',
 };
 const diagramLabel = labelMap[type] ?? '';
 
@@ -78,6 +84,28 @@ const fallbackMap: Record<string, { step: string; text: string }[]> = {
 		{ step: '8. Dueño', text: 'Hace conteo visual y ocasional sin periodicidad.' },
 		{ step: '9. Operario', text: 'Descubre faltante en pleno pedido, generando retrasos.' },
 		{ step: '10. Dueño', text: 'Compra de emergencia a mayor precio; sobrecosto no registrado.' },
+	],
+	'gestion-pedido-to-be': [
+		{ step: '1. Mostrador', text: 'Registro técnico y precotización con cotas en plataforma (Estado: PENDIENTE DE PAGO).' },
+		{ step: '2. Caja', text: 'Validación formal del cobro e ingreso obligatorio de N° operación o recibo en terminal.' },
+		{ step: '3. Sistema', text: 'Generación automática de la Orden de Producción versionada (Estado: CONFIRMADO / OP-301-v1).' },
+		{ step: '4. Sistema', text: 'Liberación digital de la cola de trabajo al taller con identificador y código QR.' },
+		{ step: '5. Gobernanza', text: 'Ante cambios de medidas, mostrador actualiza, el sistema genera v2 y bloquea v1.' },
+		{ step: '6. Operario', text: 'Corte y enchapado por versión activa; tipificación en terminal de cualquier merma.' },
+		{ step: '7. Sistema', text: 'Actualización en tiempo real al escanear código (Estado: LISTO PARA RECOJO).' },
+		{ step: '8. Despacho', text: 'Notificación automática al cliente; entrega formal y firma de acta de conformidad (Estado: ENTREGADO).' },
+	],
+	'gestion-inventario-to-be': [
+		{ step: '1. Sistema', text: 'Catálogo maestro con codificación única de tableros/tapacantos y ubicaciones rotuladas.' },
+		{ step: '2. Sistema', text: 'Parámetros automáticos de stock mínimo y punto de reorden con alerta preventiva.' },
+		{ step: '3. Dueño', text: 'Aprobación de orden de compra formal en sistema con cálculo de demanda real.' },
+		{ step: '4. Almacén', text: 'Recepción formal contrastando OC contra guía del proveedor con registro de novedades.' },
+		{ step: '5. Almacén', text: 'Almacenamiento identificado y organizado según codificación asignada.' },
+		{ step: '6. Sistema', text: 'Reserva automática al pagar y descargo real de tableros y tapacanto al completar OP.' },
+		{ step: '7. Taller', text: 'Medición, rotulado y catalogación de retazos útiles en sistema para reutilización.' },
+		{ step: '8. Taller', text: 'Registro tipificado de causas de merma (proveedor, máquina, operario o cliente).' },
+		{ step: '9. Almacén & Dueño', text: 'Inventarios cíclicos periódicos, conciliación contra sistema y ajustes autorizados.' },
+		{ step: '10. Dueño', text: 'Tablero de indicadores de rotación, mermas por causa y control de sobrecostos.' },
 	],
 };
 const fallbackSteps = fallbackMap[type] ?? [];

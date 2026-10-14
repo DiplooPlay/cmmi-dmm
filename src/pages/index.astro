@@ -75,21 +75,51 @@ import Evidencias from '../components/Evidencias.astro';
 				<p>
 					La empresa cuenta con personal encargado de ventas, almacén, producción y caja. La información de los pedidos se administra actualmente mediante un sistema instalado en una computadora principal, cuya base de datos utiliza <strong>SQLite</strong> como sistema de almacenamiento local.
 				</p>
+
+				<!-- Modelo Canvas -->
+				<figure class="my-8 rounded-lg border border-neutral-200 bg-white p-3 sm:p-4 overflow-hidden">
+					<div class="mb-3 flex items-center justify-between border-b border-neutral-100 pb-2">
+						<span class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">
+							Modelo de Negocio
+						</span>
+						<span class="text-xs text-neutral-400 font-mono">Business Model Canvas</span>
+					</div>
+					<img
+						src="/images/modelo_canvas.png"
+						alt="Modelo Canvas de la empresa FerZur S.A.C."
+						class="w-full h-auto rounded border border-neutral-100 object-contain shadow-xs hover:shadow-sm transition-shadow"
+						loading="lazy"
+					/>
+					<figcaption class="mt-3 text-center text-xs text-neutral-500 italic">
+						Figura 1: Lienzo del Modelo Canvas (Business Model Canvas) para FerZur S.A.C.
+					</figcaption>
+				</figure>
+
+				<!-- Cadena de Valor -->
+				<figure class="my-8 rounded-lg border border-neutral-200 bg-white p-3 sm:p-4 overflow-hidden">
+					<div class="mb-3 flex items-center justify-between border-b border-neutral-100 pb-2">
+						<span class="text-[11px] font-semibold text-neutral-500 uppercase tracking-wider">
+							Estructura de Valor
+						</span>
+						<span class="text-xs text-neutral-400 font-mono">Cadena de Valor de Porter</span>
+					</div>
+					<img
+						src="/images/cadena_de_valor.jpeg"
+						alt="Cadena de valor de la empresa FerZur S.A.C."
+						class="w-full h-auto rounded border border-neutral-100 object-contain shadow-xs hover:shadow-sm transition-shadow"
+						loading="lazy"
+					/>
+					<figcaption class="mt-3 text-center text-xs text-neutral-500 italic">
+						Figura 2: Cadena de valor aplicada a los procesos y operaciones de FerZur S.A.C.
+					</figcaption>
+				</figure>
 			</div>
 		</section>
 
-		<!-- SECTION 3: Procesos de la empresa  -->
+		<!-- SECTION 3: Proceso 1 - Gestión de pedido -->
 		<section id="sec-3" class="my-12 scroll-mt-16">
 			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
-				3. Procesos de la empresa 
-			</h2>
-			
-		</section>
-
-		<!-- SECTION 4: Proceso 1 - Gestión de pedido -->
-		<section id="sec-4" class="my-12 scroll-mt-16">
-			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
-				4. Proceso 1: Gestión de pedido (situación actual)
+				3. Proceso 1: Gestión de pedido (situación actual)
 			</h2>
 			<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
 				<table class="w-full text-left text-xs sm:text-sm border-collapse">
@@ -209,9 +239,10 @@ import Evidencias from '../components/Evidencias.astro';
 			/>
 		</section>
 
-		<section id="sec-5" class="my-12 scroll-mt-16">
+		<!-- SECTION 4: Proceso 2 - Gestión de inventario -->
+		<section id="sec-4" class="my-12 scroll-mt-16">
 			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
-				5. Proceso 2: Gestión de inventario 
+				4. Proceso 2: Gestión de inventario
 			</h2>
 			<p class="text-neutral-700 leading-relaxed text-sm sm:text-base mb-6">
 				Como el sistema SQLite solo registra el pedido y CutList Optimizer solo calcula tableros, el inventario se maneja de forma empírica, a ojo y basado en la experiencia del dueño.
@@ -298,11 +329,11 @@ import Evidencias from '../components/Evidencias.astro';
 			/>
 		</section>
 
-		<!-- SECTION 6: Resumen de debilidades -->
+		<!-- SECTION 5: Resumen de debilidades -->
 
-		<section id="sec-6" class="my-12 scroll-mt-16">
+		<section id="sec-5" class="my-12 scroll-mt-16">
 			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
-				6. Resumen de debilidades 
+				5. Resumen de debilidades
 			</h2>
 			<ul class="space-y-3 text-sm sm:text-base text-neutral-700">
 				<li class="flex gap-3 border-l-2 border-neutral-300 pl-4">
@@ -326,15 +357,15 @@ import Evidencias from '../components/Evidencias.astro';
 			</ul>
 		</section>
 
-		<!-- SECTION 7: Análisis Proceso 1 - Gestión de pedido -->
-		<section id="sec-7" class="my-12 scroll-mt-16">
+		<!-- SECTION 6: Análisis Proceso 1 - Gestión de pedido -->
+		<section id="sec-6" class="my-12 scroll-mt-16">
 			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
-				7. Análisis — Proceso 1: Gestión de pedido
+				6. Análisis — Proceso 1: Gestión de pedido
 			</h2>
 
-			<!-- 7.1 Problemas As-Is -->
+			<!-- 6.1 Problemas As-Is -->
 			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
-				7.1 Problemas detectados en el proceso actual (As-Is)
+				6.1 Problemas detectados en el proceso actual (As-Is)
 			</h3>
 			<div class="space-y-4 text-sm sm:text-base text-neutral-700 mb-10">
 				<div class="border-l-2 border-neutral-300 pl-4">
@@ -357,9 +388,9 @@ import Evidencias from '../components/Evidencias.astro';
 					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.5 Opacidad del avance</p>
 					<p>Mostrador no ve el estado del pedido. Para informar al cliente debe ir al taller a preguntar de palabra, y el aviso de retiro también es manual.</p>
 				</div>
-				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 pr-3 py-2 rounded-r">
-					<p class="font-semibold text-rose-900 text-sm uppercase mb-1">1.6 Manejo informal de mermas y calidad</p>
-					<p class="text-rose-950">Las piezas astilladas o mal cortadas se reponen con retazos del piso, sin registrar causa (error de máquina, defecto del tablero o descalibración) ni costo del desperdicio.</p>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.6 Manejo informal de mermas y calidad</p>
+					<p>Las piezas astilladas o mal cortadas se reponen con retazos del piso, sin registrar causa (error de máquina, defecto del tablero o descalibración) ni costo del desperdicio.</p>
 				</div>
 				<div class="border-l-2 border-neutral-300 pl-4">
 					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.7 Empaque y entrega sin evidencia</p>
@@ -367,9 +398,9 @@ import Evidencias from '../components/Evidencias.astro';
 				</div>
 			</div>
 
-			<!-- 7.2 Por qué es CMMI Nivel 1 -->
+			<!-- 6.2 Nivel de capacidad -->
 			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
-				7.2 ¿Por qué Gestión de pedido es CMMI Nivel 1 (Inicial)?
+				6.2 Nivel de capacidad
 			</h3>
 			<p class="text-sm sm:text-base text-neutral-700 mb-3 leading-relaxed">
 				En el Nivel 1 los procesos son <em>ad-hoc</em>, informales y reactivos, y el éxito depende del esfuerzo, la memoria y la vigilancia de personas clave («héroes»). Aquí se evidencia así:
@@ -381,9 +412,9 @@ import Evidencias from '../components/Evidencias.astro';
 				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Reacción en lugar de prevención:</strong> los cambios de medidas y los defectos se atienden cuando ya ocurrieron.</span></li>
 			</ul>
 
-			<!-- 7.3 Propuesta To-Be -->
+			<!-- 6.3 Propuesta To-Be -->
 			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
-				7.3 Propuesta To-Be de Gestión de pedido (paso a paso)
+				6.3 Propuesta To-Be de Gestión de pedido
 			</h3>
 			<p class="text-sm sm:text-base text-neutral-700 mb-4 leading-relaxed">
 				El modelo mantiene al dueño o familiar con el control del dinero en Caja, pero convierte su visto bueno en un disparador digital auditable.
@@ -422,17 +453,28 @@ import Evidencias from '../components/Evidencias.astro';
 					<span><strong class="text-neutral-900">Notificación y entrega con acta de conformidad:</strong> el sistema avisa a mostrador y envía un mensaje automático al cliente. En el despacho el cliente revisa y firma el acta de entrega, y el pedido pasa a <em>ENTREGADO</em>.</span>
 				</li>
 			</ol>
+
+			<!-- Diagrama BPMN To-Be Gestión de pedido -->
+			<div class="mt-8">
+				<h4 class="text-sm font-semibold text-neutral-800 uppercase tracking-wide mb-2">
+					Diagrama del proceso propuesto (To-Be)
+				</h4>
+				<BpmnDiagram
+					type="gestion-pedido-to-be"
+					title="Flujo propuesto (To-Be) · Gestión de pedido"
+				/>
+			</div>
 		</section>
 
-		<!-- SECTION 8: Análisis Proceso 2 - Gestión de inventario -->
-		<section id="sec-8" class="my-12 scroll-mt-16">
+		<!-- SECTION 7: Análisis Proceso 2 - Gestión de inventario -->
+		<section id="sec-7" class="my-12 scroll-mt-16">
 			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
-				8. Análisis — Proceso 2: Gestión de inventario
+				7. Análisis — Proceso 2: Gestión de inventario
 			</h2>
 
-			<!-- 8.1 Problemas As-Is -->
+			<!-- 7.1 Problemas As-Is -->
 			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
-				8.1 Problemas detectados en el proceso actual (As-Is)
+				7.1 Problemas detectados en el proceso actual (As-Is)
 			</h3>
 			<div class="space-y-4 text-sm sm:text-base text-neutral-700 mb-10">
 				<div class="border-l-2 border-neutral-300 pl-4">
@@ -447,9 +489,9 @@ import Evidencias from '../components/Evidencias.astro';
 					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.3 Almacenamiento sin identificación ni ubicaciones</p>
 					<p>Los tableros se apilan donde hay espacio, sin codificar material, color o espesor. Esto genera búsquedas lentas, riesgo de usar el tablero equivocado y deterioro por mala estiba.</p>
 				</div>
-				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 pr-3 py-2 rounded-r">
-					<p class="font-semibold text-rose-900 text-sm uppercase mb-1">1.4 Consumo sin descargo</p>
-					<p class="text-rose-950">El operario toma tableros y tapacanto sin vale de salida. El pedido registrado en SQLite no descuenta insumos, por lo que el consumo real por pedido se pierde y el costo real no se conoce.</p>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.4 Consumo sin descargo</p>
+					<p>El operario toma tableros y tapacanto sin vale de salida. El pedido registrado en SQLite no descuenta insumos, por lo que el consumo real por pedido se pierde y el costo real no se conoce.</p>
 				</div>
 				<div class="border-l-2 border-neutral-300 pl-4">
 					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.5 Retazos sin gestión</p>
@@ -463,15 +505,15 @@ import Evidencias from '../components/Evidencias.astro';
 					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.7 Control de existencias esporádico</p>
 					<p>El conteo es visual y ocasional. No existe inventario físico contra sistema, así que no se detectan diferencias ni pérdidas.</p>
 				</div>
-				<div class="border-l-2 border-rose-300 pl-4 bg-rose-50/40 pr-3 py-2 rounded-r">
-					<p class="font-semibold text-rose-900 text-sm uppercase mb-1">1.8 Faltantes y compras de emergencia</p>
-					<p class="text-rose-950">El faltante aparece en pleno pedido, causa retrasos y obliga a comprar a otro proveedor o a precio de tienda. El sobrecosto reduce el margen y tampoco se registra.</p>
+				<div class="border-l-2 border-neutral-300 pl-4">
+					<p class="font-semibold text-neutral-900 text-sm uppercase mb-1">1.8 Faltantes y compras de emergencia</p>
+					<p>El faltante aparece en pleno pedido, causa retrasos y obliga a comprar a otro proveedor o a precio de tienda. El sobrecosto reduce el margen y tampoco se registra.</p>
 				</div>
 			</div>
 
-			<!-- 8.2 Por qué es CMMI Nivel 1 -->
+			<!-- 7.2 Nivel de capacidad -->
 			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
-				8.2 ¿Por qué Gestión de inventario es CMMI Nivel 1 (Inicial)?
+				7.2 Nivel de capacidad
 			</h3>
 			<ul class="space-y-2 text-sm sm:text-base text-neutral-700 mb-10 pl-1">
 				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Dependencia del dueño y del operario:</strong> el conocimiento de cuánto hay, dónde está y cuándo comprar está en la memoria de personas, no en un procedimiento ni en el sistema.</span></li>
@@ -481,9 +523,9 @@ import Evidencias from '../components/Evidencias.astro';
 				<li class="flex gap-3"><span class="text-neutral-400 mt-1 shrink-0">›</span><span><strong class="text-neutral-900">Procesos desvinculados:</strong> el inventario no está conectado con los pedidos ni con CutList Optimizer, de modo que vender no descuenta existencias.</span></li>
 			</ul>
 
-			<!-- 8.3 Propuesta To-Be -->
+			<!-- 7.3 Propuesta To-Be -->
 			<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-4">
-				8.3 Propuesta To-Be de Gestión de inventario (paso a paso)
+				7.3 Propuesta To-Be de Gestión de inventario
 			</h3>
 			<p class="text-sm sm:text-base text-neutral-700 mb-4 leading-relaxed">
 				El modelo mantiene al dueño como autoridad de compra, pero reemplaza la memoria por parámetros y registros en el sistema.
@@ -530,6 +572,243 @@ import Evidencias from '../components/Evidencias.astro';
 					<span><strong class="text-neutral-900">Indicadores de control:</strong> el sistema reporta existencias, rotación, mermas por causa, diferencias de inventario y sobrecostos por compras de emergencia, para decidir con datos.</span>
 				</li>
 			</ol>
+
+			<!-- Diagrama BPMN To-Be Gestión de inventario -->
+			<div class="mt-8">
+				<h4 class="text-sm font-semibold text-neutral-800 uppercase tracking-wide mb-2">
+					Diagrama del proceso propuesto (To-Be)
+				</h4>
+				<BpmnDiagram
+					type="gestion-inventario-to-be"
+					title="Flujo propuesto (To-Be) · Gestión de inventario"
+				/>
+			</div>
+		</section>
+
+		<!-- SECTION 8: Nivel de madurez de Ferzur S.A.C. -->
+		<section id="sec-8" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
+				8. Nivel de madurez de FerZur S.A.C.
+			</h2>
+
+			<!-- Resultado de la evaluación -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Resultado de la evaluación
+				</h3>
+				<div class="space-y-4 text-sm sm:text-base text-neutral-700 leading-relaxed">
+					<p>
+						Tras analizar los procesos de <strong>Gestión de pedido</strong> y <strong>Gestión de inventario</strong>, concluimos que FerZur S.A.C. se encuentra en el <strong>Nivel 1 (Inicial)</strong> del modelo CMMI.
+					</p>
+					<p>
+						Con esto no decimos que la empresa funcione mal. FerZur atiende pedidos, cobra, corta y entrega. Lo que encontramos es que ese resultado se logra gracias al esfuerzo y la experiencia de unas pocas personas, y no porque existan procesos definidos que lo aseguren. Eso es justamente lo que caracteriza al Nivel 1: los procesos son <em>ad-hoc</em>, reactivos y dependen de «héroes».
+					</p>
+				</div>
+			</div>
+
+			<!-- ¿Por qué creemos que está en Nivel 1? -->
+			<div class="mb-10">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					¿Por qué creemos que está en Nivel 1?
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 mb-6 leading-relaxed">
+					Para llegar a esta conclusión contrastamos lo observado con lo que CMMI exige para el Nivel 2 (Gestionado). Ahí la empresa tendría que planificar, documentar, controlar y revisar sus procesos. En FerZur encontramos lo contrario en cuatro frentes:
+				</p>
+
+				<div class="space-y-6 text-sm sm:text-base text-neutral-700">
+					<!-- Frente 1 -->
+					<div class="border-l-2 border-neutral-300 pl-4 space-y-2">
+						<h4 class="font-bold text-neutral-900 uppercase text-xs sm:text-sm">
+							1. El éxito depende de personas, no de procedimientos
+						</h4>
+						<ul class="space-y-1.5 list-disc pl-5 text-neutral-700">
+							<li>El dueño concentra el cobro, la verificación del pago, la autorización de corte, las compras y el conteo de existencias.</li>
+							<li>El operario concentra el conocimiento del taller: dónde está cada material, qué retazos sirven y cómo cortar sin errores.</li>
+							<li>La verificación de pagos por Yape, Plin o transferencia se hace mirando el celular personal del dueño. Si él no está, la cadena se detiene.</li>
+						</ul>
+						<p class="text-neutral-600 text-xs sm:text-sm italic pt-1">
+							Si cualquiera de ellos se ausenta o es reemplazado, el proceso pierde calidad porque ese conocimiento no está escrito en ningún lado.
+						</p>
+					</div>
+
+					<!-- Frente 2 -->
+					<div class="border-l-2 border-neutral-300 pl-4 space-y-2">
+						<h4 class="font-bold text-neutral-900 uppercase text-xs sm:text-sm">
+							2. Los procesos no están definidos ni documentados
+						</h4>
+						<ul class="space-y-1.5 list-disc pl-5 text-neutral-700">
+							<li>No existe un procedimiento escrito de recepción de pedidos, cobro, liberación a taller o entrega.</li>
+							<li>No hay formato estándar para la solicitud del cliente (llega por tienda o WhatsApp en formatos libres).</li>
+							<li>En inventario no hay política de stock mínimo, criterios de compra ni reglas de almacenamiento.</li>
+						</ul>
+						<p class="text-neutral-600 text-xs sm:text-sm italic pt-1">
+							CMMI Nivel 2 exige que los procesos se planifiquen y se ejecuten según una política establecida. Aquí cada persona actúa según su costumbre.
+						</p>
+					</div>
+
+					<!-- Frente 3: Tabla productos de trabajo auditables -->
+					<div class="border-l-2 border-neutral-300 pl-4 space-y-3">
+						<h4 class="font-bold text-neutral-900 uppercase text-xs sm:text-sm">
+							3. No existen productos de trabajo auditables
+						</h4>
+						<p>
+							Es el hallazgo más fuerte. Con lo que hoy produce la empresa no se puede reconstruir qué pasó con un pedido:
+						</p>
+						<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+							<table class="w-full text-left text-xs sm:text-sm border-collapse">
+								<thead>
+									<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+										<th class="py-2 px-3 font-bold w-1/2">Evidencia que debería existir</th>
+										<th class="py-2 px-3 font-bold">Situación actual</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-neutral-100 text-neutral-700">
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Registro del pago (n.º de operación, cuenta, hora)</td>
+										<td class="py-2 px-3">Constatación visual y mental del dueño</td>
+									</tr>
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Autorización de corte</td>
+										<td class="py-2 px-3">Sello manual, ticket o aviso verbal</td>
+									</tr>
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Orden de producción versionada</td>
+										<td class="py-2 px-3">Hoja impresa tachada con lápiz</td>
+									</tr>
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Registro de mermas y causas</td>
+										<td class="py-2 px-3">No existe</td>
+									</tr>
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Vale de salida de materiales</td>
+										<td class="py-2 px-3">No existe</td>
+									</tr>
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Orden de compra y acta de recepción</td>
+										<td class="py-2 px-3">No existen (pedido por WhatsApp o llamada)</td>
+									</tr>
+									<tr>
+										<td class="py-2 px-3 font-medium text-neutral-900">Acta de conformidad de entrega</td>
+										<td class="py-2 px-3">No existe</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<p class="text-neutral-600 text-xs sm:text-sm italic">
+							Sin estos registros no hay trazabilidad, no se puede medir ni se puede aprender de los errores.
+						</p>
+					</div>
+
+					<!-- Frente 4 -->
+					<div class="border-l-2 border-neutral-300 pl-4 space-y-2">
+						<h4 class="font-bold text-neutral-900 uppercase text-xs sm:text-sm">
+							4. La gestión es reactiva, no preventiva
+						</h4>
+						<p>Los problemas se atienden cuando ya ocurrieron:</p>
+						<ul class="space-y-1.5 list-disc pl-5 text-neutral-700">
+							<li><strong class="text-neutral-900">Cambio de medidas:</strong> alguien debe correr al taller a retirar la hoja antes de que se corte. Si llega tarde, se pierde el material.</li>
+							<li><strong class="text-neutral-900">Piezas defectuosas:</strong> se repiten con un retazo del piso, sin registrar la causa. El error se repetirá.</li>
+							<li><strong class="text-neutral-900">Faltantes de material:</strong> se descubren en pleno pedido y se resuelven con compras de emergencia a mayor precio.</li>
+							<li><strong class="text-neutral-900">Estado del pedido:</strong> no se conoce hasta que alguien camina al taller a preguntar.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!-- Evidencia por área de proceso CMMI -->
+			<div class="mb-10">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Evidencia por área de proceso CMMI
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 mb-4 leading-relaxed">
+					Al revisar las áreas clave del Nivel 2, ninguna se cumple de forma institucionalizada:
+				</p>
+				<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+					<table class="w-full text-left text-xs sm:text-sm border-collapse">
+						<thead>
+							<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+								<th class="py-2 px-3 font-bold">Área de proceso CMMI (Nivel 2)</th>
+								<th class="py-2 px-3 font-bold">Hallazgo en FerZur</th>
+								<th class="py-2 px-3 font-bold whitespace-nowrap">Cumplimiento</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-neutral-100 text-neutral-700">
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Gestión de Requisitos (REQM)</td>
+								<td class="py-2 px-3">Las medidas del cliente no se formalizan ni se controlan sus cambios</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Gestión de la Configuración (CM)</td>
+								<td class="py-2 px-3">No hay versiones del plano; la hoja vieja puede seguir en uso</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Aseguramiento de Calidad (PPQA)</td>
+								<td class="py-2 px-3">Defectos y mermas sin registro ni causa</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Monitoreo y Control (PMC)</td>
+								<td class="py-2 px-3">Sin visibilidad del avance; seguimiento verbal</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Planificación (PP)</td>
+								<td class="py-2 px-3">No hay planificación de producción ni de compras</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Gestión de Proveedores (SAM)</td>
+								<td class="py-2 px-3">Compras informales, sin evaluación ni orden de compra</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+							<tr>
+								<td class="py-2 px-3 font-medium text-neutral-900">Medición y Análisis (MA)</td>
+								<td class="py-2 px-3">No se miden tiempos de ciclo, mermas ni rotación</td>
+								<td class="py-2 px-3 font-semibold text-neutral-600 whitespace-nowrap">No cumple</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Hallazgos adicionales sobre sistemas y datos -->
+			<div class="mb-10">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Hallazgos adicionales sobre sistemas y datos
+				</h3>
+				<ul class="space-y-2 text-sm sm:text-base text-neutral-700">
+					<li class="flex gap-3 border-l-2 border-neutral-300 pl-4">
+						<span><strong class="text-neutral-900">Sistemas desconectados:</strong> CutList Optimizer, el sistema SQLite local y el papel funcionan como islas. El plano se genera en una herramienta, el pedido se registra en otra y el avance vive en papel.</span>
+					</li>
+					<li class="flex gap-3 border-l-2 border-neutral-300 pl-4">
+						<span><strong class="text-neutral-900">Pedido e inventario desvinculados:</strong> vender un pedido no descuenta tableros ni tapacanto. El costo real por pedido es desconocido.</span>
+					</li>
+					<li class="flex gap-3 border-l-2 border-neutral-300 pl-4">
+						<span><strong class="text-neutral-900">Registro tardío:</strong> el pedido se ingresa en el sistema recién después del pago, lo que deja una ventana de omisión.</span>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Conclusión -->
+			<div class="p-5 bg-white rounded-lg border border-neutral-200">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Conclusión
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 mb-3 leading-relaxed">
+					FerZur S.A.C. se ubica en <strong>CMMI Nivel 1 (Inicial)</strong> porque:
+				</p>
+				<ul class="space-y-1.5 list-disc pl-5 text-sm sm:text-base text-neutral-700 mb-4">
+					<li>Sus resultados dependen de personas clave y no de procesos institucionalizados.</li>
+					<li>No hay procedimientos definidos ni documentados.</li>
+					<li>No se generan evidencias auditables que permitan controlar y mejorar.</li>
+					<li>Gestiona de forma reactiva en lugar de planificar y prevenir.</li>
+				</ul>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed">
+					La oportunidad es clara: la empresa ya tiene lo básico (sistema local, herramienta de optimización, personal con experiencia). Lo que falta es formalizar y conectar. Nuestras propuestas To-Be apuntan a eso: pasar al Nivel 2 (Gestionado) con orden de producción versionada, validación de pago registrada, descargo automático de inventario y registro tipificado de mermas.
+				</p>
+			</div>
 		</section>
 
 		<!-- SECCIÓN EVIDENCIAS DEL PROYECTO -->

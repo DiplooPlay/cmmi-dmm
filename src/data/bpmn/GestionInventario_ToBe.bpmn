@@ -1,0 +1,301 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Def_GestionInventario_ToBe"
+  targetNamespace="http://ferzur.pe/bpmn">
+
+  <bpmn:collaboration id="Collab_GestionInventario_ToBe">
+    <bpmn:participant id="Part_GestionInventario_ToBe" name="FerZur S.A.C. — Gestión de inventario (Propuesta To-Be)" processRef="Proc_GestionInventario_ToBe" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Proc_GestionInventario_ToBe" isExecutable="false">
+    <bpmn:laneSet id="LS_GestionInventario_ToBe">
+
+      <!-- Dueño (Compras y Autorizaciones) -->
+      <bpmn:lane id="Lane_Dueno_Inv_TB" name="Dueño (Compras &amp; Control)">
+        <bpmn:flowNodeRef>T03_AprobacionOC</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T09b_AjusteAutorizado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T10_DashboardDecisiones</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Inv_TB</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Sistema Centralizado (Inventario / ERP) -->
+      <bpmn:lane id="Lane_Sistema_Inv_TB" name="Sistema Centralizado">
+        <bpmn:flowNodeRef>Start_Inv_TB</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T01_CatalogoCodificacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T02_AlertaReposicion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T06_ReservaDescargoAuto</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T07_RegistroRetazos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T08_RegistroMermasCausa</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T09_ConciliacionCiclica</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Almacén / Taller (Operario & Recepción) -->
+      <bpmn:lane id="Lane_Operario_Inv_TB" name="Almacén &amp; Taller (Operario)">
+        <bpmn:flowNodeRef>T04_RecepcionVerificacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T05_AlmacenamientoRotulado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T09_ConteoPeriodico</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+    </bpmn:laneSet>
+
+    <!-- Start -->
+    <bpmn:startEvent id="Start_Inv_TB" name="Inicio gestión parametrizada">
+      <bpmn:outgoing>F_ITB01</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- 1. Sistema: Catálogo y codificación -->
+    <bpmn:serviceTask id="T01_CatalogoCodificacion" name="1. Catálogo maestro y codificación&#10;(Código único + ubicación)">
+      <bpmn:incoming>F_ITB01</bpmn:incoming>
+      <bpmn:outgoing>F_ITB02</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 2. Sistema: Parámetros y alerta -->
+    <bpmn:serviceTask id="T02_AlertaReposicion" name="2. Parámetros de reposición&#10;(Stock mín. / reorden / alerta)">
+      <bpmn:incoming>F_ITB02</bpmn:incoming>
+      <bpmn:outgoing>F_ITB03</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 3. Dueño: OC formal -->
+    <bpmn:userTask id="T03_AprobacionOC" name="3. Orden de compra formal&#10;(Aprobada y enviada a proveedor)">
+      <bpmn:incoming>F_ITB03</bpmn:incoming>
+      <bpmn:outgoing>F_ITB04</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 4. Almacén: Recepción -->
+    <bpmn:userTask id="T04_RecepcionVerificacion" name="4. Recepción con verificación&#10;(Contraste OC vs guía / registro)">
+      <bpmn:incoming>F_ITB04</bpmn:incoming>
+      <bpmn:outgoing>F_ITB05</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 5. Almacén: Ubicación rotulada -->
+    <bpmn:userTask id="T05_AlmacenamientoRotulado" name="5. Almacenamiento identificado&#10;(Ubicación en zona rotulada)">
+      <bpmn:incoming>F_ITB05</bpmn:incoming>
+      <bpmn:outgoing>F_ITB06</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 6. Sistema: Reserva y descargo -->
+    <bpmn:serviceTask id="T06_ReservaDescargoAuto" name="6. Reserva y descargo automático&#10;(Reserva al pago / descargo al terminar)">
+      <bpmn:incoming>F_ITB06</bpmn:incoming>
+      <bpmn:outgoing>F_ITB07</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 7. Sistema / Taller: Retazos -->
+    <bpmn:userTask id="T07_RegistroRetazos" name="7. Gestión de retazos útiles&#10;(Medidos, rotulados y en catálogo)">
+      <bpmn:incoming>F_ITB07</bpmn:incoming>
+      <bpmn:outgoing>F_ITB08</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 8. Sistema / Taller: Mermas -->
+    <bpmn:userTask id="T08_RegistroMermasCausa" name="8. Registro tipificado de mermas&#10;(Causa documentada y descargo)">
+      <bpmn:incoming>F_ITB08</bpmn:incoming>
+      <bpmn:outgoing>F_ITB09</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 9. Conteo periódico -->
+    <bpmn:userTask id="T09_ConteoPeriodico" name="9a. Conteo físico periódico&#10;(Inventario cíclico programado)">
+      <bpmn:incoming>F_ITB09</bpmn:incoming>
+      <bpmn:outgoing>F_ITB10</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 9. Conciliación sistema -->
+    <bpmn:serviceTask id="T09_ConciliacionCiclica" name="9b. Conciliación contra sistema&#10;(Detección de descuadres)">
+      <bpmn:incoming>F_ITB10</bpmn:incoming>
+      <bpmn:outgoing>F_ITB11</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 9b. Dueño ajusta -->
+    <bpmn:userTask id="T09b_AjusteAutorizado" name="9c. Ajuste autorizado de stock&#10;(Validado formalmente por dueño)">
+      <bpmn:incoming>F_ITB11</bpmn:incoming>
+      <bpmn:outgoing>F_ITB12</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 10. Dueño: Tablero de indicadores -->
+    <bpmn:userTask id="T10_DashboardDecisiones" name="10. Indicadores y reporte directivo&#10;(Rotación, mermas y sobrecostos)">
+      <bpmn:incoming>F_ITB12</bpmn:incoming>
+      <bpmn:outgoing>F_ITB13</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- End -->
+    <bpmn:endEvent id="End_Inv_TB" name="Inventario gobernado y trazable">
+      <bpmn:incoming>F_ITB13</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Flows -->
+    <bpmn:sequenceFlow id="F_ITB01" sourceRef="Start_Inv_TB" targetRef="T01_CatalogoCodificacion" />
+    <bpmn:sequenceFlow id="F_ITB02" sourceRef="T01_CatalogoCodificacion" targetRef="T02_AlertaReposicion" />
+    <bpmn:sequenceFlow id="F_ITB03" sourceRef="T02_AlertaReposicion" targetRef="T03_AprobacionOC" />
+    <bpmn:sequenceFlow id="F_ITB04" sourceRef="T03_AprobacionOC" targetRef="T04_RecepcionVerificacion" />
+    <bpmn:sequenceFlow id="F_ITB05" sourceRef="T04_RecepcionVerificacion" targetRef="T05_AlmacenamientoRotulado" />
+    <bpmn:sequenceFlow id="F_ITB06" sourceRef="T05_AlmacenamientoRotulado" targetRef="T06_ReservaDescargoAuto" />
+    <bpmn:sequenceFlow id="F_ITB07" sourceRef="T06_ReservaDescargoAuto" targetRef="T07_RegistroRetazos" />
+    <bpmn:sequenceFlow id="F_ITB08" sourceRef="T07_RegistroRetazos" targetRef="T08_RegistroMermasCausa" />
+    <bpmn:sequenceFlow id="F_ITB09" sourceRef="T08_RegistroMermasCausa" targetRef="T09_ConteoPeriodico" />
+    <bpmn:sequenceFlow id="F_ITB10" sourceRef="T09_ConteoPeriodico" targetRef="T09_ConciliacionCiclica" />
+    <bpmn:sequenceFlow id="F_ITB11" sourceRef="T09_ConciliacionCiclica" targetRef="T09b_AjusteAutorizado" />
+    <bpmn:sequenceFlow id="F_ITB12" sourceRef="T09b_AjusteAutorizado" targetRef="T10_DashboardDecisiones" />
+    <bpmn:sequenceFlow id="F_ITB13" sourceRef="T10_DashboardDecisiones" targetRef="End_Inv_TB" />
+
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="Diag_GestionInventario_ToBe" name="Gestión de inventario — Propuesta To-Be">
+    <bpmndi:BPMNPlane id="Plane_GestionInventario_ToBe" bpmnElement="Collab_GestionInventario_ToBe">
+
+      <!-- Participant pool -->
+      <bpmndi:BPMNShape id="DI_Part_Inv_TB" bpmnElement="Part_GestionInventario_ToBe" isHorizontal="true">
+        <dc:Bounds x="100" y="0" width="2800" height="600" />
+      </bpmndi:BPMNShape>
+
+      <!-- Lanes -->
+      <bpmndi:BPMNShape id="DI_Lane_Dueno_Inv_TB" bpmnElement="Lane_Dueno_Inv_TB" isHorizontal="true">
+        <dc:Bounds x="130" y="0" width="2770" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Sistema_Inv_TB" bpmnElement="Lane_Sistema_Inv_TB" isHorizontal="true">
+        <dc:Bounds x="130" y="200" width="2770" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Operario_Inv_TB" bpmnElement="Lane_Operario_Inv_TB" isHorizontal="true">
+        <dc:Bounds x="130" y="400" width="2770" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Start -->
+      <bpmndi:BPMNShape id="DI_Start_Inv_TB" bpmnElement="Start_Inv_TB">
+        <dc:Bounds x="182" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- 1. Catálogo -->
+      <bpmndi:BPMNShape id="DI_T01_Inv_TB" bpmnElement="T01_CatalogoCodificacion">
+        <dc:Bounds x="260" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 2. Alerta -->
+      <bpmndi:BPMNShape id="DI_T02_Inv_TB" bpmnElement="T02_AlertaReposicion">
+        <dc:Bounds x="440" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 3. Dueño OC -->
+      <bpmndi:BPMNShape id="DI_T03_Inv_TB" bpmnElement="T03_AprobacionOC">
+        <dc:Bounds x="620" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 4. Recepción -->
+      <bpmndi:BPMNShape id="DI_T04_Inv_TB" bpmnElement="T04_RecepcionVerificacion">
+        <dc:Bounds x="800" y="460" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 5. Almacenamiento -->
+      <bpmndi:BPMNShape id="DI_T05_Inv_TB" bpmnElement="T05_AlmacenamientoRotulado">
+        <dc:Bounds x="980" y="460" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 6. Reserva descargo -->
+      <bpmndi:BPMNShape id="DI_T06_Inv_TB" bpmnElement="T06_ReservaDescargoAuto">
+        <dc:Bounds x="1160" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 7. Retazos -->
+      <bpmndi:BPMNShape id="DI_T07_Inv_TB" bpmnElement="T07_RegistroRetazos">
+        <dc:Bounds x="1340" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 8. Mermas -->
+      <bpmndi:BPMNShape id="DI_T08_Inv_TB" bpmnElement="T08_RegistroMermasCausa">
+        <dc:Bounds x="1520" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 9a. Conteo físico -->
+      <bpmndi:BPMNShape id="DI_T09_Inv_TB" bpmnElement="T09_ConteoPeriodico">
+        <dc:Bounds x="1700" y="460" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 9b. Conciliación -->
+      <bpmndi:BPMNShape id="DI_T09b_Inv_TB" bpmnElement="T09_ConciliacionCiclica">
+        <dc:Bounds x="1880" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 9c. Ajuste autorizado -->
+      <bpmndi:BPMNShape id="DI_T09c_Inv_TB" bpmnElement="T09b_AjusteAutorizado">
+        <dc:Bounds x="2060" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 10. Dashboard decisiones -->
+      <bpmndi:BPMNShape id="DI_T10_Inv_TB" bpmnElement="T10_DashboardDecisiones">
+        <dc:Bounds x="2240" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- End -->
+      <bpmndi:BPMNShape id="DI_End_Inv_TB" bpmnElement="End_Inv_TB">
+        <dc:Bounds x="2432" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+      <bpmndi:BPMNEdge id="DI_F_ITB01" bpmnElement="F_ITB01">
+        <di:waypoint x="218" y="300" />
+        <di:waypoint x="260" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB02" bpmnElement="F_ITB02">
+        <di:waypoint x="390" y="300" />
+        <di:waypoint x="440" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB03" bpmnElement="F_ITB03">
+        <di:waypoint x="570" y="300" />
+        <di:waypoint x="595" y="300" />
+        <di:waypoint x="595" y="100" />
+        <di:waypoint x="620" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB04" bpmnElement="F_ITB04">
+        <di:waypoint x="750" y="100" />
+        <di:waypoint x="775" y="100" />
+        <di:waypoint x="775" y="500" />
+        <di:waypoint x="800" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB05" bpmnElement="F_ITB05">
+        <di:waypoint x="930" y="500" />
+        <di:waypoint x="980" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB06" bpmnElement="F_ITB06">
+        <di:waypoint x="1110" y="500" />
+        <di:waypoint x="1135" y="500" />
+        <di:waypoint x="1135" y="300" />
+        <di:waypoint x="1160" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB07" bpmnElement="F_ITB07">
+        <di:waypoint x="1290" y="300" />
+        <di:waypoint x="1340" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB08" bpmnElement="F_ITB08">
+        <di:waypoint x="1470" y="300" />
+        <di:waypoint x="1520" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB09" bpmnElement="F_ITB09">
+        <di:waypoint x="1650" y="300" />
+        <di:waypoint x="1675" y="300" />
+        <di:waypoint x="1675" y="500" />
+        <di:waypoint x="1700" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB10" bpmnElement="F_ITB10">
+        <di:waypoint x="1830" y="500" />
+        <di:waypoint x="1855" y="500" />
+        <di:waypoint x="1855" y="300" />
+        <di:waypoint x="1880" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB11" bpmnElement="F_ITB11">
+        <di:waypoint x="2010" y="300" />
+        <di:waypoint x="2035" y="300" />
+        <di:waypoint x="2035" y="100" />
+        <di:waypoint x="2060" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB12" bpmnElement="F_ITB12">
+        <di:waypoint x="2190" y="100" />
+        <di:waypoint x="2240" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_ITB13" bpmnElement="F_ITB13">
+        <di:waypoint x="2370" y="100" />
+        <di:waypoint x="2432" y="100" />
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,286 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Def_GestionPedido_ToBe"
+  targetNamespace="http://ferzur.pe/bpmn">
+
+  <bpmn:collaboration id="Collab_GestionPedido_ToBe">
+    <bpmn:participant id="Part_GestionPedido_ToBe" name="FerZur S.A.C. — Gestión de pedido (Propuesta To-Be)" processRef="Proc_GestionPedido_ToBe" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Proc_GestionPedido_ToBe" isExecutable="false">
+    <bpmn:laneSet id="LS_GestionPedido_ToBe">
+
+      <!-- Mostrador -->
+      <bpmn:lane id="Lane_Mostrador_ToBe" name="Mostrador">
+        <bpmn:flowNodeRef>Start_Pedido_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T01_RegistroPrecotizacion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T05_GobernanzaCambios</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Caja (Dueño / Encargado) -->
+      <bpmn:lane id="Lane_Caja_ToBe" name="Caja (Dueño / Encargado)">
+        <bpmn:flowNodeRef>T02_ValidacionCaja</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Sistema Centralizado -->
+      <bpmn:lane id="Lane_Sistema_ToBe" name="Sistema Centralizado">
+        <bpmn:flowNodeRef>T03_GeneracionOP</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T04_LiberacionDigital</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T07_ActualizacionEstado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T08_NotificacionAutomatica</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+      <!-- Taller / Operario -->
+      <bpmn:lane id="Lane_Taller_ToBe" name="Taller / Operario">
+        <bpmn:flowNodeRef>Gw_CambioMedidas</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T06_EjecucionCalidad</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>T08b_DespachoActa</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Pedido_ToBe</bpmn:flowNodeRef>
+      </bpmn:lane>
+
+    </bpmn:laneSet>
+
+    <!-- Start -->
+    <bpmn:startEvent id="Start_Pedido_ToBe" name="Recepción solicitud estándar">
+      <bpmn:outgoing>F_TB01</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- 1. Mostrador -->
+    <bpmn:userTask id="T01_RegistroPrecotizacion" name="1. Registro técnico y precotización&#10;(Estado: PENDIENTE DE PAGO)">
+      <bpmn:incoming>F_TB01</bpmn:incoming>
+      <bpmn:outgoing>F_TB02</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 2. Caja -->
+    <bpmn:userTask id="T02_ValidacionCaja" name="2. Validación formal en Caja&#10;(Ingreso N° operación / recibo)">
+      <bpmn:incoming>F_TB02</bpmn:incoming>
+      <bpmn:outgoing>F_TB03</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 3. Sistema -->
+    <bpmn:serviceTask id="T03_GeneracionOP" name="3. Generación automática OP versionada&#10;(Estado: CONFIRMADO / OP-v1)">
+      <bpmn:incoming>F_TB03</bpmn:incoming>
+      <bpmn:outgoing>F_TB04</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 4. Sistema -->
+    <bpmn:serviceTask id="T04_LiberacionDigital" name="4. Liberación digital a taller&#10;(Cola de trabajo / QR / código)">
+      <bpmn:incoming>F_TB04</bpmn:incoming>
+      <bpmn:incoming>F_TB_reactivar</bpmn:incoming>
+      <bpmn:outgoing>F_TB05</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- Gateway cambios -->
+    <bpmn:exclusiveGateway id="Gw_CambioMedidas" name="¿Cliente cambia medidas?">
+      <bpmn:incoming>F_TB05</bpmn:incoming>
+      <bpmn:outgoing>F_TB_cambio_si</bpmn:outgoing>
+      <bpmn:outgoing>F_TB_cambio_no</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+
+    <!-- 5. Mostrador -->
+    <bpmn:userTask id="T05_GobernanzaCambios" name="5. Gobernanza de cambios&#10;(Genera v2, bloquea v1)">
+      <bpmn:incoming>F_TB_cambio_si</bpmn:incoming>
+      <bpmn:outgoing>F_TB_reactivar</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 6. Operario -->
+    <bpmn:userTask id="T06_EjecucionCalidad" name="6. Ejecución y control de calidad&#10;(Tipifica causas de descarte)">
+      <bpmn:incoming>F_TB_cambio_no</bpmn:incoming>
+      <bpmn:outgoing>F_TB06</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- 7. Sistema -->
+    <bpmn:serviceTask id="T07_ActualizacionEstado" name="7. Actualización de estado en tiempo real&#10;(Escaneo código: LISTO PARA RECOJO)">
+      <bpmn:incoming>F_TB06</bpmn:incoming>
+      <bpmn:outgoing>F_TB07</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 8a. Sistema -->
+    <bpmn:serviceTask id="T08_NotificacionAutomatica" name="8a. Notificación automática&#10;(Alerta mostrador y WhatsApp cliente)">
+      <bpmn:incoming>F_TB07</bpmn:incoming>
+      <bpmn:outgoing>F_TB08</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <!-- 8b. Operario / Despacho -->
+    <bpmn:userTask id="T08b_DespachoActa" name="8b. Despacho y entrega con firma&#10;(Acta conformidad: ENTREGADO)">
+      <bpmn:incoming>F_TB08</bpmn:incoming>
+      <bpmn:outgoing>F_TB09</bpmn:outgoing>
+    </bpmn:userTask>
+
+    <!-- End -->
+    <bpmn:endEvent id="End_Pedido_ToBe" name="Pedido entregado con trazabilidad">
+      <bpmn:incoming>F_TB09</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequences -->
+    <bpmn:sequenceFlow id="F_TB01" sourceRef="Start_Pedido_ToBe" targetRef="T01_RegistroPrecotizacion" />
+    <bpmn:sequenceFlow id="F_TB02" sourceRef="T01_RegistroPrecotizacion" targetRef="T02_ValidacionCaja" />
+    <bpmn:sequenceFlow id="F_TB03" sourceRef="T02_ValidacionCaja" targetRef="T03_GeneracionOP" />
+    <bpmn:sequenceFlow id="F_TB04" sourceRef="T03_GeneracionOP" targetRef="T04_LiberacionDigital" />
+    <bpmn:sequenceFlow id="F_TB05" sourceRef="T04_LiberacionDigital" targetRef="Gw_CambioMedidas" />
+    <bpmn:sequenceFlow id="F_TB_cambio_si" name="Sí" sourceRef="Gw_CambioMedidas" targetRef="T05_GobernanzaCambios" />
+    <bpmn:sequenceFlow id="F_TB_reactivar" sourceRef="T05_GobernanzaCambios" targetRef="T04_LiberacionDigital" />
+    <bpmn:sequenceFlow id="F_TB_cambio_no" name="No" sourceRef="Gw_CambioMedidas" targetRef="T06_EjecucionCalidad" />
+    <bpmn:sequenceFlow id="F_TB06" sourceRef="T06_EjecucionCalidad" targetRef="T07_ActualizacionEstado" />
+    <bpmn:sequenceFlow id="F_TB07" sourceRef="T07_ActualizacionEstado" targetRef="T08_NotificacionAutomatica" />
+    <bpmn:sequenceFlow id="F_TB08" sourceRef="T08_NotificacionAutomatica" targetRef="T08b_DespachoActa" />
+    <bpmn:sequenceFlow id="F_TB09" sourceRef="T08b_DespachoActa" targetRef="End_Pedido_ToBe" />
+
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="Diag_GestionPedido_ToBe" name="Gestión de pedido — Propuesta To-Be">
+    <bpmndi:BPMNPlane id="Plane_GestionPedido_ToBe" bpmnElement="Collab_GestionPedido_ToBe">
+
+      <!-- Participant pool -->
+      <bpmndi:BPMNShape id="DI_Part_TB" bpmnElement="Part_GestionPedido_ToBe" isHorizontal="true">
+        <dc:Bounds x="100" y="0" width="2600" height="800" />
+      </bpmndi:BPMNShape>
+
+      <!-- Lanes -->
+      <bpmndi:BPMNShape id="DI_Lane_Mostrador_TB" bpmnElement="Lane_Mostrador_ToBe" isHorizontal="true">
+        <dc:Bounds x="130" y="0" width="2570" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Caja_TB" bpmnElement="Lane_Caja_ToBe" isHorizontal="true">
+        <dc:Bounds x="130" y="200" width="2570" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Sistema_TB" bpmnElement="Lane_Sistema_ToBe" isHorizontal="true">
+        <dc:Bounds x="130" y="400" width="2570" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DI_Lane_Taller_TB" bpmnElement="Lane_Taller_ToBe" isHorizontal="true">
+        <dc:Bounds x="130" y="600" width="2570" height="200" />
+      </bpmndi:BPMNShape>
+
+      <!-- Start -->
+      <bpmndi:BPMNShape id="DI_Start_TB" bpmnElement="Start_Pedido_ToBe">
+        <dc:Bounds x="182" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- 1. Mostrador -->
+      <bpmndi:BPMNShape id="DI_T01_TB" bpmnElement="T01_RegistroPrecotizacion">
+        <dc:Bounds x="270" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 2. Caja -->
+      <bpmndi:BPMNShape id="DI_T02_TB" bpmnElement="T02_ValidacionCaja">
+        <dc:Bounds x="460" y="260" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 3. Sistema OP -->
+      <bpmndi:BPMNShape id="DI_T03_TB" bpmnElement="T03_GeneracionOP">
+        <dc:Bounds x="650" y="460" width="140" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 4. Sistema Liberacion -->
+      <bpmndi:BPMNShape id="DI_T04_TB" bpmnElement="T04_LiberacionDigital">
+        <dc:Bounds x="850" y="460" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Gateway cambios -->
+      <bpmndi:BPMNShape id="DI_Gw_Cambios" bpmnElement="Gw_CambioMedidas">
+        <dc:Bounds x="1040" y="675" width="50" height="50" />
+      </bpmndi:BPMNShape>
+
+      <!-- 5. Mostrador Cambios -->
+      <bpmndi:BPMNShape id="DI_T05_TB" bpmnElement="T05_GobernanzaCambios">
+        <dc:Bounds x="1000" y="60" width="130" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 6. Operario Calidad -->
+      <bpmndi:BPMNShape id="DI_T06_TB" bpmnElement="T06_EjecucionCalidad">
+        <dc:Bounds x="1170" y="660" width="140" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 7. Sistema Estado -->
+      <bpmndi:BPMNShape id="DI_T07_TB" bpmnElement="T07_ActualizacionEstado">
+        <dc:Bounds x="1380" y="460" width="140" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 8a. Sistema Notif -->
+      <bpmndi:BPMNShape id="DI_T08_TB" bpmnElement="T08_NotificacionAutomatica">
+        <dc:Bounds x="1590" y="460" width="140" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- 8b. Despacho -->
+      <bpmndi:BPMNShape id="DI_T08b_TB" bpmnElement="T08b_DespachoActa">
+        <dc:Bounds x="1800" y="660" width="140" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- End -->
+      <bpmndi:BPMNShape id="DI_End_TB" bpmnElement="End_Pedido_ToBe">
+        <dc:Bounds x="2012" y="682" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+      <bpmndi:BPMNEdge id="DI_F_TB01" bpmnElement="F_TB01">
+        <di:waypoint x="218" y="100" />
+        <di:waypoint x="270" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB02" bpmnElement="F_TB02">
+        <di:waypoint x="400" y="100" />
+        <di:waypoint x="430" y="100" />
+        <di:waypoint x="430" y="300" />
+        <di:waypoint x="460" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB03" bpmnElement="F_TB03">
+        <di:waypoint x="590" y="300" />
+        <di:waypoint x="620" y="300" />
+        <di:waypoint x="620" y="500" />
+        <di:waypoint x="650" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB04" bpmnElement="F_TB04">
+        <di:waypoint x="790" y="500" />
+        <di:waypoint x="850" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB05" bpmnElement="F_TB05">
+        <di:waypoint x="980" y="500" />
+        <di:waypoint x="1010" y="500" />
+        <di:waypoint x="1010" y="700" />
+        <di:waypoint x="1040" y="700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB_cambio_si" bpmnElement="F_TB_cambio_si">
+        <di:waypoint x="1065" y="675" />
+        <di:waypoint x="1065" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1070" y="400" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB_reactivar" bpmnElement="F_TB_reactivar">
+        <di:waypoint x="1000" y="100" />
+        <di:waypoint x="915" y="100" />
+        <di:waypoint x="915" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB_cambio_no" bpmnElement="F_TB_cambio_no">
+        <di:waypoint x="1090" y="700" />
+        <di:waypoint x="1170" y="700" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1115" y="682" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB06" bpmnElement="F_TB06">
+        <di:waypoint x="1310" y="700" />
+        <di:waypoint x="1345" y="700" />
+        <di:waypoint x="1345" y="500" />
+        <di:waypoint x="1380" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB07" bpmnElement="F_TB07">
+        <di:waypoint x="1520" y="500" />
+        <di:waypoint x="1590" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB08" bpmnElement="F_TB08">
+        <di:waypoint x="1730" y="500" />
+        <di:waypoint x="1765" y="500" />
+        <di:waypoint x="1765" y="700" />
+        <di:waypoint x="1800" y="700" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DI_F_TB09" bpmnElement="F_TB09">
+        <di:waypoint x="1940" y="700" />
+        <di:waypoint x="2012" y="700" />
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
