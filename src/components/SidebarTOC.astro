@@ -1,0 +1,152 @@
+---
+interface SectionItem {
+	id: string;
+	num: string;
+	title: string;
+}
+
+const sections: SectionItem[] = [
+	{ id: "sec-1", num: "1", title: "Introducción" },
+	{ id: "sec-2", num: "2", title: "Descripción de la empresa" },
+	{ id: "sec-3", num: "3", title: "Gestión de pedido" },
+	{ id: "sec-4", num: "4", title: "Gestión de inventario" },
+	{ id: "sec-5", num: "5", title: "Resumen de debilidades" },
+	{ id: "sec-6", num: "6", title: "Análisis: Gestión de pedido" },
+	{ id: "sec-7", num: "7", title: "Análisis: Gestión de inventario" },
+	{ id: "sec-8", num: "8", title: "Nivel de madurez de FerZur" },
+	{ id: "sec-evaluacion-dimensiones", num: "9", title: "Evaluación por dimensiones" },
+	{ id: "sec-evidencias", num: "10", title: "Evidencias del proyecto" }
+];
+---
+
+<nav
+	id="floating-toc"
+	class="group fixed left-3 sm:left-4 top-1/2 -translate-y-1/2 z-40 bg-white/95 backdrop-blur-md border border-neutral-200/90 rounded-2xl shadow-lg shadow-neutral-950/5 transition-all duration-300 ease-out w-10 hover:w-64 p-1.5 overflow-hidden select-none"
+	aria-label="Índice de navegación"
+>
+	<div class="flex flex-col gap-1">
+		{sections.map((s) => (
+			<a
+				href={`#${s.id}`}
+				data-section={s.id}
+				title={`${s.num}. ${s.title}`}
+				class="toc-link flex items-center h-8 sm:h-9 px-1 rounded-xl transition-all duration-150 text-neutral-600 hover:text-neutral-950 hover:bg-neutral-100/80"
+			>
+				<!-- Punto que representa la sección (visible en el rectángulo alargado colapsado) -->
+				<span class="w-6 flex items-center justify-center shrink-0">
+					<span class="toc-dot w-2 h-2 rounded-full bg-neutral-300 transition-all duration-200"></span>
+				</span>
+
+				<!-- Nombre de la sección (se despliega con animación al pasar el cursor) -->
+				<span class="toc-label overflow-hidden whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 ease-out text-xs flex items-baseline gap-1.5 min-w-0 pr-2 pointer-events-none group-hover:pointer-events-auto">
+					<span class="font-mono text-neutral-400 text-[11px] shrink-0 font-medium">{s.num}.</span>
+					<span class="truncate">{s.title}</span>
+				</span>
+			</a>
+		))}
+	</div>
+</nav>
+
+<style>
+	#floating-toc.is-touch-expanded {
+		width: 16rem;
+	}
+	#floating-toc.is-touch-expanded .toc-label {
+		opacity: 1;
+		transform: translateX(0);
+		pointer-events: auto;
+	}
+</style>
+
+<script>
+	const toc = document.getElementById('floating-toc');
+	const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+
+	// Touch device support (mobile/tablet)
+	toc?.addEventListener('click', (e) => {
+		if (window.matchMedia('(hover: none)').matches) {
+			const clickedLink = (e.target as HTMLElement).closest('.toc-link');
+			if (!toc.classList.contains('is-touch-expanded') && !clickedLink) {
+				toc.classList.add('is-touch-expanded');
+			}
+		}
+	});
+
+	document.addEventListener('click', (e) => {
+		if (!toc?.contains(e.target as Node)) {
+			toc?.classList.remove('is-touch-expanded');
+		}
+	});
+
+	links.forEach((link) => {
+		link.addEventListener('click', () => {
+			toc?.classList.remove('is-touch-expanded');
+		});
+	});
+
+	// Scrollspy para resaltar el punto y texto de la sección activa
+	const sectionIds = Array.from(links)
+		.map((l) => l.getAttribute('data-section'))
+		.filter((id): id is string => Boolean(id));
+
+	const sectionElements = sectionIds
+		.map((id) => document.getElementById(id))
+		.filter((el): el is HTMLElement => el !== null);
+
+	const updateActiveSection = () => {
+		const scrollPos = window.scrollY + 140;
+		let currentId = '';
+
+		for (const section of sectionElements) {
+			const top = section.getBoundingClientRect().top + window.scrollY;
+			if (scrollPos >= top) {
+				currentId = section.id;
+			}
+		}
+
+		if (!currentId && sectionElements.length > 0) {
+			currentId = sectionElements[0].id;
+		}
+
+		links.forEach((link) => {
+			const target = link.getAttribute('data-section');
+			const dot = link.querySelector('.toc-dot');
+			const label = link.querySelector('.toc-label span:last-child');
+
+			if (target === currentId) {
+				link.classList.add('bg-neutral-100/70', 'text-neutral-950');
+				link.classList.remove('text-neutral-600');
+
+				dot?.classList.add('bg-neutral-900', 'ring-4', 'ring-neutral-200/90', 'scale-125');
+				dot?.classList.remove('bg-neutral-300');
+
+				label?.classList.add('font-semibold');
+			} else {
+				link.classList.remove('bg-neutral-100/70', 'text-neutral-950');
+				link.classList.add('text-neutral-600');
+
+				dot?.classList.remove('bg-neutral-900', 'ring-4', 'ring-neutral-200/90', 'scale-125');
+				dot?.classList.add('bg-neutral-300');
+
+				label?.classList.remove('font-semibold');
+			}
+		});
+	};
+
+	let ticking = false;
+	window.addEventListener(
+		'scroll',
+		() => {
+			if (!ticking) {
+				window.requestAnimationFrame(() => {
+					updateActiveSection();
+					ticking = false;
+				});
+				ticking = true;
+			}
+		},
+		{ passive: true }
+	);
+
+	updateActiveSection();
+</script>

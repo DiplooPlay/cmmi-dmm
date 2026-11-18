@@ -4,12 +4,14 @@ import BpmnDiagram from '../components/BpmnDiagram.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Evidencias from '../components/Evidencias.astro';
 import DimensionesCarousel from '../components/DimensionesCarousel.astro';
+import SidebarTOC from '../components/SidebarTOC.astro';
 ---
 
 <Layout
 	title="Caso de estudio: aplicando CMMI y DMM a la empresa FerZur S.A.C."
 	description="Estudio de reingeniería de procesos y madurez de datos para la gestión de pedidos y corte de melamina (CMMI & DMM)"
 >
+	<SidebarTOC />
 	<main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
 		<!-- Encabezado del caso de estudio -->
 		<header class="border-b border-neutral-200 pb-8 mb-8">
@@ -814,8 +816,51 @@ import DimensionesCarousel from '../components/DimensionesCarousel.astro';
 
 		<section id="sec-evaluacion-dimensiones" class="my-12 scroll-mt-16">
 			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
-				Evaluación por dimensiones: situación actual
+				9. Evaluación por dimensiones: situación actual
 			</h2>
+
+			<!-- Alcance y método de la evaluación -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Alcance y método de la evaluación
+				</h3>
+				<div class="space-y-4 text-sm sm:text-base text-neutral-700 leading-relaxed mb-4">
+					<p>
+						FerZur S.A.C. es una pequeña empresa que vende planchas de melamina y ofrece servicio de corte y enchapado a medida. La evaluación cubre toda la empresa, es decir, sus cuatro áreas de trabajo: ventas en el mostrador, caja y administración, almacén y taller de producción.
+					</p>
+					<p>
+						Antes de proponer inversiones o cambios tecnológicos, quisimos tener una imagen fiel de cómo trabaja la empresa hoy. Para eso hicimos un trabajo de campo con tres fuentes de verificación:
+					</p>
+				</div>
+				<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+					<table class="w-full text-left text-xs sm:text-sm border-collapse">
+						<thead>
+							<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+								<th class="py-2.5 px-3 font-bold">Fuente</th>
+								<th class="py-2.5 px-3 font-bold">Qué se hizo</th>
+								<th class="py-2.5 px-3 font-bold">Para qué sirvió</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-neutral-100 text-neutral-700">
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">1. Entrevistas</td>
+								<td class="py-2.5 px-3">Un cuestionario de 24 preguntas al dueño y al personal operativo.</td>
+								<td class="py-2.5 px-3">Saber cómo se toman las decisiones, cómo se cobran los pedidos y cómo se repone el material.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">2. Observación directa</td>
+								<td class="py-2.5 px-3">Seguimiento del flujo completo en persona, desde la tienda o el WhatsApp hasta la entrega.</td>
+								<td class="py-2.5 px-3">Encontrar tiempos muertos, avisos de palabra y puntos donde se corta el flujo digital.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">3. Fotografías</td>
+								<td class="py-2.5 px-3">Fotos de la PC principal, CutList Optimizer, el almacén, la seccionadora y la zona de acopio.</td>
+								<td class="py-2.5 px-3">Mostrar con evidencia el estado de los equipos, el orden y el seguimiento de los materiales.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 
 			<!-- Dimensión 1: Estrategia y liderazgo -->
 			<div class="mb-8">
