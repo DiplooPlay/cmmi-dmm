@@ -1,0 +1,70 @@
+---
+const images = [
+	"/dimensiones/1.png",
+	"/dimensiones/2.png",
+	"/dimensiones/3.png",
+	"/dimensiones/4.png",
+	"/dimensiones/5.png",
+	"/dimensiones/6.png",
+];
+---
+
+<div class="mt-8">
+	<div class="flex justify-end gap-2 mb-3">
+		<button
+			id="dimensiones-prev-btn"
+			type="button"
+			aria-label="Anterior"
+			class="w-8 h-8 flex items-center justify-center rounded border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 active:scale-95 transition cursor-pointer"
+		>
+			<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+			</svg>
+		</button>
+		<button
+			id="dimensiones-next-btn"
+			type="button"
+			aria-label="Siguiente"
+			class="w-8 h-8 flex items-center justify-center rounded border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 active:scale-95 transition cursor-pointer"
+		>
+			<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+			</svg>
+		</button>
+	</div>
+
+	<div
+		id="dimensiones-track"
+		class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 touch-pan-x pb-2"
+		style="scrollbar-width: thin;"
+	>
+		{images.map((src, idx) => (
+			<div class="flex-none w-[calc(50%-0.5rem)] snap-start flex justify-center">
+				<div class="w-full bg-neutral-50 rounded-lg border border-neutral-200 p-2 flex justify-center items-center">
+					<img
+						src={src}
+						alt={`Dimensión ${idx + 1}`}
+						class="w-auto max-w-full h-auto max-h-[320px] object-contain rounded"
+						loading="lazy"
+					/>
+				</div>
+			</div>
+		))}
+	</div>
+</div>
+
+<script>
+	const track = document.getElementById('dimensiones-track') as HTMLDivElement | null;
+	const prevBtn = document.getElementById('dimensiones-prev-btn') as HTMLButtonElement | null;
+	const nextBtn = document.getElementById('dimensiones-next-btn') as HTMLButtonElement | null;
+
+	if (track) {
+		prevBtn?.addEventListener('click', () => {
+			track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+		});
+
+		nextBtn?.addEventListener('click', () => {
+			track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+		});
+	}
+</script>

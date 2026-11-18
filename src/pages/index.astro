@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BpmnDiagram from '../components/BpmnDiagram.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import Evidencias from '../components/Evidencias.astro';
+import DimensionesCarousel from '../components/DimensionesCarousel.astro';
 ---
 
 <Layout
@@ -809,6 +810,238 @@ import Evidencias from '../components/Evidencias.astro';
 					La oportunidad es clara: la empresa ya tiene lo básico (sistema local, herramienta de optimización, personal con experiencia). Lo que falta es formalizar y conectar. Nuestras propuestas To-Be apuntan a eso: pasar al Nivel 2 (Gestionado) con orden de producción versionada, validación de pago registrada, descargo automático de inventario y registro tipificado de mermas.
 				</p>
 			</div>
+		</section>
+
+		<section id="sec-evaluacion-dimensiones" class="my-12 scroll-mt-16">
+			<h2 class="text-xl sm:text-2xl font-serif font-bold text-neutral-900 mb-6 pb-2 border-b border-neutral-200">
+				Evaluación por dimensiones: situación actual
+			</h2>
+
+			<!-- Dimensión 1: Estrategia y liderazgo -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Dimensión 1: Estrategia y liderazgo
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed">
+					FerZur no tiene un plan de tecnología, reglas digitales escritas ni un presupuesto anual para innovar o mantener sus equipos. Tampoco hay un liderazgo digital formal. El dueño decide las compras de software o equipos solo cuando surge una urgencia, como comprar una herramienta para optimizar cortes. La tecnología ayuda en el mostrador, pero no forma parte del plan de crecimiento de la empresa.
+				</p>
+			</div>
+
+			<!-- Dimensión 2: Procesos y operaciones -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Dimensión 2: Procesos y operaciones
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-4">
+					Los dos procesos principales, pedidos e inventario, funcionan por separado y sin conexión. En el mostrador se usa software para optimizar cortes, pero el flujo se corta cuando el plano se imprime y se lleva en papel al taller. El avance de la producción, los cambios de medidas y el control de existencias se manejan a mano, de palabra y por experiencia.
+				</p>
+				<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+					<table class="w-full text-left text-xs sm:text-sm border-collapse">
+						<thead>
+							<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+								<th class="py-2.5 px-3 font-bold">Aspecto</th>
+								<th class="py-2.5 px-3 font-bold">Cómo es hoy</th>
+								<th class="py-2.5 px-3 font-bold">Evidencia</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-neutral-100 text-neutral-700">
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Digitalización</td>
+								<td class="py-2.5 px-3">Parcial en el mostrador (CutList y registro en SQLite después del pago). Ninguna en taller y almacén.</td>
+								<td class="py-2.5 px-3">Diagrama BPMN actual y foto de la PC del mostrador.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Automatización</td>
+								<td class="py-2.5 px-3">Ninguna. Los avisos de pago, los cambios de medidas y el recojo se hacen de palabra o a mano.</td>
+								<td class="py-2.5 px-3">Respuestas 08, 15 y 16 de la entrevista.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Integración</td>
+								<td class="py-2.5 px-3">Ninguna. Al vender un pedido no se descuentan los tableros ni los tapacantos del inventario.</td>
+								<td class="py-2.5 px-3">Revisión del flujo entre caja, SQLite y almacén.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Dimensión 3: Tecnología e infraestructura -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Dimensión 3: Tecnología e infraestructura
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-4">
+					La empresa sí tiene algunas herramientas: una PC en el mostrador, internet, CutList Optimizer y una base de datos local en SQLite. Aun así, está en Nivel 1 porque todo funciona en un solo equipo, de forma aislada y sin copias de seguridad. Según el modelo DMM, tener equipos básicos sin red interna, sin conexión entre programas y sin respaldos es una infraestructura improvisada.
+				</p>
+				<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+					<table class="w-full text-left text-xs sm:text-sm border-collapse">
+						<thead>
+							<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+								<th class="py-2.5 px-3 font-bold">Componente</th>
+								<th class="py-2.5 px-3 font-bold">Cómo es hoy</th>
+								<th class="py-2.5 px-3 font-bold">Riesgo</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-neutral-100 text-neutral-700">
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Equipos y redes</td>
+								<td class="py-2.5 px-3">Una computadora en el mostrador, el celular personal del dueño e internet básico.</td>
+								<td class="py-2.5 px-3">No hay red local ni equipos de consulta en el taller o el almacén.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Aplicaciones</td>
+								<td class="py-2.5 px-3">CutList Optimizer para el despiece y un sistema local para registrar pedidos.</td>
+								<td class="py-2.5 px-3">Funcionan como islas: no comparten datos entre sí.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Almacenamiento y seguridad</td>
+								<td class="py-2.5 px-3">La base de datos está solo en el disco de la PC principal. Los datos de cobro están en el celular del dueño.</td>
+								<td class="py-2.5 px-3">Si el equipo falla, se pierde todo: no hay copias de seguridad automáticas, ni nube, ni equipo de reemplazo.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Dimensión 4: Personas y cultura -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Dimensión 4: Personas y cultura
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed">
+					El equipo tiene mucha experiencia en carpintería, optimización y manejo de maquinaria (seccionadora y enchapadora). Sus habilidades digitales son básicas: usan WhatsApp, apps bancarias y CutList en el mostrador. El trabajo se apoya en la comunicación verbal, la costumbre y la memoria de cada persona (una «cultura de héroes»). No hay manuales, capacitaciones digitales ni un plan para manejar los cambios. Si el dueño o el operario principal faltan, la operación se detiene o baja su calidad.
+				</p>
+			</div>
+
+			<!-- Dimensión 5: Datos y analítica -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Dimensión 5: Datos y analítica
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-4">
+					Los datos del negocio están dispersos, repetidos y sin reglas comunes. No existe una base de datos central ni un catálogo con códigos para tableros y retazos. Por eso no se puede ver el estado del negocio en tiempo real, tener registros confiables ni decidir con indicadores.
+				</p>
+				<div class="overflow-x-auto rounded border border-neutral-200 bg-white">
+					<table class="w-full text-left text-xs sm:text-sm border-collapse">
+						<thead>
+							<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+								<th class="py-2.5 px-3 font-bold">Factor</th>
+								<th class="py-2.5 px-3 font-bold">Cómo es hoy</th>
+								<th class="py-2.5 px-3 font-bold">Impacto en el negocio</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-neutral-100 text-neutral-700">
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Disponibilidad y calidad</td>
+								<td class="py-2.5 px-3">Los datos están repartidos entre CutList, SQLite (se registran recién después del pago) y hojas de papel.</td>
+								<td class="py-2.5 px-3">Se pueden olvidar pedidos. Para saber el estado real hay que caminar hasta el taller.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Seguridad e integridad</td>
+								<td class="py-2.5 px-3">Los planos no tienen control de versiones y no se registran mermas, defectos ni consumo real.</td>
+								<td class="py-2.5 px-3">No se conoce el costo real de cada pedido ni cuánto dinero se pierde en desperdicios.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">Uso de indicadores (KPIs)</td>
+								<td class="py-2.5 px-3">Ninguno. No se miden tiempos de entrega, rotación de stock ni sobrecostos por compras urgentes.</td>
+								<td class="py-2.5 px-3">Las compras de reposición se hacen «a ojo» y de memoria.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Dimensión 6: Experiencia y servicios -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Dimensión 6: Experiencia y servicios
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-3">
+					FerZur usa canales digitales con sus clientes: recibe listas de medidas por WhatsApp y cobra con Yape, Plin o transferencias. Sin embargo, estos medios se usan de manera informal, sin un estándar ni forma de seguimiento:
+				</p>
+				<ul class="space-y-1.5 list-disc pl-5 text-sm sm:text-base text-neutral-700">
+					<li>Las solicitudes llegan en formatos libres y nadie las revisa antes.</li>
+					<li>Los pagos se confirman a simple vista en el teléfono personal del dueño, y no se emite un comprobante digital ligado al pedido.</li>
+					<li>El cliente no puede ver cómo avanza su corte.</li>
+					<li>El despacho termina sin rotular los paquetes ni firmar un acta de conformidad, por lo que la empresa no tiene respaldo ante reclamos.</li>
+				</ul>
+			</div>
+
+			<!-- Resumen de madurez digital -->
+			<div class="mb-8">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Resumen de madurez digital
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed mb-4">
+					Este cuadro resume el diagnóstico de FerZur S.A.C. en las seis dimensiones.
+				</p>
+				<div class="overflow-x-auto rounded border border-neutral-200 bg-white mb-4">
+					<table class="w-full text-left text-xs sm:text-sm border-collapse">
+						<thead>
+							<tr class="bg-neutral-100 border-b border-neutral-200 text-neutral-800">
+								<th class="py-2.5 px-3 font-bold">Dimensión</th>
+								<th class="py-2.5 px-3 font-bold text-center">Nivel</th>
+								<th class="py-2.5 px-3 font-bold">Denominación</th>
+								<th class="py-2.5 px-3 font-bold">Por qué tiene este nivel</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-neutral-100 text-neutral-700">
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">1. Estrategia y liderazgo</td>
+								<td class="py-2.5 px-3 text-center font-semibold text-neutral-800">1</td>
+								<td class="py-2.5 px-3 whitespace-nowrap">Inicial</td>
+								<td class="py-2.5 px-3">Sin plan de TI, presupuesto ni reglas. Las decisiones son reactivas y las toma el dueño.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">2. Procesos y operaciones</td>
+								<td class="py-2.5 px-3 text-center font-semibold text-neutral-800">1</td>
+								<td class="py-2.5 px-3 whitespace-nowrap">Inicial</td>
+								<td class="py-2.5 px-3">El papel en el taller rompe el flujo digital y el inventario se maneja sin conexión con las ventas.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">3. Tecnología e infraestructura</td>
+								<td class="py-2.5 px-3 text-center font-semibold text-neutral-800">1</td>
+								<td class="py-2.5 px-3 whitespace-nowrap">Inicial</td>
+								<td class="py-2.5 px-3">Herramientas aisladas (CutList y SQLite en una sola PC), sin red en taller y almacén, sin copias de seguridad.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">4. Personas y cultura</td>
+								<td class="py-2.5 px-3 text-center font-semibold text-neutral-800">1</td>
+								<td class="py-2.5 px-3 whitespace-nowrap">Inicial</td>
+								<td class="py-2.5 px-3">Se depende del conocimiento de unas pocas personas («héroes») y no se usan herramientas digitales en el taller.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">5. Datos y analítica</td>
+								<td class="py-2.5 px-3 text-center font-semibold text-neutral-800">1</td>
+								<td class="py-2.5 px-3 whitespace-nowrap">Inicial</td>
+								<td class="py-2.5 px-3">Datos aislados, sin códigos maestros ni control de versiones, y sin registro de mermas ni indicadores.</td>
+							</tr>
+							<tr>
+								<td class="py-2.5 px-3 font-medium text-neutral-900 whitespace-nowrap">6. Experiencia y servicios</td>
+								<td class="py-2.5 px-3 text-center font-semibold text-neutral-800">1</td>
+								<td class="py-2.5 px-3 whitespace-nowrap">Inicial</td>
+								<td class="py-2.5 px-3">WhatsApp y Yape personal sin cotización estándar, sin seguimiento del pedido y sin acta de conformidad.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="text-sm sm:text-base font-medium text-neutral-900">
+					Índice global de madurez digital actual: 1.00 / 5.00 (Nivel 1, Inicial, en todas las dimensiones).
+				</p>
+			</div>
+
+			<!-- Conclusión del diagnóstico -->
+			<div class="p-5 bg-white rounded-lg border border-neutral-200">
+				<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900 mb-3">
+					Conclusión del diagnóstico
+				</h3>
+				<p class="text-sm sm:text-base text-neutral-700 leading-relaxed">
+					FerZur S.A.C. está en el Nivel 1 (Inicial) en madurez de procesos (CMMI), madurez digital y gestión de datos. La empresa ya usa algunas herramientas en el mostrador (CutList Optimizer y SQLite) y medios de contacto cotidianos (WhatsApp, Yape y Plin). Pero no hay conexión entre sistemas, ni copias de seguridad, ni formas estándar de registrar la información, ni registros que se puedan auditar. Por eso no se puede considerar que esté en un nivel gestionado.
+				</p>
+			</div>
+
+			<!-- Carrusel horizontal de imágenes por dimensión (manual) -->
+			<DimensionesCarousel />
 		</section>
 
 		<!-- SECCIÓN EVIDENCIAS DEL PROYECTO -->
