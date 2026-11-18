@@ -86,6 +86,7 @@ if (fs.existsSync(evidenciasDir)) {
 			const baseName = parsed.name.toLowerCase();
 			return !assignedSlots.some(s => s.filenameBase.toLowerCase() === baseName);
 		})
+		.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 		.map(f => ({
 			filename: f,
 			url: `/evidencias/${f}`
@@ -259,29 +260,67 @@ const preguntasEntrevista = [
 				)}
 			</div>
 		))}
+	</div>
 
-		{extraImages.map((extra) => (
-			<div class="rounded-lg border border-neutral-200 bg-white overflow-hidden flex flex-col justify-between shadow-xs">
+	<!-- Espacio dedicado para Evidencias Adicionales (Carrusel horizontal) -->
+	{extraImages.length > 0 && (
+		<div class="mt-10 rounded-xl border border-neutral-200 bg-white p-4 sm:p-5 shadow-xs">
+			<div class="flex items-center justify-between pb-3 mb-4 border-b border-neutral-100">
 				<div>
-					<div class="relative bg-neutral-100 aspect-video overflow-hidden border-b border-neutral-100">
-						<img
-							src={extra.url}
-							alt={extra.filename}
-							class="w-full h-full object-cover select-none pointer-events-none"
-							loading="lazy"
-						/>
-						<span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-blue-700 text-white text-[10px] font-medium shadow">
-							Evidencia adicional
-						</span>
-					</div>
-					<div class="p-4">
-						<h3 class="text-sm font-bold text-neutral-900 mb-1">{extra.filename}</h3>
-						<p class="text-xs text-neutral-500">Evidencia fotográfica complementaria</p>
-					</div>
+					<h3 class="text-base sm:text-lg font-serif font-bold text-neutral-900">
+						Evidencias adicionales
+					</h3>
+				</div>
+
+				<div class="flex items-center gap-2">
+					<span id="extra-evidencias-counter" class="text-xs font-mono text-neutral-500 px-2 py-1 bg-neutral-100 rounded">
+						1 / {extraImages.length}
+					</span>
+					<button
+						id="extra-evidencias-prev-btn"
+						type="button"
+						aria-label="Evidencia anterior"
+						class="w-8 h-8 flex items-center justify-center rounded border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 active:scale-95 transition cursor-pointer"
+					>
+						<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+						</svg>
+					</button>
+					<button
+						id="extra-evidencias-next-btn"
+						type="button"
+						aria-label="Siguiente evidencia"
+						class="w-8 h-8 flex items-center justify-center rounded border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 active:scale-95 transition cursor-pointer"
+					>
+						<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						</svg>
+					</button>
 				</div>
 			</div>
-		))}
-	</div>
+
+			<div
+				id="extra-evidencias-track"
+				class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 touch-pan-x pb-2"
+				style="scrollbar-width: thin;"
+			>
+				{extraImages.map((extra, idx) => (
+					<div class="extra-slide flex-none w-full sm:w-[calc(50%-0.5rem)] snap-start flex flex-col">
+						<div class="rounded-lg border border-neutral-200 bg-neutral-50 overflow-hidden flex flex-col h-full">
+							<div class="h-[400px] sm:h-[460px] flex items-center justify-center p-2">
+								<img
+									src={extra.url}
+									alt={`Evidencia adicional ${idx + 1}`}
+									class="max-w-full max-h-full object-contain rounded"
+									loading="lazy"
+								/>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	)}
 
 	<!-- Instrumento de Levantamiento: Guía de Entrevista -->
 	<div id="guia-entrevista" class="mt-12 rounded-xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-sm scroll-mt-20">
@@ -331,3 +370,45 @@ const preguntasEntrevista = [
 		</div>
 	</div>
 </section>
+
+<script>
+	const extraTrack = document.getElementById('extra-evidencias-track') as HTMLDivElement | null;
+	const extraPrevBtn = document.getElementById('extra-evidencias-prev-btn') as HTMLButtonElement | null;
+	const extraNextBtn = document.getElementById('extra-evidencias-next-btn') as HTMLButtonElement | null;
+	const extraCounter = document.getElementById('extra-evidencias-counter');
+	const extraSlides = document.querySelectorAll<HTMLElement>('.extra-slide');
+
+	if (extraTrack && extraSlides.length > 0) {
+		const updateExtraCounter = () => {
+			if (!extraCounter) return;
+			const trackCenter = extraTrack.scrollLeft + extraTrack.clientWidth / 2;
+			let closestIndex = 0;
+			let minDiff = Infinity;
+			extraSlides.forEach((slide, idx) => {
+				const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+				const diff = Math.abs(trackCenter - slideCenter);
+				if (diff < minDiff) {
+					minDiff = diff;
+					closestIndex = idx;
+				}
+			});
+			extraCounter.textContent = `${closestIndex + 1} / ${extraSlides.length}`;
+		};
+
+		extraPrevBtn?.addEventListener('click', () => {
+			extraTrack.scrollBy({ left: -extraTrack.clientWidth, behavior: 'smooth' });
+		});
+
+		extraNextBtn?.addEventListener('click', () => {
+			extraTrack.scrollBy({ left: extraTrack.clientWidth, behavior: 'smooth' });
+		});
+
+		let extraScrollTimeout: number | undefined;
+		extraTrack.addEventListener('scroll', () => {
+			window.clearTimeout(extraScrollTimeout);
+			extraScrollTimeout = window.setTimeout(updateExtraCounter, 50);
+		}, { passive: true });
+
+		updateExtraCounter();
+	}
+</script>
